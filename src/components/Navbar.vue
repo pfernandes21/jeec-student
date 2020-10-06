@@ -2,7 +2,7 @@
   <div class="navbar">
     <div class="top">
       <img
-        @click="open"
+        @click.stop="display_menu = !display_menu"
         alt="menu icon"
         src="../assets/icons/menu.svg"
         class="top-start"
@@ -15,7 +15,8 @@
         style="width: auto; height: 6vh"
       />
     </div>
-    <div v-show="display_menu" class="menu">
+    <v-navigation-drawer v-model="display_menu" absolute dark left temporary :width=width*0.82>
+    <div class="menu">
       <div class="menu-top">
         <img
           alt="profile photo"
@@ -77,8 +78,8 @@
       <div class="menu-bottom">
         <img alt="IST logo" src="../assets/tecnico.svg" style="height: 7vh" />
       </div>
-    </div>
-    <div @click="close" v-show="display_menu" class="menu-blank"></div>
+      </div>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -88,15 +89,8 @@ export default {
   data: function () {
     return {
       display_menu: false,
+      width: window.innerWidth,
     };
-  },
-  methods: {
-    open() {
-      this.display_menu = true;
-    },
-    close() {
-      this.display_menu = false;
-    },
   },
 };
 </script>
@@ -105,6 +99,7 @@ export default {
 .navbar {
   margin: 0 !important;
   padding: 0 !important;
+  color: white;
 }
 
 .top {
@@ -129,32 +124,11 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.menu-blank {
-  width: 20vw;
-  height: 100vh;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: #3939394d;
-}
-
-.menu {
-  width: 80vw;
-  height: 100vh;
-  background-color: #50575c;
-  left: 0;
-  top: 0;
-  position: absolute;
-  z-index: 1;
-}
-
 .menu > * {
   padding-left: 5vw;
   padding-right: 5vw;
   padding-top: 3vh;
   padding-bottom: 3vh;
-  color: white;
 }
 
 .menu-top {

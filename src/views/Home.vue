@@ -19,7 +19,7 @@
         <p>Pedro Fernandes</p>
         <p>lvl. 3</p>
         
-        <Expbar exp="50" />
+        <Expbar />
       </div>
     </div>
   </div>
