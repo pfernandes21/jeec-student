@@ -15,69 +15,59 @@
         style="width: auto; height: 6vh"
       />
     </div>
-    <v-navigation-drawer v-model="display_menu" absolute dark left temporary :width=width*0.82>
-    <div class="menu">
-      <div class="menu-top">
-        <img
-          alt="profile photo"
-          src="../assets/profile.jpg"
-          style="width: 12vh; height: 12vh; border-radius: 50%"
-        />
-        <div class="profile-info">
-          <div class="name">
-            <p>Pedro</p>
-            <p>Fernandes</p>
+    <v-navigation-drawer
+      v-model="display_menu"
+      absolute
+      dark
+      color="primary"
+      left
+      temporary
+      :width="width * 0.82"
+    >
+      <div class="menu">
+        <div class="menu-top">
+          <img
+            alt="profile photo"
+            src="../assets/profile.jpg"
+            style="width: 12vh; height: 12vh; border-radius: 50%"
+          />
+          <div class="profile-info">
+            <div class="name">
+              <p>Pedro</p>
+              <p>Fernandes</p>
+            </div>
+            <div class="level">
+              <p><b>level 3</b></p>
+            </div>
           </div>
-          <div class="level"><p>level 3</p></div>
         </div>
-      </div>
-      <div class="menu-middle">
-        <table class="menu-items">
-          <tbody>
-            <tr>
+        <div class="menu-middle">
+          <table class="menu-items">
+            <tr
+              v-for="item in menu_items"
+              :key="item.name"
+              v-bind:class="{
+                'active-item': page === item.page,
+                'inactive-item': page !== item.page,
+              }"
+              @click.stop="redirect(item.page)"
+            >
               <td>
-                <img alt="inicio" src="../assets/icons/placeholder.svg" />
+                <img :src="item.src" />
               </td>
-              <td>Início</td>
+              <td class="menu-names">{{ item.name }}</td>
             </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/barcode.svg" /></td>
-              <td>Redeem Code</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/sword.svg" /></td>
-              <td>Quests</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/trophy.svg" /></td>
-              <td>Rewards</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/calendar.svg" /></td>
-              <td>Actividades</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/user.svg" /></td>
-              <td>Meu Perfil</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/puzzle.svg" /></td>
-              <td>Equipa</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/rank.svg" /></td>
-              <td>Ranking</td>
-            </tr>
-            <tr>
-              <td><img alt="inicio" src="../assets/icons/warning.svg" /></td>
-              <td>Regras</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="menu-bottom">
-        <img alt="IST logo" src="../assets/tecnico.svg" style="height: 7vh" />
-      </div>
+          </table>
+        </div>
+        <div class="menu-bottom">
+          <center>
+            <img
+              alt="IST logo"
+              src="../assets/tecnico.svg"
+              style="height: 6vh"
+            />
+          </center>
+        </div>
       </div>
     </v-navigation-drawer>
   </div>
@@ -86,11 +76,76 @@
 <script>
 export default {
   name: "Navbar",
+  props: {
+    page: String,
+  },
   data: function () {
     return {
       display_menu: false,
       width: window.innerWidth,
+      menu_items: [
+        {
+          name: "Início",
+          src: require("../assets/icons/placeholder.svg"),
+          page: "Home",
+        },
+        {
+          name: "Redeem Code",
+          src: require("../assets/icons/barcode.svg"),
+          page: "Code",
+        },
+        {
+          name: "Quests",
+          src: require("../assets/icons/sword.svg"),
+          page: "Quests",
+        },
+        {
+          name: "Rewards",
+          src: require("../assets/icons/trophy.svg"),
+          page: "Rewards",
+        },
+        {
+          name: "Atividades",
+          src: require("../assets/icons/calendar.svg"),
+          page: "Activities",
+        },
+        {
+          name: "Meu Perfil",
+          src: require("../assets/icons/user.svg"),
+          page: "Profile",
+        },
+        {
+          name: "Equipa",
+          src: require("../assets/icons/puzzle.svg"),
+          page: "Team",
+        },
+        {
+          name: "Ranking",
+          src: require("../assets/icons/rank.svg"),
+          page: "Ranking",
+        },
+        {
+          name: "Regras",
+          src: require("../assets/icons/warning.svg"),
+          page: "Rules",
+        },
+      ],
     };
+  },
+  methods: {
+    redirect(target) {
+      console.log(target);
+      if (target !== this.page) this.$router.push({ name: target });
+    },
+    myEventHandler() {
+      this.width = window.innerWidth;
+    },
+  },
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
   },
 };
 </script>
@@ -124,15 +179,17 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.menu > * {
-  padding-left: 5vw;
-  padding-right: 5vw;
-  padding-top: 3vh;
-  padding-bottom: 3vh;
+.menu {
+  position: relative;
+  height: 100vh;
 }
 
 .menu-top {
   display: flex;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
 }
 
 .menu-top img {
@@ -154,7 +211,7 @@ export default {
   padding: 0;
   line-height: 3vh;
   font-size: 3vh;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .level p {
@@ -162,10 +219,13 @@ export default {
   margin: 0;
   font-size: 2vh;
   font-weight: 700;
+  color: #ffffff79;
 }
 
 .menu-middle {
-  padding-bottom: 0;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  color: black;
 }
 
 .menu-middle img {
@@ -178,14 +238,25 @@ export default {
   font-weight: 700;
 }
 
-.menu-items td {
-  padding-bottom: 0.5vh;
-  padding-right: 5vw;
+.active-item > * {
+  filter: invert(70%) sepia(55%) saturate(3669%) hue-rotate(164deg)
+    brightness(93%) contrast(91%);
+}
+
+.inactive-item > * {
+  filter: invert(1);
+}
+
+.menu-names {
+  padding-left: 4vw;
+  padding-bottom: 1.8vh;
 }
 
 .menu-bottom {
   position: absolute;
+  width: 100%;
   bottom: 0;
-  left: 20%;
+  padding-bottom: 2vh;
+  align-items: center;
 }
 </style>

@@ -12,22 +12,24 @@
         <img alt="IST logo" src="../assets/tecnico.svg" style="width: 40vw" />
       </div>
     </div>
-    <div v-show="!loading" class="info">
-      <Navbar />
+    <div v-show="!loading" class="">
+      <Navbar :page="currentPage" />
 
       <div>
         <p>Pedro Fernandes</p>
         <p>lvl. 3</p>
-        
-        <Expbar />
+        <center>
+          <Expbar :xp=10 />
+        </center>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import Expbar from "@/components/Expbar.vue"
+import Expbar from "@/components/Expbar.vue";
 
 export default {
   name: "Home",
@@ -38,6 +40,7 @@ export default {
   data: function () {
     return {
       loading: false,
+      currentPage: this.$route.name,
     };
   },
   mounted() {
@@ -47,7 +50,6 @@ export default {
 </script>
 
 <style scoped>
-
 .loading {
   background-color: #50575c;
   height: 100vh;
@@ -69,5 +71,4 @@ export default {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
 </style>
