@@ -40,25 +40,35 @@
         <p class="main-title">Team Terry</p>
         <p class="sub-title">rank 1</p>
 
-        <div class="xp-wrapper">
-          <p class="xp-top">Diário:</p>
-          <p class="xp-value">200</p>
-          <p class="xp">xp</p>
-          <p class="xp-top">Total:</p>
-          <p class="xp-value">999</p>
-          <p class="xp">xp</p>
-        </div>
+        <div class="middle-info">
+          <div class="xp-wrapper">
+            <p class="xp-top">Diário:</p>
+            <span class="xp-value">200</span>
+            <span class="xp">xp</span>
+            <p class="xp-top">Total:</p>
+            <span class="xp-value">999</span>
+            <span class="xp">xp</span>
+          </div>
 
-        <div class="today-reward">
-          <p class="t-reward-top">Prémio de hoje:</p>
-          <img src="" alt="today-reward" />
-          <p class="t-reward-bottom">Hover Board</p>
+          <div class="today-reward">
+            <p class="t-reward-top">Prémio de hoje:</p>
+            <center>
+              <div class="reward-img">
+                <img src="../assets/test/Bepis.png" alt="today-reward" />
+              </div>
+            </center>
+            <p class="t-reward-bottom">Hover Board</p>
+          </div>
         </div>
       </div>
 
       <div class="bottom">
-        <button>Redeem Codes</button>
-        <button>Daily Quests</button>
+        <router-link to="/code" tag="button" class="button1"
+          >Redeem<br />Codes</router-link
+        >
+        <router-link to="/quests" tag="button" class="button2"
+          >Daily<br />Quests</router-link
+        >
       </div>
     </div>
   </div>
@@ -87,6 +97,10 @@ export default {
 </script>
 
 <style scoped>
+.home {
+  height: 100%;
+}
+
 .loading {
   background-color: #50575c;
   height: 100vh;
@@ -111,6 +125,7 @@ export default {
 
 .home-page {
   background-color: #e6e6e6;
+  height: 100%;
 }
 
 .top,
@@ -119,7 +134,7 @@ export default {
   margin-top: 1vh;
   background-color: #f1f1f1;
   padding-top: 1vh;
-  padding-bottom: 1vh;
+  padding-bottom: 4vh;
   padding-left: 4vw;
   padding-right: 4vw;
 }
@@ -198,9 +213,83 @@ export default {
 }
 
 .n-reward-bottom {
-  font-size: 1.6vh;
+  font-size: 1.7vh;
   font-weight: 700 !important;
   margin-top: -0.5vh !important;
 }
 
+.middle-info {
+  display: flex;
+  padding-top: 2vh;
+  scroll-padding-bottom: 2vh;
+}
+
+.xp-wrapper {
+  align-self: center;
+}
+
+.today-reward {
+  margin-left: auto;
+}
+
+.xp-top {
+  font-size: 1.7vh;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: -1.5vh;
+}
+
+.xp-value {
+  font-size: 5.5vh;
+  font-weight: 600;
+  margin: 0;
+}
+
+.xp {
+  font-size: 2vh;
+  font-weight: 700;
+}
+
+.t-reward-top {
+  font-size: 2.5vh;
+  font-weight: 500;
+  color: #848484;
+  margin: 0;
+}
+
+.t-reward-bottom {
+  font-size: 2.5vh;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.bottom {
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button1,
+.button2 {
+  background-color: #27ade4;
+  border-radius: 3vh;
+  font-size: 4vh;
+  font-weight: 600;
+  color: white;
+  width: 43vw;
+  height: auto;
+}
+
+.button1 {
+  margin-right: 2vw;
+}
+
+.button2 {
+  margin-left: 2vw;
+}
 </style>
