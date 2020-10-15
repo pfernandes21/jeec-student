@@ -4,7 +4,9 @@
 
     <div class="code-page">
       <input type="text" class="input-code" placeholder="xxxx-xxxx-xxxx-xxxx" />
-      <button class="redeem">Redeem</button>
+      <center>
+        <button class="redeem">Redeem</button>
+      </center>
 
       <div class="xp-wrapper">
         <p class="xp-top">Personal:</p>
@@ -39,16 +41,55 @@ export default {
 }
 
 .code-page {
-  padding-top: 5vh;
-  padding-bottom: 5vh;
+  padding-top: 6vh;
+  padding-bottom: 6vh;
   padding-left: 10vw;
   padding-right: 10vw;
 }
 
 .input-code {
   width: 80vw;
-  height: 6vh;
+  height: 7vh;
   background-color: white;
   text-align: center;
+  border: 0.1vh solid #707070;
+  font-size: 3.5vh;
+  font-weight: 500;
 }
+
+.redeem {
+  background-color: #27ade4;
+  border-radius: 2vh;
+  font-size: 4vh;
+  font-weight: 600;
+  color: white;
+  width: 43vw;
+  height: auto;
+  margin-top: 2.5vh;
+}
+
+.xp-wrapper {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 10vh;
+}
+
+.xp-top {
+  font-size: 3vh;
+  font-weight: 700;
+  color: #aaadb0;
+  margin: 0;
+  margin-bottom: -3vh;
+}
+
+.xp-value {
+  font-size: 11vh;
+  font-weight: 600;
+  margin: 0;
+}
+
+.xp {
+  font-weight: 700;
+}
+
 </style>
