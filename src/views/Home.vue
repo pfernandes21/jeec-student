@@ -28,9 +28,9 @@
             <img src="../assets/test/Bepis.png" alt="next-reward" />
           </div>
           <div class="next-reward-info">
-            <p class="n-reward-top">Próximo Prémio:</p>
+            <p class="n-reward-top">Next Reward:</p>
             <p class="n-reward-middle">Caderno das JEEC</p>
-            <p class="n-reward-bottom">Faltam 600 pontos</p>
+            <p class="n-reward-bottom">Missing 600 xp points</p>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
         <div class="middle-info">
           <div class="xp-wrapper">
-            <p class="xp-top">Diário:</p>
+            <p class="xp-top">Daily:</p>
             <span class="xp-value">200</span>
             <span class="xp">xp</span>
             <p class="xp-top">Total:</p>
@@ -51,7 +51,7 @@
           </div>
 
           <div class="today-reward">
-            <p class="t-reward-top">Prémio de hoje:</p>
+            <p class="t-reward-top">Today Reward:</p>
             <center>
               <div class="reward-img">
                 <img src="../assets/test/Bepis.png" alt="today-reward" />

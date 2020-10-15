@@ -85,7 +85,7 @@ export default {
       width: window.innerWidth,
       menu_items: [
         {
-          name: "Início",
+          name: "Home",
           src: require("../assets/icons/placeholder.svg"),
           page: "Home",
         },
@@ -105,17 +105,17 @@ export default {
           page: "Rewards",
         },
         {
-          name: "Atividades",
+          name: "Activities",
           src: require("../assets/icons/calendar.svg"),
           page: "Activities",
         },
         {
-          name: "Meu Perfil",
+          name: "My Profile",
           src: require("../assets/icons/user.svg"),
           page: "Profile",
         },
         {
-          name: "Equipa",
+          name: "Team",
           src: require("../assets/icons/puzzle.svg"),
           page: "Team",
         },
@@ -125,7 +125,7 @@ export default {
           page: "Ranking",
         },
         {
-          name: "Regras",
+          name: "Rules",
           src: require("../assets/icons/warning.svg"),
           page: "Rules",
         },
@@ -134,7 +134,6 @@ export default {
   },
   methods: {
     redirect(target) {
-      console.log(target);
       if (target !== this.page) this.$router.push({ name: target });
     },
     myEventHandler() {
