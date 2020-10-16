@@ -233,14 +233,14 @@ export default {
 }
 
 .xp-top {
-  font-size: 1.7vh;
+  font-size: 1.8vh;
   font-weight: 700;
   margin: 0;
   margin-bottom: -1.5vh;
 }
 
 .xp-value {
-  font-size: 5.5vh;
+  font-size: 6vh;
   font-weight: 600;
   margin: 0;
 }
