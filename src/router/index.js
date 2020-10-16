@@ -5,6 +5,7 @@ import Code from '../views/Code.vue'
 import Activities from '../views/Activities.vue'
 import Profile from '../views/Profile.vue'
 import Quests from '../views/Quests.vue'
+import Team from '../views/Team.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/quests',
     name: 'Quests',
     component: Quests,
+  },
+  {
+    path: '/team',
+    name: 'Team',
+    component: Team,
   }
 ]
 
