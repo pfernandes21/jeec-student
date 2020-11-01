@@ -14,12 +14,12 @@
         <img class="arrow-right" src="../assets/icons/arrow.svg" />
       </div>
 
-      <div class="activities-wrapper" style="display: none;">
+      <div class="activities-wrapper" >
         <Activity />
         <Activity />
       </div>
 
-      <div class="no-activities-warning">
+      <div class="no-activities-warning" style="display: none;">
         <span class="warning-msg">Go to your</span>
         <span class="warning-msg profile"> Profile </span>
         <span class="warning-msg">to add Interests!</span>

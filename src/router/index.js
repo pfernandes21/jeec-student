@@ -6,6 +6,7 @@ import Activities from '../views/Activities.vue'
 import Profile from '../views/Profile.vue'
 import Quests from '../views/Quests.vue'
 import Team from '../views/Team.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +15,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/code',
@@ -43,7 +49,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  mode: 'history',
+  routes: routes
 })
 
 export default router

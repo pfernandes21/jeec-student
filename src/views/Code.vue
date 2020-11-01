@@ -66,6 +66,7 @@ export default {
   width: 43vw;
   height: auto;
   margin-top: 2.5vh;
+  padding: 0.5vh;
 }
 
 .xp-wrapper {

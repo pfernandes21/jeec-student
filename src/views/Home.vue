@@ -51,7 +51,7 @@
           </div>
 
           <div class="today-reward">
-            <p class="t-reward-top">Today Reward:</p>
+            <p class="t-reward-top">Today's Reward:</p>
             <center>
               <div class="reward-img">
                 <img src="../assets/test/Bepis.png" alt="today-reward" />
@@ -86,12 +86,12 @@ export default {
   },
   data: function () {
     return {
-      loading: false,
+      loading: true,
       currentPage: this.$route.name,
     };
   },
   mounted() {
-    //setTimeout(() => { this.loading = false }, 5000)
+    setTimeout(() => { this.loading = false }, 2000)
   },
 };
 </script>

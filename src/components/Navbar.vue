@@ -28,13 +28,13 @@
         <div class="menu-top">
           <img
             alt="profile photo"
-            src="../assets/profile.jpg"
+            :src="'data: ' + currentUser.photo_type + ';base64, ' + currentUser.photo"
             style="width: 12vh; height: 12vh; border-radius: 50%"
           />
           <div class="profile-info">
             <div class="name">
-              <p>Pedro</p>
-              <p>Fernandes</p>
+              <p>{{ nameArray[0] }}</p>
+              <p>{{ nameArray[nameArray.length - 1] }}</p>
             </div>
             <div class="level">
               <p><b>level 3</b></p>
@@ -145,6 +145,14 @@ export default {
   },
   destroyed() {
     window.removeEventListener("resize", this.myEventHandler);
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    nameArray() {
+      return this.$store.state.auth.user.name.split(" ");
+    },
   },
 };
 </script>

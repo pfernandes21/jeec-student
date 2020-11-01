@@ -60,7 +60,7 @@
           <td class="notifications">Notifications</td>
         </tr>
         <tr class="spacer"></tr>
-        <tr>
+        <tr @click.stop="logout">
           <td class="logout-img" align="center"><img src="../assets/icons/logout.svg" alt="logout" /></td>
           <td class="logout">LogOut</td>
         </tr>
@@ -85,6 +85,12 @@ export default {
       color: "gray",
     };
   },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    },
+  }
 };
 </script>
 
