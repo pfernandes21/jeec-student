@@ -4,22 +4,45 @@
 
     <center>
       <div class="buttons">
-        <button class="button1">All</button>
-        <button class="button2">My Interests</button>
+        <button
+          class="button1"
+          :class="{ active: button_mode }"
+          @click.stop="button_mode = true"
+        >
+          All
+        </button>
+        <button
+          class="button2"
+          :class="{ active: !button_mode }"
+          @click.stop="button_mode = false"
+        >
+          My Interests
+        </button>
       </div>
 
-      <div class="day-wrapper">
-        <img class="arrow-left" src="../assets/icons/arrow.svg" />
-        <p class="day">Monday</p>
-        <img class="arrow-right" src="../assets/icons/arrow.svg" />
+      <div>
+        <v-carousel
+          style="height: 11vh"
+          hide-delimiter-background
+          hide-delimiters
+          v-model="model"
+        >
+          <v-carousel-item v-for="day in days" :key="day">
+            <v-sheet color="#e6e6e6" tile>
+              <v-row class="day-wrapper" align="center" justify="center">
+                <div class="day">{{ day }}</div>
+              </v-row>
+            </v-sheet>
+          </v-carousel-item>
+        </v-carousel>
       </div>
 
-      <div class="activities-wrapper" >
+      <div class="activities-wrapper">
         <Activity />
         <Activity />
       </div>
 
-      <div class="no-activities-warning" style="display: none;">
+      <div class="no-activities-warning" style="display: none">
         <span class="warning-msg">Go to your</span>
         <span class="warning-msg profile"> Profile </span>
         <span class="warning-msg">to add Interests!</span>
@@ -41,7 +64,20 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
+      button_mode: true,
+      model: 0,
+      days: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
@@ -61,7 +97,7 @@ export default {
 
 .button1,
 .button2 {
-  background-color: #27ade4;
+  background-color: rgba(88, 185, 224, 0.397);
   border-radius: 3vh;
   font-size: 3.5vh;
   font-weight: 500;
@@ -80,28 +116,20 @@ export default {
   margin-left: 2vw;
 }
 
+.active {
+  background-color: #27ade4;
+}
+
 .day-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2vh;
+  vertical-align: middle;
 }
 
 .day {
+  color: black;
   align-self: center;
-  font-size: 7vh;
+  font-size: 6.5vh;
   font-weight: 600;
   margin: 0;
-}
-
-.arrow-left {
-  align-self: center;
-  height: 8vh;
-  transform: rotate(180deg);
-}
-
-.arrow-right {
-  align-self: center;
-  height: 8vh;
 }
 
 .no-activities-warning {
@@ -117,5 +145,4 @@ export default {
   color: #27ade4;
   font-weight: 600;
 }
-
 </style>

@@ -6,9 +6,9 @@ class AuthService {
       .get(process.env.VUE_APP_JEEC_BRAIN_URL + 'student/info', { headers: { Authorization: 'Bearer ' + accessToken } })
       .then(response => {
         if (response.data) {
-          localStorage.setItem('user', JSON.stringify(accessToken));
-
           user = response.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('user', JSON.stringify(user));
           return user;
         }
       });
@@ -16,6 +16,11 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+  }
+
+  userUpdate(user) {
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   //   register(user) {

@@ -7,17 +7,18 @@ import Profile from '../views/Profile.vue'
 import Quests from '../views/Quests.vue'
 import Team from '../views/Team.vue'
 import Login from '../views/Login.vue'
+import Rankings from '../views/Rankings.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home,
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: Login,
   },
@@ -45,6 +46,11 @@ const routes = [
     path: '/team',
     name: 'Team',
     component: Team,
+  },
+  {
+    path: '/rankings',
+    name: 'Rankings',
+    component: Rankings,
   }
 ]
 

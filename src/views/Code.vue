@@ -3,16 +3,26 @@
     <Navbar :page="currentPage" />
 
     <div class="code-page">
-      <input type="text" class="input-code" placeholder="xxxx-xxxx-xxxx-xxxx" />
+      <input
+        type="text"
+        class="input-code"
+        placeholder="xxxx-xxxx-xxxx-xxxx"
+        ref="code"
+        autofocus
+      />
       <center>
-        <button class="redeem">Redeem</button>
+        <button @click.stop="redeem" class="redeem">Redeem</button>
       </center>
 
       <div class="xp-wrapper">
         <p class="xp-top">Personal:</p>
-        <span class="xp-value">200</span><span class="xp">xp</span>
+        <span class="xp-value">{{ currentUser.total_points }}</span
+        ><span class="xp">xp</span>
         <p class="xp-top">Team:</p>
-        <span class="xp-value">999</span><span class="xp">xp</span>
+        <span class="xp-value">{{
+          currentUser.squad ? currentUser.squad.total_points : "0"
+        }}</span
+        ><span class="xp">xp</span>
       </div>
     </div>
   </div>
@@ -20,6 +30,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import UserService from "../services/user.service";
 
 export default {
   name: "Home",
@@ -30,6 +41,32 @@ export default {
     return {
       currentPage: this.$route.name,
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
+  methods: {
+    redeem() {
+      console.log(this.$refs.code.value);
+      UserService.redeemCode(this.$refs.code.value).then(
+        (response) => {
+          console.log(response.data);
+        },
+        (error) => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
@@ -92,5 +129,4 @@ export default {
 .xp {
   font-weight: 700;
 }
-
 </style>

@@ -2,11 +2,11 @@
   <div class="expbar" :style="'width:' + width">
     <v-progress-linear
       class="bar"
-      v-model="xp"
+      v-model="progress"
       height="30"
       light
       color="secundary"
-      ><p class="xp">{{ xp }} / {{ next_xp }}</p></v-progress-linear>
+      ><p class="xp">{{ xp }} / {{ level.end_points }}</p></v-progress-linear>
   </div>
 </template>
 
@@ -15,7 +15,8 @@ export default {
   name: "Expbar",
   props: {
     xp: Number,
-    next_xp: Number,
+    progress: Number,
+    level: Object,
     width: String,
   },
 };

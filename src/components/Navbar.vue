@@ -37,7 +37,7 @@
               <p>{{ nameArray[nameArray.length - 1] }}</p>
             </div>
             <div class="level">
-              <p><b>level 3</b></p>
+              <p><b>level {{ currentUser.level.value }}</b></p>
             </div>
           </div>
         </div>
@@ -120,9 +120,9 @@ export default {
           page: "Team",
         },
         {
-          name: "Ranking",
+          name: "Rankings",
           src: require("../assets/icons/rank.svg"),
-          page: "Ranking",
+          page: "Rankings",
         },
         {
           name: "Rules",
@@ -241,7 +241,7 @@ export default {
 }
 
 .menu-items {
-  font-size: 4vh;
+  font-size: 3.7vh;
   font-weight: 700;
 }
 
@@ -256,7 +256,7 @@ export default {
 
 .menu-names {
   padding-left: 4vw;
-  padding-bottom: 1.8vh;
+  padding-bottom: 2vh;
 }
 
 .menu-bottom {

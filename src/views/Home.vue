@@ -1,26 +1,21 @@
 <template>
   <div class="home">
-    <div v-show="loading" class="loading">
-      <div class="loading-center">
-        <img
-          alt="JEEC logo"
-          src="../assets/jeec_white.svg"
-          style="width: 75vw"
-        />
-      </div>
-      <div class="loading-bottom">
-        <img alt="IST logo" src="../assets/tecnico.svg" style="width: 40vw" />
-      </div>
-    </div>
-    <div v-show="!loading" class="home-page">
+    <div class="home-page">
       <Navbar :page="currentPage" />
 
       <div class="top">
-        <p class="plus">+</p>
-        <p class="main-title">Pedro Fernandes</p>
-        <p class="sub-title">lvl. 3</p>
+        <router-link to="/profile" tag="p" class="plus">+</router-link>
+        <p class="main-title">
+          {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
+        </p>
+        <p class="sub-title">lvl. {{ currentUser.level.value }}</p>
         <center class="expbar">
-          <Expbar :xp="10" :next_xp="100" width="92vw" />
+          <Expbar
+            :xp="currentUser.total_points"
+            :progress="progress"
+            :level="currentUser.level"
+            width="92vw"
+          />
         </center>
 
         <div class="next-reward">
@@ -36,7 +31,7 @@
       </div>
 
       <div class="middle">
-        <p class="plus">+</p>
+        <router-link to="/team" tag="p" class="plus">+</router-link>
         <p class="main-title">Team Terry</p>
         <p class="sub-title">rank 1</p>
 
@@ -86,12 +81,28 @@ export default {
   },
   data: function () {
     return {
-      loading: true,
       currentPage: this.$route.name,
     };
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    nameArray() {
+      return this.$store.state.auth.user.name.split(" ");
+    },
+    progress() {
+      var xp = this.$store.state.auth.user.total_points;
+      var start_points = this.$store.state.auth.user.level.start_points;
+      var end_points = this.$store.state.auth.user.level.end_points;
+
+      return ((xp - start_points) / (end_points - start_points)) * 100;
+    },
+  },
   mounted() {
-    setTimeout(() => { this.loading = false }, 2000)
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
@@ -99,28 +110,6 @@ export default {
 <style scoped>
 .home {
   height: 100%;
-}
-
-.loading {
-  background-color: #50575c;
-  height: 100vh;
-  position: relative;
-}
-
-.loading-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.loading-bottom {
-  position: absolute;
-  top: 90%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 .home-page {

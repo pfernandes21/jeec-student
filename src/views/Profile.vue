@@ -5,27 +5,36 @@
     <div class="top">
       <img
         alt="profile photo"
-        src="../assets/profile.jpg"
+        :src="
+          'data: ' + currentUser.photo_type + ';base64, ' + currentUser.photo
+        "
         style="width: 12vh; height: 12vh; border-radius: 50%"
       />
       <div class="profile-info">
         <div class="name">
-          <p>Pedro</p>
-          <p>Fernandes</p>
+          <p>{{ nameArray[0] }}</p>
+          <p>{{ nameArray[nameArray.length - 1] }}</p>
         </div>
-        <p class="level">level 3</p>
-        <Expbar :xp="10" :next_xp="100" width="60vw" />
+        <p class="level">level {{ currentUser.level.value }}</p>
+        <Expbar
+          :xp="currentUser.total_points"
+          :progress="progress"
+          :level="currentUser.level"
+          width="60vw"
+        />
       </div>
     </div>
 
     <div class="middle">
       <div class="cv-wrapper">
         <img src="../assets/icons/cv.svg" alt="cv" />
-        <p>Add your CV</p>
+        <p v-if="currentUser.uploaded_cv === false">Add your CV</p>
+        <v-icon v-else large style="color: green">mdi-check</v-icon>
       </div>
-      <div class="linkedin-wrapper">
+      <div class="linkedin-wrapper" @click.stop="dialog = true">
         <img src="../assets/icons/linkedin.svg" alt="linkedin" />
-        <p>Add your linkedin</p>
+        <p v-if="currentUser.linkedin_url === null">Add your linkedin</p>
+        <v-icon v-else large style="color: green">mdi-check</v-icon>
       </div>
     </div>
 
@@ -37,11 +46,13 @@
       <div class="tags">
         <p class="tag">All</p>
         <p class="tag">Machine Learning</p>
+        <p class="tag add-tag">Add +</p>
       </div>
       <p class="interest-title">Partners:</p>
       <div class="tags">
         <p class="tag">All</p>
         <p class="tag">Deloitte</p>
+        <p class="tag add-tag">Add +</p>
       </div>
     </div>
 
@@ -56,22 +67,44 @@
               value="grey"
               hide-details
             ></v-switch>
-        </td>
+          </td>
           <td class="notifications">Notifications</td>
         </tr>
         <tr class="spacer"></tr>
         <tr @click.stop="logout">
-          <td class="logout-img" align="center"><img src="../assets/icons/logout.svg" alt="logout" /></td>
+          <td class="logout-img" align="center">
+            <img src="../assets/icons/logout.svg" alt="logout" />
+          </td>
           <td class="logout">LogOut</td>
         </tr>
       </table>
     </div>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <div class="linkedin-input">
+          <form @submit="add_linkedin">
+            <input
+              type="url"
+              ref="linkedin_url"
+              placeholder="https://www.linkedin.com/in/XXXXX/"
+              autofocus
+              required
+            />
+            <br />
+            <center>
+              <button type="submit">Confirm</button>
+            </center>
+          </form>
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
+import UserService from "../services/user.service";
 
 export default {
   name: "Profile",
@@ -83,14 +116,53 @@ export default {
     return {
       currentPage: this.$route.name,
       color: "gray",
+      dialog: false,
     };
   },
   methods: {
     logout() {
-      this.$store.dispatch('auth/logout');
-      this.$router.push('/login');
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/");
     },
-  }
+    add_linkedin(e) {
+      e.preventDefault();
+
+      var url = this.$refs.linkedin_url.value;
+      this.dialog = false;
+
+      UserService.addLinkedin(url).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data);
+        },
+        (error) => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    nameArray() {
+      return this.$store.state.auth.user.name.split(" ");
+    },
+    progress() {
+      var xp = this.$store.state.auth.user.total_points;
+      var start_points = this.$store.state.auth.user.level.start_points;
+      var end_points = this.$store.state.auth.user.level.end_points;
+
+      return ((xp - start_points) / (end_points - start_points)) * 100;
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
+  },
 };
 </script>
 
@@ -180,7 +252,7 @@ export default {
 
 .tag {
   margin: 0;
-  line-height: 3.6vh;
+  line-height: 4vh;
   font-size: 2vh;
   color: white;
   height: 4vh;
@@ -190,6 +262,12 @@ export default {
   padding-right: 2vw;
   margin-right: 1vw;
   margin-bottom: 1vh;
+}
+
+.add-tag {
+  background-color: green;
+  font-weight: 600;
+  font-size: 2.5vh;
 }
 
 .footer {
@@ -209,7 +287,8 @@ export default {
   padding: 0;
 }
 
-.notifications, .logout {
+.notifications,
+.logout {
   color: rgba(255, 255, 255, 0.89);
   font-size: 3vh;
   vertical-align: middle;
@@ -219,9 +298,21 @@ export default {
   font-weight: 600;
 }
 
-.logout-img img{
+.logout-img img {
   height: 4vh;
   width: 4vh;
 }
 
+/* .linkedin-input {
+} */
+
+.linkedin-input input {
+  width: 100%;
+  margin-top: 0.5vh;
+}
+
+.linkedin-input button {
+  margin: 1vh;
+  color: green;
+}
 </style>
