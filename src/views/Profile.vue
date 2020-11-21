@@ -19,17 +19,18 @@
         <Expbar
           :xp="currentUser.total_points"
           :progress="progress"
-          :level="currentUser.level"
+          :end_points="currentUser.level.end_points"
           width="60vw"
         />
       </div>
     </div>
 
     <div class="middle">
-      <div class="cv-wrapper">
+      <div class="cv-wrapper" @click.stop="cv_click">
         <img src="../assets/icons/cv.svg" alt="cv" />
         <p v-if="currentUser.uploaded_cv === false">Add your CV</p>
         <v-icon v-else large style="color: green">mdi-check</v-icon>
+        <input hidden type="file" accept="application/pdf" ref="cv" @change="add_cv" />
       </div>
       <div class="linkedin-wrapper" @click.stop="dialog = true">
         <img src="../assets/icons/linkedin.svg" alt="linkedin" />
@@ -72,14 +73,14 @@
         </tr>
         <tr class="spacer"></tr>
         <tr @click.stop="logout">
-          <td class="logout-img" align="center">
+          <td class="logout-img">
             <img src="../assets/icons/logout.svg" alt="logout" />
           </td>
           <td class="logout">LogOut</td>
         </tr>
       </table>
     </div>
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog v-model="dialog">
       <v-card>
         <div class="linkedin-input">
           <form @submit="add_linkedin">
@@ -132,15 +133,20 @@ export default {
 
       UserService.addLinkedin(url).then(
         (response) => {
-          this.$store.dispatch("auth/userUpdate", response.data);
+          this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-        }
+        (error) => { console.log(error); }
       );
+    },
+    cv_click() {
+      this.$refs.cv.click();
+    },
+    add_cv() {
+      var formData = new FormData();
+      var file = this.$refs.cv;
+      formData.append("cv", file.files[0]);
+
+      UserService.addCV(formData);
     },
   },
   computed: {
@@ -272,10 +278,11 @@ export default {
 
 .footer {
   background-color: #50575c;
+  margin-top: 0.8vh;
 }
 
 .spacer {
-  height: 1vh;
+  height: 1.5vh;
 }
 
 .notifications-wrapper {
@@ -291,16 +298,20 @@ export default {
 .logout {
   color: rgba(255, 255, 255, 0.89);
   font-size: 3vh;
-  vertical-align: middle;
 }
 
 .logout {
   font-weight: 600;
+  vertical-align: middle;
+  
 }
 
 .logout-img img {
   height: 4vh;
   width: 4vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* .linkedin-input {
@@ -309,6 +320,7 @@ export default {
 .linkedin-input input {
   width: 100%;
   margin-top: 0.5vh;
+  font-size: 2.7vh;
 }
 
 .linkedin-input button {

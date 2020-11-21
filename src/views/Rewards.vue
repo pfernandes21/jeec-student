@@ -1,57 +1,54 @@
 <template>
-  <div class="quests">
+  <div class="rewards">
     <Navbar :page="currentPage" />
 
     <center>
       <div class="buttons">
-        <button class="button">Daily</button>
-        <button class="button">Special</button>
+        <button class="button">Personal</button>
+        <button class="button">Team</button>
+        <button class="button">JEECPOT</button>
       </div>
     </center>
 
-    <div class="daily" style="display: none">
-      <div class="activities-wrapper">
-        <Activity />
-        <Activity />
-      </div>
+    <PersonalReward :name="'Bepis'" :rewards="rewards" :xp="20" />
 
-      <div class="quests-warning">
-        <p class="searching">Searching...</p>
-        <span class="warning-msg">For more quests go to</span>
-        <router-link to="/activities" class="warning-msg activities-link">
-          Activities</router-link
-        >
-      </div>
-    </div>
-
-    <div class="special">
-      <Quest />
-    </div>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import Activity from "@/components/Activity.vue";
-import Quest from "@/components/Quest.vue";
+import PersonalReward from "@/components/PersonalReward.vue";
+//import TeamReward from "@/components/TeamReward.vue";
 
 export default {
-  name: "Quests",
+  name: "Rewards",
   components: {
     Navbar,
-    Activity,
-    Quest,
+    PersonalReward,
+    //TeamReward,
   },
   data: function () {
     return {
       currentPage: this.$route.name,
+      rewards: [
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+          level: 1,
+          name: 'Bepis1',
+        },
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+          level: 2,
+          name: 'Bepis2',
+        }
+      ]
     };
   },
 };
 </script>
 
 <style scoped>
-.quests {
+.rewards {
   background-color: #e6e6e6;
   height: 100%;
 }
@@ -75,6 +72,7 @@ export default {
   padding-bottom: 1vh;
   margin-left: 1vw;
   margin-right: 1vw;
+  margin-bottom: 2vh;
 }
 
 .no-activities-warning {

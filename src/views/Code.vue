@@ -52,13 +52,10 @@ export default {
       console.log(this.$refs.code.value);
       UserService.redeemCode(this.$refs.code.value).then(
         (response) => {
-          console.log(response.data);
+          this.$store.dispatch("auth/userUpdate", response.data.data);
         },
         (error) => {
-          this.content =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
+          console.log(error);
         }
       );
     },

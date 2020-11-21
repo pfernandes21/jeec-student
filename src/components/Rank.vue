@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Expbar",
+  name: "Rank",
   props: {
     index: Number,
     img_src: String,

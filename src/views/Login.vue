@@ -59,17 +59,14 @@ export default {
             this.$router.push("/home");
           },
           (error) => {
-            this.message =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
+            console.log(error);
           }
         );
     }
   },
   methods: {
     login() {
-      window.location.replace(this.jeec_brain_url + "student/login");
+      window.location.replace(this.jeec_brain_url + "/student/login");
     },
   },
 };

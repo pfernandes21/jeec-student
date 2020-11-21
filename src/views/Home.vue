@@ -13,7 +13,7 @@
           <Expbar
             :xp="currentUser.total_points"
             :progress="progress"
-            :level="currentUser.level"
+            :end_points="currentUser.level.end_points"
             width="92vw"
           />
         </center>
@@ -58,10 +58,10 @@
       </div>
 
       <div class="bottom">
-        <router-link to="/code" tag="button" class="button1"
+        <router-link to="/code" tag="button" class="button"
           >Redeem<br />Codes</router-link
         >
-        <router-link to="/quests" tag="button" class="button2"
+        <router-link to="/quests" tag="button" class="button"
           >Daily<br />Quests</router-link
         >
       </div>
@@ -72,6 +72,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
+import UserService from "../services/user.service";
 
 export default {
   name: "Home",
@@ -82,6 +83,7 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
+      squad: {},
     };
   },
   computed: {
@@ -103,6 +105,15 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/");
     }
+
+    UserService.getUserSquad().then(
+      (response) => {
+        this.squad = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
@@ -263,8 +274,7 @@ export default {
   justify-content: center;
 }
 
-.button1,
-.button2 {
+.button {
   background-color: #27ade4;
   border-radius: 3vh;
   font-size: 4vh;
@@ -272,13 +282,7 @@ export default {
   color: white;
   width: 43vw;
   height: auto;
-}
-
-.button1 {
-  margin-right: 2vw;
-}
-
-.button2 {
-  margin-left: 2vw;
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 </style>

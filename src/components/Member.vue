@@ -1,12 +1,23 @@
 <template>
   <div class="member">
-    <img src="../assets/profile.jpg" alt="profile photo" class="profile-photo">
+    <img
+      :src="'data: ' + member.photo_type + ';base64, ' + member.photo"
+      alt="profile photo"
+      class="profile-photo"
+    />
     <div class="profile-info">
-      <p v-if="true" class="captain">Captain</p>
-      <p class="name">Pedro Fernandes</p>
-      <p class="level">level 3</p>
+      <p v-if="member.is_captain" class="captain">Captain</p>
+      <p class="name">
+        {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
+      </p>
+      <p class="level">level {{ member.level }}</p>
     </div>
-    <img src="../assets/icons/kick.svg" alt="kick" class="kick">
+    <img
+      v-if="member.is_captain"
+      src="../assets/icons/kick.svg"
+      alt="kick"
+      class="kick"
+    />
   </div>
 </template>
 
@@ -14,13 +25,17 @@
 export default {
   name: "Member",
   props: {
-    
+    member: Object,
+  },
+  computed: {
+    nameArray() {
+      return this.member.name.split(" ");
+    },
   },
 };
 </script>
 
 <style scoped>
-
 .member {
   display: flex;
   margin-bottom: 1.5vh;
@@ -38,14 +53,14 @@ export default {
   margin-left: 3vw;
 }
 
-.profile-info *{
+.profile-info * {
   margin: 0;
 }
 
 .captain {
-  font-size: 1.6vh;
+  font-size: 1.8vh;
   font-weight: 700;
-  color: #A1A1A1;
+  color: #a1a1a1;
   margin-bottom: -0.5vh;
 }
 
@@ -55,9 +70,9 @@ export default {
 }
 
 .level {
-  font-size: 1.6vh;
+  font-size: 1.8vh;
   font-weight: 700;
-  color: #27ADE4;
+  color: #27ade4;
   margin-top: -0.5vh;
 }
 
@@ -68,5 +83,4 @@ export default {
   transform: scaleX(-1);
   margin-left: auto;
 }
-
 </style>

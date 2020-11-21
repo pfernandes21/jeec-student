@@ -115,9 +115,9 @@ export default {
           page: "Profile",
         },
         {
-          name: "Team",
+          name: "Squad",
           src: require("../assets/icons/puzzle.svg"),
-          page: "Team",
+          page: "Squad",
         },
         {
           name: "Rankings",

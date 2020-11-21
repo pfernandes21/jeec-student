@@ -6,7 +6,7 @@
       height="30"
       light
       color="secundary"
-      ><p class="xp">{{ xp }} / {{ level.end_points }}</p></v-progress-linear>
+      ><p class="xp">{{ xp }} / {{ end_points }}</p></v-progress-linear>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   props: {
     xp: Number,
     progress: Number,
-    level: Object,
+    end_points: Number,
     width: String,
   },
 };

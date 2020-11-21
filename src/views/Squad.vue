@@ -1,18 +1,26 @@
 <template>
-  <div class="team">
+  <div class="squad">
     <Navbar :page="currentPage" />
 
     <center>
       <div class="buttons">
-        <button class="button button1">My Team</button>
-        <button class="button button2">Invitations(91)</button>
+        <button class="button">My Squad</button>
+        <button class="button">Invitations(22)</button>
       </div>
     </center>
 
-    <div class="no-team" style="display: none">
-      <div class="n-team-header">You have no team</div>
-      <div class="team-creation">
-        <p>Team Creation</p>
+    <div class="no-squad" v-if="squad === null">
+      <div class="n-squad-header">
+        <img
+          v-show="locked"
+          src="../assets/icons/lock.svg"
+          style="padding-right: 2vw"
+          alt="lock"
+        />
+        <p>You don't have a squad</p>
+      </div>
+      <div class="squad-creation">
+        <p>Squad Creation</p>
         <center>
           <div
             v-show="!image_uploaded"
@@ -31,7 +39,7 @@
           <img
             v-show="image_uploaded"
             @click.stop="input_click"
-            class="team-image"
+            class="squad-image"
             src=""
             alt="uploaded-image"
             ref="uploaded_image"
@@ -41,44 +49,49 @@
           type="text"
           placeholder="Name"
           v-model="name"
-          class="team-input"
+          class="squad-input"
           :class="{ input_exists: name.length }"
         />
         <input
           type="text"
           placeholder="Battle Cry!"
           v-model="cry"
-          class="team-input"
+          class="squad-input"
           :class="{ input_exists: cry.length }"
         />
 
         <center>
-          <button class="button button3">Create!</button>
+          <button @click.stop="create_squad" class="button button1">
+            Create!
+          </button>
         </center>
       </div>
     </div>
 
-    <div class="yes-team" style="">
-      <div class="team-info">
-        <div class="team-info-top">
+    <div class="yes-squad" v-if="squad !== null">
+      <div class="squad-info">
+        <div class="squad-info-top">
           <img
-            class="team-image"
-            src="../assets/test/Bepis.png"
-            alt="team-image"
+            class="squad-image"
+            :src="jeec_brain_url + squad.image"
+            alt="squad-image"
           />
-          <div class="team-data">
-            <p class="team-name">Orangotangos</p>
-            <p class="team-rank">Rank 1</p>
+          <div class="squad-data">
+            <p class="squad-name">{{ squad.name }}</p>
+            <p class="squad-cry">{{ squad.cry }}</p>
+            <p class="squad-rank">Rank {{ squad.rank }}</p>
           </div>
         </div>
         <div class="xp-wrapper">
           <div>
             <p class="xp-name">Diário:</p>
-            <span class="xp-value">200</span><span class="xp">xp</span>
+            <span class="xp-value">{{ squad.daily_points }}</span
+            ><span class="xp">xp</span>
           </div>
           <div>
             <p class="xp-name">Total:</p>
-            <span class="xp-value">200</span><span class="xp">xp</span>
+            <span class="xp-value">{{ squad.total_points }}</span
+            ><span class="xp">xp</span>
           </div>
         </div>
         <div class="today-reward">
@@ -92,23 +105,82 @@
         </div>
       </div>
       <div class="members">
-        <p>Team Members (1/4):</p>
-        <Member />
-        <Member />
+        <p>Squad Members ({{ squad.members.data.length }}/4):</p>
+        <Member
+          v-for="member in squad.members.data"
+          :key="member.ist_id"
+          :member="member"
+        />
         <center>
-          <button class="bottom-button">Add Members</button>
+          <button
+            class="bottom-button"
+            style="background-color: #27ade4"
+            @click.stop="add_members_dialog = true"
+          >
+            Add Members
+          </button>
+          <button class="bottom-button" style="background-color: red">
+            {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
+          </button>
         </center>
       </div>
     </div>
+    <v-dialog v-model="add_members_dialog">
+      <v-card>
+        <v-autocomplete
+          v-model="friends"
+          :disabled="isUpdating"
+          :items="people"
+          filled
+          chips
+          color="blue-grey lighten-2"
+          label="Select"
+          item-text="name"
+          item-value="name"
+        >
+          <template v-slot:selection="data">
+            <v-chip
+              v-bind="data.attrs"
+              :input-value="data.selected"
+              close
+              @click="data.select"
+              @click:close="remove(data.item)"
+            >
+              <v-avatar left>
+                <v-img :src="data.item.avatar"></v-img>
+              </v-avatar>
+              {{ data.item.name }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <template v-if="typeof data.item !== 'object'">
+              <v-list-item-content v-text="data.item"></v-list-item-content>
+            </template>
+            <template v-else>
+              <v-list-item-avatar>
+                <img :src="data.item.avatar" />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                <v-list-item-subtitle
+                  v-html="data.item.group"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </template>
+        </v-autocomplete>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Member from "@/components/Member.vue";
+import UserService from "../services/user.service";
 
 export default {
-  name: "Team",
+  name: "Squad",
   components: {
     Navbar,
     Member,
@@ -120,6 +192,9 @@ export default {
       image_uploaded: false,
       name: "",
       cry: "",
+      squad: null,
+      jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
+      add_members_dialog: false,
     };
   },
   methods: {
@@ -141,12 +216,59 @@ export default {
         this.image_uploaded = true;
       }
     },
+    create_squad() {
+      if (!this.locked) return;
+
+      var formData = new FormData();
+      var file = this.$refs.image_input;
+
+      formData.append("file", file.files[0]);
+      formData.append("name", this.name);
+      formData.append("cry", this.cry);
+
+      UserService.createSquad(formData).then(
+        (response) => {
+          this.squad = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    add_members() {},
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+
+    locked() {
+      return this.image_uploaded && this.name.length && this.cry.length;
+    },
+
+    user_is_captain() {
+      return this.$store.state.auth.user.ist_id === this.squad.captain_id;
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
+
+    UserService.getUserSquad().then(
+      (response) => {
+        this.squad = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
 
 <style scoped>
-.team {
+.squad {
   height: 100%;
   background-color: #e6e6e6;
 }
@@ -168,30 +290,33 @@ export default {
   height: auto;
   padding-top: 1vh;
   padding-bottom: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 .button1 {
-  margin-right: 2vw;
-}
-
-.button2 {
-  margin-left: 2vw;
-}
-
-.button3 {
   margin-top: 4vh;
 }
 
-.n-team-header {
+.n-squad-header {
   background-color: #f1f1f1;
   padding: 2vh;
   text-align: center;
   font-size: 2.5vh;
   font-weight: 600;
   margin-bottom: 0.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.team-creation {
+.n-squad-header p {
+  margin: 0;
+  padding-top: 0.8vh;
+  padding-bottom: 0.8vh;
+}
+
+.squad-creation {
   background-color: #f1f1f1;
   padding-top: 2vh;
   padding-bottom: 2vh;
@@ -199,7 +324,7 @@ export default {
   padding-right: 5vw;
 }
 
-.team-creation p {
+.squad-creation p {
   font-size: 2.5vh;
   font-weight: 600;
 }
@@ -227,7 +352,7 @@ export default {
   color: #707070;
 }
 
-.team-image {
+.squad-image {
   height: 13vh;
   width: 13vh;
   border-radius: 50%;
@@ -235,7 +360,7 @@ export default {
   box-shadow: 0 0 2.5vh 0.1vh #27ade4;
 }
 
-.team-input {
+.squad-input {
   font-size: 2.5vh;
   font-weight: 600;
   background-color: white;
@@ -252,7 +377,8 @@ export default {
   box-shadow: 0 0.3vh 1.5vh 0.1vh #27ade4 !important;
 }
 
-.team-info, .members {
+.squad-info,
+.members {
   background-color: #f1f1f1;
   padding-top: 2vh;
   padding-bottom: 2vh;
@@ -261,27 +387,35 @@ export default {
   margin-bottom: 0.5vh;
 }
 
-.team-info-top {
+.squad-info-top {
   display: flex;
 }
 
-.team-data {
+.squad-data {
   margin-left: 5vw;
   align-self: center;
 }
 
-.team-name {
+.squad-name {
   margin: 0;
-  margin-bottom: -0.7vh;
-  font-size: 3.6vh;
-  font-weight: 500;
+  margin-bottom: -0.9vh;
+  font-size: 3.7vh;
+  font-weight: 600;
   color: #848484;
 }
 
-.team-rank {
+.squad-cry {
+  color: #848484;
   margin: 0;
-  font-size: 2.9vh;
-  font-weight: 600;
+  font-size: 2.5vh;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.squad-rank {
+  margin: 0;
+  font-size: 2.7vh;
+  font-weight: 700;
 }
 
 .xp-wrapper {
@@ -361,7 +495,6 @@ export default {
 }
 
 .bottom-button {
-  background-color: #27ade4;
   border-radius: 3vh;
   font-size: 2vh;
   font-weight: 500;
@@ -372,6 +505,12 @@ export default {
   padding-left: 5vw;
   padding-right: 5vw;
   margin-bottom: -0.5vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
 
+.add-members input {
+  width: 100%;
+  font-size: 3vh;
+}
 </style>

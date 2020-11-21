@@ -5,14 +5,14 @@
     <center>
       <div class="buttons">
         <button
-          class="button1"
+          class="button"
           :class="{ active: button_mode }"
           @click.stop="button_mode = true"
         >
           All
         </button>
         <button
-          class="button2"
+          class="button"
           :class="{ active: !button_mode }"
           @click.stop="button_mode = false"
         >
@@ -95,8 +95,7 @@ export default {
   padding-right: 5vw;
 }
 
-.button1,
-.button2 {
+.button {
   background-color: rgba(88, 185, 224, 0.397);
   border-radius: 3vh;
   font-size: 3.5vh;
@@ -106,14 +105,8 @@ export default {
   height: auto;
   padding-top: 1vh;
   padding-bottom: 1vh;
-}
-
-.button1 {
-  margin-right: 2vw;
-}
-
-.button2 {
-  margin-left: 2vw;
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 .active {
