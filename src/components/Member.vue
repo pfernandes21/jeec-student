@@ -1,7 +1,7 @@
 <template>
   <div class="member">
     <img
-      :src="'data: ' + member.photo_type + ';base64, ' + member.photo"
+      :src="member.photo"
       alt="profile photo"
       class="profile-photo"
     />
@@ -13,7 +13,8 @@
       <p class="level">level {{ member.level }}</p>
     </div>
     <img
-      v-if="member.is_captain"
+      v-if="is_kickable"
+      @click.stop="kick"
       src="../assets/icons/kick.svg"
       alt="kick"
       class="kick"
@@ -26,10 +27,25 @@ export default {
   name: "Member",
   props: {
     member: Object,
+    captain_ist_id: String,
   },
   computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+
     nameArray() {
       return this.member.name.split(" ");
+    },
+
+    is_kickable() {
+      var user = this.$store.state.auth.user;
+      return user.ist_id === this.captain_ist_id && this.member.ist_id !== user.ist_id;
+    }
+  },
+  methods: {
+    kick() {
+      this.$emit('kick', this.member.ist_id);
     },
   },
 };

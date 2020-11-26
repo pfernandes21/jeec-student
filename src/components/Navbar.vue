@@ -28,7 +28,7 @@
         <div class="menu-top">
           <img
             alt="profile photo"
-            :src="'data: ' + currentUser.photo_type + ';base64, ' + currentUser.photo"
+            :src="currentUser.photo"
             style="width: 12vh; height: 12vh; border-radius: 50%"
           />
           <div class="profile-info">

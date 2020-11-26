@@ -11,6 +11,7 @@ export default {
   mounted () {
     this.$vuetify.theme.themes.light.primary = '#50575C';
     this.$vuetify.theme.themes.light.secundary = '#27ADE4';
+    this.$vuetify.theme.themes.light.accent = '#F1F1F1';
   },  
 }
 

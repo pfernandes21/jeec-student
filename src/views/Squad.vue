@@ -4,179 +4,218 @@
 
     <center>
       <div class="buttons">
-        <button class="button">My Squad</button>
-        <button class="button">Invitations(22)</button>
+        <button
+          class="button"
+          :class="{ active: button === 'squad' }"
+          @click.stop="button = 'squad'"
+        >
+          My Squad
+        </button>
+        <button
+          class="button"
+          :class="{ active: button === 'invitations' }"
+          @click.stop="button = 'invitations'"
+        >
+          Invitations({{ invitations.length }})
+        </button>
       </div>
     </center>
 
-    <div class="no-squad" v-if="squad === null">
-      <div class="n-squad-header">
-        <img
-          v-show="locked"
-          src="../assets/icons/lock.svg"
-          style="padding-right: 2vw"
-          alt="lock"
-        />
-        <p>You don't have a squad</p>
-      </div>
-      <div class="squad-creation">
-        <p>Squad Creation</p>
-        <center>
-          <div
-            v-show="!image_uploaded"
-            class="image-input disabled"
-            @click.stop="input_click"
-          >
-            <p>Upload<br />Image</p>
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            ref="image_input"
-            @change="input_file"
-            style="display: none"
-          />
+    <div v-show="button === 'squad'">
+      <div class="no-squad" v-if="squad === null">
+        <div class="n-squad-header">
           <img
-            v-show="image_uploaded"
-            @click.stop="input_click"
-            class="squad-image"
-            src=""
-            alt="uploaded-image"
-            ref="uploaded_image"
+            v-show="locked"
+            src="../assets/icons/lock.svg"
+            style="padding-right: 2vw"
+            alt="lock"
           />
-        </center>
-        <input
-          type="text"
-          placeholder="Name"
-          v-model="name"
-          class="squad-input"
-          :class="{ input_exists: name.length }"
-        />
-        <input
-          type="text"
-          placeholder="Battle Cry!"
-          v-model="cry"
-          class="squad-input"
-          :class="{ input_exists: cry.length }"
-        />
-
-        <center>
-          <button @click.stop="create_squad" class="button button1">
-            Create!
-          </button>
-        </center>
-      </div>
-    </div>
-
-    <div class="yes-squad" v-if="squad !== null">
-      <div class="squad-info">
-        <div class="squad-info-top">
-          <img
-            class="squad-image"
-            :src="jeec_brain_url + squad.image"
-            alt="squad-image"
-          />
-          <div class="squad-data">
-            <p class="squad-name">{{ squad.name }}</p>
-            <p class="squad-cry">{{ squad.cry }}</p>
-            <p class="squad-rank">Rank {{ squad.rank }}</p>
-          </div>
+          <p>You don't have a squad</p>
         </div>
-        <div class="xp-wrapper">
-          <div>
-            <p class="xp-name">Diário:</p>
-            <span class="xp-value">{{ squad.daily_points }}</span
-            ><span class="xp">xp</span>
-          </div>
-          <div>
-            <p class="xp-name">Total:</p>
-            <span class="xp-value">{{ squad.total_points }}</span
-            ><span class="xp">xp</span>
-          </div>
-        </div>
-        <div class="today-reward">
-          <p>Today's Reward:</p>
-          <div class="reward-info">
-            <div class="reward-img">
-              <img src="../assets/test/Bepis.png" alt="today-reward" />
-            </div>
-            <p>Hover Board</p>
-          </div>
-        </div>
-      </div>
-      <div class="members">
-        <p>Squad Members ({{ squad.members.data.length }}/4):</p>
-        <Member
-          v-for="member in squad.members.data"
-          :key="member.ist_id"
-          :member="member"
-        />
-        <center>
-          <button
-            class="bottom-button"
-            style="background-color: #27ade4"
-            @click.stop="add_members_dialog = true"
-          >
-            Add Members
-          </button>
-          <button class="bottom-button" style="background-color: red">
-            {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
-          </button>
-        </center>
-      </div>
-    </div>
-    <v-dialog v-model="add_members_dialog">
-      <v-card>
-        <v-autocomplete
-          v-model="friends"
-          :disabled="isUpdating"
-          :items="people"
-          filled
-          chips
-          color="blue-grey lighten-2"
-          label="Select"
-          item-text="name"
-          item-value="name"
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              v-bind="data.attrs"
-              :input-value="data.selected"
-              close
-              @click="data.select"
-              @click:close="remove(data.item)"
+        <div class="squad-creation">
+          <p>Squad Creation</p>
+          <center>
+            <div
+              v-show="!image_uploaded"
+              class="image-input disabled"
+              @click.stop="input_click"
             >
-              <v-avatar left>
-                <v-img :src="data.item.avatar"></v-img>
-              </v-avatar>
-              {{ data.item.name }}
-            </v-chip>
-          </template>
-          <template v-slot:item="data">
-            <template v-if="typeof data.item !== 'object'">
-              <v-list-item-content v-text="data.item"></v-list-item-content>
+              <p>Upload<br />Image</p>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref="image_input"
+              @change="input_file"
+              style="display: none"
+            />
+            <img
+              v-show="image_uploaded"
+              @click.stop="input_click"
+              class="squad-image"
+              src=""
+              alt="uploaded-image"
+              ref="uploaded_image"
+            />
+          </center>
+          <input
+            type="text"
+            placeholder="Name"
+            v-model="name"
+            class="squad-input"
+            :class="{ input_exists: name.length }"
+          />
+          <input
+            type="text"
+            placeholder="Battle Cry!"
+            v-model="cry"
+            class="squad-input"
+            :class="{ input_exists: cry.length }"
+          />
+
+          <center>
+            <button @click.stop="create_squad" class="button button1">
+              Create!
+            </button>
+          </center>
+        </div>
+      </div>
+
+      <div class="yes-squad" v-if="squad !== null">
+        <div class="squad-info">
+          <div class="squad-info-top">
+            <img
+              class="squad-image"
+              :src="jeec_brain_url + squad.image"
+              alt="squad-image"
+            />
+            <div class="squad-data">
+              <p class="squad-name">{{ squad.name }}</p>
+              <p class="squad-cry">{{ squad.cry }}</p>
+              <p class="squad-rank">Rank {{ squad.rank }}</p>
+            </div>
+          </div>
+          <div class="xp-wrapper">
+            <div>
+              <p class="xp-name">Diário:</p>
+              <span class="xp-value">{{ squad.daily_points }}</span
+              ><span class="xp">xp</span>
+            </div>
+            <div>
+              <p class="xp-name">Total:</p>
+              <span class="xp-value">{{ squad.total_points }}</span
+              ><span class="xp">xp</span>
+            </div>
+          </div>
+          <div class="today-reward">
+            <p>Today's Reward:</p>
+            <div class="reward-info">
+              <div class="reward-img">
+                <img src="../assets/test/Bepis.png" alt="today-reward" />
+              </div>
+              <p>Hover Board</p>
+            </div>
+          </div>
+        </div>
+        <div class="members">
+          <p>Squad Members ({{ squad.members.data.length }}/4):</p>
+          <Member
+            v-for="member in squad.members.data"
+            :key="member.ist_id"
+            :member="member"
+            :captain_ist_id="squad.captain_ist_id"
+            @kick="kick_member"
+          />
+          <center>
+            <button
+              class="bottom-button"
+              style="background-color: #27ade4"
+              @click.stop="add_members_dialog = true"
+              v-if="squad.members.data.length <= 4"
+            >
+              Add Members
+            </button>
+            <button
+              @click.stop="leave_squad"
+              class="bottom-button"
+              style="background-color: red"
+            >
+              {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
+            </button>
+          </center>
+        </div>
+      </div>
+      <v-dialog v-model="add_members_dialog">
+        <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+          <p class="dialog-title">Add Squadmates</p>
+          <v-autocomplete
+            v-model="squadmates"
+            :items="students"
+            outlined
+            chips
+            label="Name or istID"
+            item-text="name"
+            item-value="ist_id"
+            multiple
+            :filter="filterStudents"
+            :search-input.sync="search"
+          >
+            <template v-slot:selection="data">
+              <v-chip
+                v-bind="data.attrs"
+                :input-value="data.name"
+                close
+                @click="remove(data.item)"
+                @click:close="remove(data.item)"
+              >
+                <v-avatar left>
+                  <v-img :src="data.item.photo"></v-img>
+                </v-avatar>
+                {{ data.item.name }}
+              </v-chip>
             </template>
-            <template v-else>
-              <v-list-item-avatar>
-                <img :src="data.item.avatar" />
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                <v-list-item-subtitle
-                  v-html="data.item.group"
-                ></v-list-item-subtitle>
-              </v-list-item-content>
+            <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-item-content v-text="data.item"></v-list-item-content>
+              </template>
+              <template v-else>
+                <v-list-item-avatar>
+                  <img :src="data.item.photo" />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-html="data.item.name"
+                  ></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-html="data.item.ist_id"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
+              </template>
             </template>
-          </template>
-        </v-autocomplete>
-      </v-card>
-    </v-dialog>
+          </v-autocomplete>
+          <center>
+            <button @click.stop="invite" class="button invite">Invite</button>
+          </center>
+        </v-card>
+      </v-dialog>
+    </div>
+
+    <div v-show="button === 'invitations'">
+      <Invitation
+        @accept="accept_invitation"
+        @reject="reject_invitation"
+        v-for="invitation in invitations"
+        :key="invitation.sender_name"
+        :invitation="invitation"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Member from "@/components/Member.vue";
+import Invitation from "@/components/Invitation.vue";
 import UserService from "../services/user.service";
 
 export default {
@@ -184,10 +223,12 @@ export default {
   components: {
     Navbar,
     Member,
+    Invitation,
   },
   data: function () {
     return {
       currentPage: this.$route.name,
+      button: "squad",
       files: [],
       image_uploaded: false,
       name: "",
@@ -195,6 +236,10 @@ export default {
       squad: null,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       add_members_dialog: false,
+      students: [],
+      squadmates: [],
+      search: null,
+      invitations: [],
     };
   },
   methods: {
@@ -219,14 +264,9 @@ export default {
     create_squad() {
       if (!this.locked) return;
 
-      var formData = new FormData();
-      var file = this.$refs.image_input;
+      var image = this.$refs.image_input;
 
-      formData.append("file", file.files[0]);
-      formData.append("name", this.name);
-      formData.append("cry", this.cry);
-
-      UserService.createSquad(formData).then(
+      UserService.createSquad(image.files[0], this.name, this.cry).then(
         (response) => {
           this.squad = response.data.data;
         },
@@ -235,7 +275,91 @@ export default {
         }
       );
     },
-    add_members() {},
+    remove(item) {
+      const index = this.squadmates.indexOf(item.ist_id);
+      if (index >= 0) this.squadmates.splice(index, 1);
+    },
+    filterStudents(item, queryText) {
+      const name = item.name.toLowerCase();
+      const ist_id = item.ist_id.toLowerCase();
+      const searchText = queryText.toLowerCase();
+
+      return (
+        (name.indexOf(searchText) > -1 || ist_id.indexOf(searchText) > -1) &&
+        this.currentUser.ist_id !== item.ist_id &&
+        this.squadmates.length + this.squad.members.data.length <= 4
+      );
+    },
+    invite() {
+      UserService.inviteSquad(this.squadmates);
+      this.add_members_dialog = false;
+    },
+    leave_squad() {
+      UserService.leaveSquad().then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.squad = null;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    accept_invitation(invitation_id) {
+      UserService.acceptInvitation(invitation_id).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+      UserService.getSquadInvitations().then(
+        (response) => {
+          this.invitations = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+      UserService.getUserSquad().then(
+        (response) => {
+          this.squad = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    reject_invitation(invitation_id) {
+      UserService.rejectInvitation(invitation_id).then(
+        () => {},
+        (error) => {
+          console.log(error);
+        }
+      );
+
+      UserService.getSquadInvitations().then(
+        (response) => {
+          this.invitations = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    kick_member(ist_id) {
+      UserService.kickMember(ist_id).then(
+        (response) => {
+          this.squad = response.data.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
   computed: {
     currentUser() {
@@ -250,6 +374,20 @@ export default {
       return this.$store.state.auth.user.ist_id === this.squad.captain_id;
     },
   },
+  watch: {
+    search(val) {
+      if (val && ((val.length == 3 && val !== "ist") || (val.length == 4 && val.substring(0,3) === "ist"))) {
+        UserService.getStudents("").then(
+          (response) => {
+            this.students = response.data.data;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    },
+  },
   mounted() {
     if (!this.currentUser) {
       this.$router.push("/");
@@ -258,6 +396,23 @@ export default {
     UserService.getUserSquad().then(
       (response) => {
         this.squad = response.data.data;
+        var squad = this.squad;
+
+        squad.members.data.forEach(function (item, i) {
+          if (item.ist_id === squad.captain_ist_id) {
+            squad.members.data.splice(i, 1);
+            squad.members.data.unshift(item);
+          }
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getSquadInvitations().then(
+      (response) => {
+        this.invitations = response.data.data;
       },
       (error) => {
         console.log(error);
@@ -281,7 +436,7 @@ export default {
 }
 
 .button {
-  background-color: #27ade4;
+  background-color: rgba(88, 185, 224, 0.397);
   border-radius: 3vh;
   font-size: 3.3vh;
   font-weight: 500;
@@ -294,8 +449,13 @@ export default {
   margin-right: 1vw;
 }
 
+.active {
+  background-color: #27ade4;
+}
+
 .button1 {
   margin-top: 4vh;
+  background-color: #27ade4;
 }
 
 .n-squad-header {
@@ -509,8 +669,16 @@ export default {
   margin-right: 2vw;
 }
 
-.add-members input {
-  width: 100%;
-  font-size: 3vh;
+.dialog-title {
+  text-align: center;
+  font-size: 4vh;
+  font-weight: 600;
+  padding-top: 2vh;
+}
+
+.invite {
+  margin-bottom: 2.5vh;
+  margin-top: -1.5vh;
+  background-color: #27ade4;
 }
 </style>

@@ -4,6 +4,5 @@ export default class User {
       this.name = "";
       this.email = "";
       this.photo = "";
-      this.photo_type = "";
     }
   }

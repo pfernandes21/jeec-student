@@ -16,7 +16,10 @@ class UserService {
     return axios.post(jeec_brain_url + '/student/add-linkedin', { url: url }, { headers: authHeader() })
   }
 
-  addCV(formData) {
+  addCV(cv) {
+    var formData = new FormData();
+    formData.append("cv", cv.files[0]);
+
     return axios.post(jeec_brain_url + '/student/add-cv', formData, {
       headers: {
         ...{
@@ -30,7 +33,12 @@ class UserService {
     return axios.get(jeec_brain_url + '/student/squad', { headers: authHeader() });
   }
 
-  createSquad(formData) {
+  createSquad(image, name, cry) {
+    var formData = new FormData();
+    formData.append("file", image);
+    formData.append("name", name);
+    formData.append("cry", cry);
+
     return axios.post(jeec_brain_url + '/student/squad', formData, {
       headers: {
         ...{
@@ -38,6 +46,34 @@ class UserService {
         }, ...authHeader()
       },
     });
+  }
+
+  getStudents(search) {
+    return axios.get(jeec_brain_url + '/student/students?search=' + search, { headers: authHeader() });
+  }
+
+  inviteSquad(members) {
+    return axios.post(jeec_brain_url + '/student/invite-squad', { members: members }, { headers: authHeader() })
+  }
+
+  getSquadInvitations() {
+    return axios.get(jeec_brain_url + '/student/squad-invitations', { headers: authHeader() });
+  }
+
+  leaveSquad() {
+    return axios.post(jeec_brain_url + '/student/leave-squad', null, { headers: authHeader() })
+  }
+
+  acceptInvitation(invitation_id) {
+    return axios.post(jeec_brain_url + '/student/accept-invitation', { invitation_id: invitation_id }, { headers: authHeader() })
+  }
+
+  rejectInvitation(invitation_id) {
+    return axios.post(jeec_brain_url + '/student/reject-invitation', { invitation_id: invitation_id }, { headers: authHeader() })
+  }
+
+  kickMember(ist_id) {
+    return axios.post(jeec_brain_url + '/student/kick-member', { ist_id: ist_id }, { headers: authHeader() })    
   }
 }
 

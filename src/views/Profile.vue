@@ -5,9 +5,7 @@
     <div class="top">
       <img
         alt="profile photo"
-        :src="
-          'data: ' + currentUser.photo_type + ';base64, ' + currentUser.photo
-        "
+        :src="currentUser.photo"
         style="width: 12vh; height: 12vh; border-radius: 50%"
       />
       <div class="profile-info">
@@ -30,7 +28,13 @@
         <img src="../assets/icons/cv.svg" alt="cv" />
         <p v-if="currentUser.uploaded_cv === false">Add your CV</p>
         <v-icon v-else large style="color: green">mdi-check</v-icon>
-        <input hidden type="file" accept="application/pdf" ref="cv" @change="add_cv" />
+        <input
+          hidden
+          type="file"
+          accept="application/pdf"
+          ref="cv"
+          @change="add_cv"
+        />
       </div>
       <div class="linkedin-wrapper" @click.stop="dialog = true">
         <img src="../assets/icons/linkedin.svg" alt="linkedin" />
@@ -135,18 +139,23 @@ export default {
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => { console.log(error); }
+        (error) => {
+          console.log(error);
+        }
       );
     },
     cv_click() {
       this.$refs.cv.click();
     },
     add_cv() {
-      var formData = new FormData();
-      var file = this.$refs.cv;
-      formData.append("cv", file.files[0]);
-
-      UserService.addCV(formData);
+      UserService.addCV(this.$refs.cv).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
   computed: {
@@ -303,7 +312,6 @@ export default {
 .logout {
   font-weight: 600;
   vertical-align: middle;
-  
 }
 
 .logout-img img {

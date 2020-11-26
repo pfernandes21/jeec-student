@@ -6,15 +6,15 @@
       <div class="buttons">
         <button
           class="button"
-          :class="{ active: button_mode }"
-          @click.stop="button_mode = true"
+          :class="{ active: button === 'all' }"
+          @click.stop="button = 'all'"
         >
           All
         </button>
         <button
           class="button"
-          :class="{ active: !button_mode }"
-          @click.stop="button_mode = false"
+          :class="{ active: button === 'interests' }"
+          @click.stop="button = 'interests'"
         >
           My Interests
         </button>
@@ -64,7 +64,7 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
-      button_mode: true,
+      button: 'all',
       model: 0,
       days: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
     };

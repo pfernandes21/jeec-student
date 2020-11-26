@@ -32,16 +32,16 @@
 
       <div class="middle">
         <router-link to="/team" tag="p" class="plus">+</router-link>
-        <p class="main-title">Team Terry</p>
-        <p class="sub-title">rank 1</p>
+        <p class="main-title">{{ squad.name }}</p>
+        <p class="sub-title">rank {{ squad.rank }}</p>
 
         <div class="middle-info">
           <div class="xp-wrapper">
             <p class="xp-top">Daily:</p>
-            <span class="xp-value">200</span>
+            <span class="xp-value">{{ squad.daily_points }}</span>
             <span class="xp">xp</span>
             <p class="xp-top">Total:</p>
-            <span class="xp-value">999</span>
+            <span class="xp-value">{{ squad.total_points }}</span>
             <span class="xp">xp</span>
           </div>
 
