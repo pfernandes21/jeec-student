@@ -27,10 +27,10 @@
           hide-delimiters
           v-model="model"
         >
-          <v-carousel-item v-for="day in days" :key="day">
+          <v-carousel-item v-for="day in event_days" :key="day.getTime()">
             <v-sheet color="#e6e6e6" tile>
               <v-row class="day-wrapper" align="center" justify="center">
-                <div class="day">{{ day }}</div>
+                <div class="day">{{ weekdays[day.getDay()] }}</div>
               </v-row>
             </v-sheet>
           </v-carousel-item>
@@ -38,8 +38,12 @@
       </div>
 
       <div class="activities-wrapper">
-        <Activity />
-        <Activity />
+        <Activity
+          v-for="activity in activities"
+          :key="activity.name + activity.type"
+          v-show="show_activity(activity)"
+          :activity="activity"
+        />
       </div>
 
       <div class="no-activities-warning" style="display: none">
@@ -54,6 +58,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Activity from "@/components/Activity.vue";
+import UserService from "../services/user.service";
 
 export default {
   name: "Activities",
@@ -64,10 +69,35 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
-      button: 'all',
+      button: "all",
       model: 0,
-      days: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      event_days: [],
+      activities: [],
+      weekdays: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
     };
+  },
+  methods: {
+    getEventDates(start_date, end_date) {
+      var startDate = new Date(start_date.substring(0, 11));
+      var endDate = new Date(end_date.substring(0, 11));
+
+      for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+        this.event_days.push(new Date(d));
+      }
+    },
+    show_activity(activity) {
+      var activity_date = new Date(activity.day.substring(0, 11));
+
+      return activity_date.getTime() === this.event_days[this.model].getTime() && (this.button === 'all' || (this.button === 'interests' && activity.interest));
+    },
   },
   computed: {
     currentUser() {
@@ -78,6 +108,16 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/");
     }
+
+    UserService.getActivities().then(
+      (response) => {
+        this.activities = response.data.data;
+        this.getEventDates(response.data.start_date, response.data.end_date);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>

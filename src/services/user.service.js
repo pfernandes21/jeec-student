@@ -73,7 +73,39 @@ class UserService {
   }
 
   kickMember(ist_id) {
-    return axios.post(jeec_brain_url + '/student/kick-member', { ist_id: ist_id }, { headers: authHeader() })    
+    return axios.post(jeec_brain_url + '/student/kick-member', { ist_id: ist_id }, { headers: authHeader() })
+  }
+
+  getActivities() {
+    return axios.get(jeec_brain_url + '/student/activities', { headers: authHeader() });
+  }
+
+  getQuests() {
+    return axios.get(jeec_brain_url + '/student/quests', { headers: authHeader() });
+  }
+
+  getTags() {
+    return axios.get(jeec_brain_url + '/student/tags', { headers: authHeader() });
+  }
+
+  addTags(tags) {
+    return axios.post(jeec_brain_url + '/student/add-tags', { tags: tags }, { headers: authHeader() })
+  }
+
+  deleteTag(tag) {
+    return axios.post(jeec_brain_url + '/student/delete-tag', { tag: tag }, { headers: authHeader() })
+  }
+
+  getCompanies() {
+    return axios.get(jeec_brain_url + '/student/companies', { headers: authHeader() });
+  }
+
+  addCompanies(companies) {
+    return axios.post(jeec_brain_url + '/student/add-companies', { companies: companies }, { headers: authHeader() })
+  }
+
+  deleteCompany(company) {
+    return axios.post(jeec_brain_url + '/student/delete-company', { company: company }, { headers: authHeader() })
   }
 }
 

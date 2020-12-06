@@ -4,15 +4,30 @@
 
     <center>
       <div class="buttons">
-        <button class="button">Daily</button>
-        <button class="button">Special</button>
+        <button
+          class="button"
+          :class="{ active: button === 'daily' }"
+          @click.stop="button = 'daily'"
+        >
+          Daily
+        </button>
+        <button
+          class="button"
+          :class="{ active: button === 'special' }"
+          @click.stop="button = 'special'"
+        >
+          Special
+        </button>
       </div>
     </center>
 
-    <div class="daily" style="display: none">
+    <div class="daily" v-show="button === 'daily'">
       <div class="activities-wrapper">
-        <Activity />
-        <Activity />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
       </div>
 
       <div class="quests-warning">
@@ -24,8 +39,9 @@
       </div>
     </div>
 
-    <div class="special">
-      <Quest />
+    <div class="special" v-show="button === 'special'">
+      <Quest :image="require('../assets/icons/cv.svg')" :description="cv_description" :points="400" :done="currentUser.uploaded_cv" />
+      <Quest :image="require('../assets/icons/linkedin.svg')" :description="linkedin_description" :points="400" :done="has_linkedin" />
     </div>
   </div>
 </template>
@@ -34,6 +50,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Activity from "@/components/Activity.vue";
 import Quest from "@/components/Quest.vue";
+import UserService from "../services/user.service";
 
 export default {
   name: "Quests",
@@ -45,7 +62,37 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
+      button: "daily",
+      quests: [],
+      cv_description: '<b>Add your CV to your <a href='+'"/profile"'+' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
+      linkedin_description: '<b>Add your linkedin to your <a href='+'"/profile"'+' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    has_linkedin() {
+      if(this.$store.state.auth.user.linkedin_url)
+      {
+        return true;
+      }
+      return false;
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
+
+    UserService.getQuests().then(
+      (response) => {
+        this.quests = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
@@ -64,7 +111,7 @@ export default {
 }
 
 .button {
-  background-color: #27ade4;
+  background-color: rgba(88, 185, 224, 0.397);
   border-radius: 3vh;
   font-size: 3.5vh;
   font-weight: 500;
@@ -77,12 +124,17 @@ export default {
   margin-right: 1vw;
 }
 
+.active {
+  background-color: #27ade4;
+}
+
 .no-activities-warning {
   margin-top: 16vh;
 }
 
 .quests-warning {
   margin-top: 3vh;
+  text-align: center;
 }
 
 .searching {

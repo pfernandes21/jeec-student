@@ -28,4 +28,9 @@ export default {
   font-weight: 400;
 }
 
+#app button
+{
+    outline:none;
+}
+
 </style>

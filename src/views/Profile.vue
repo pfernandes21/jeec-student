@@ -49,15 +49,37 @@
       </center>
       <p class="interest-title">Themes:</p>
       <div class="tags">
-        <p class="tag">All</p>
-        <p class="tag">Machine Learning</p>
-        <p class="tag add-tag">Add +</p>
+        <p
+          v-for="tag in currentUser.tags"
+          :key="tag"
+          v-touch="{
+            left: () => delete_tag(tag),
+            right: () => delete_tag(tag),
+            up: () => {},
+            down: () => {},
+          }"
+          class="tag"
+        >
+          {{ tag }}
+        </p>
+        <p @click.stop="tags_dialog = true" class="tag add-tag">Add +</p>
       </div>
       <p class="interest-title">Partners:</p>
       <div class="tags">
-        <p class="tag">All</p>
-        <p class="tag">Deloitte</p>
-        <p class="tag add-tag">Add +</p>
+        <p
+          v-for="company in currentUser.companies"
+          :key="company"
+          v-touch="{
+            left: () => delete_company(company),
+            right: () => delete_company(company),
+            up: () => {},
+            down: () => {},
+          }"
+          class="tag"
+        >
+          {{ company }}
+        </p>
+        <p @click.stop="companies_dialog = true" class="tag add-tag">Add +</p>
       </div>
     </div>
 
@@ -103,6 +125,36 @@
         </div>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="tags_dialog">
+      <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+        <v-autocomplete
+          v-model="added_tags"
+          :items="tags"
+          hide-no-data
+          hide-selected
+          label="Interests"
+          placeholder="Start typing to Search"
+          multiple
+          return-object
+        />
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="companies_dialog">
+      <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+        <v-autocomplete
+          v-model="added_companies"
+          :items="companies"
+          hide-no-data
+          hide-selected
+          label="Partners"
+          placeholder="Start typing to Search"
+          multiple
+          return-object
+        />
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -122,6 +174,12 @@ export default {
       currentPage: this.$route.name,
       color: "gray",
       dialog: false,
+      tags: [],
+      companies: [],
+      added_tags: [],
+      added_companies: [],
+      tags_dialog: false,
+      companies_dialog: false,
     };
   },
   methods: {
@@ -157,6 +215,54 @@ export default {
         }
       );
     },
+    delete_tag(tag) {
+      UserService.deleteTag(tag).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    delete_company(company) {
+      UserService.deleteCompany(company).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+  },
+  watch: {
+    tags_dialog(val) {
+      if (!val && this.added_tags.length > 0) {
+        UserService.addTags(this.added_tags).then(
+          (response) => {
+            this.$store.dispatch("auth/userUpdate", response.data.data);
+            this.added_tags = [];
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    },
+    companies_dialog(val) {
+      if (!val && this.added_companies.length > 0) {
+        UserService.addCompanies(this.added_companies).then(
+          (response) => {
+            this.$store.dispatch("auth/userUpdate", response.data.data);
+            this.added_companies = [];
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    },
   },
   computed: {
     currentUser() {
@@ -177,6 +283,24 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/");
     }
+
+    UserService.getTags().then(
+      (response) => {
+        this.tags = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getCompanies().then(
+      (response) => {
+        this.companies = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
