@@ -32,7 +32,7 @@
 
       <div class="middle">
         <router-link to="/team" tag="p" class="plus">+</router-link>
-        <p class="main-title">{{ squad.name }}</p>
+        <p class="main-title">{{ squad.name ? squad.name : 'No squad' }}</p>
         <p class="sub-title">rank {{ squad.rank }}</p>
 
         <div class="middle-info">

@@ -107,6 +107,14 @@ class UserService {
   deleteCompany(company) {
     return axios.post(jeec_brain_url + '/student/delete-company', { company: company }, { headers: authHeader() })
   }
+
+  getStudentsRanking() {
+    return axios.get(jeec_brain_url + '/student/students-ranking', { headers: authHeader() });  
+  }
+
+  getSquadsRanking() {
+    return axios.get(jeec_brain_url + '/student/squads-ranking', { headers: authHeader() });  
+  }
 }
 
 export default new UserService();

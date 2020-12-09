@@ -269,7 +269,10 @@ export default {
       return this.$store.state.auth.user;
     },
     nameArray() {
-      return this.$store.state.auth.user.name.split(" ");
+      var names = this.$store.state.auth.user.name.split(" ");
+
+      if(names.length > 1) return names;
+      else return [this.name, ""];
     },
     progress() {
       var xp = this.$store.state.auth.user.total_points;

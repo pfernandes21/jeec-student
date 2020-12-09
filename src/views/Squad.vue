@@ -299,6 +299,7 @@ export default {
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
           this.squad = null;
+          this.uploaded_image = false;
         },
         (error) => {
           console.log(error);
@@ -438,7 +439,7 @@ export default {
 .button {
   background-color: rgba(88, 185, 224, 0.397);
   border-radius: 3vh;
-  font-size: 3.3vh;
+  font-size: 3vh;
   font-weight: 500;
   color: white;
   width: 43vw;

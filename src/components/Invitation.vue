@@ -13,17 +13,16 @@
       </div>
     </div>
     <div class="from">
-      <v-icon style="color:yellow">mdi-star</v-icon> <a class="sender-name">{{ invitation.sender_name }}</a>
+      <v-icon style="color: yellow">mdi-star</v-icon>
+      <a class="sender-name"
+        >{{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}</a
+      >
     </div>
 
     <center>
       <div class="buttons">
-        <button @click.stop="accept" class="button green">
-          Accept
-        </button>
-        <button @click.stop="reject" class="button red">
-          Reject
-        </button>
+        <button @click.stop="accept" class="button green">Accept</button>
+        <button @click.stop="reject" class="button red">Reject</button>
       </div>
     </center>
   </div>
@@ -46,16 +45,19 @@ export default {
     },
 
     nameArray() {
-      return this.invitation.sender_name.split(" ");
+      var names = this.invitation.sender_name.split(" ");
+
+      if (names.length > 1) return names;
+      else return [this.name, ""];
     },
   },
   methods: {
     accept() {
-      this.$emit('accept', this.invitation.external_id);
+      this.$emit("accept", this.invitation.external_id);
     },
     reject() {
-      this.$emit('reject', this.invitation.external_id);
-    }
+      this.$emit("reject", this.invitation.external_id);
+    },
   },
 };
 </script>

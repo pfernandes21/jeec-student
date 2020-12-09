@@ -35,7 +35,10 @@ export default {
     },
 
     nameArray() {
-      return this.member.name.split(" ");
+      var names = this.member.name.split(" ");
+
+      if(names.length > 1) return names;
+      else return [this.name, ""];
     },
 
     is_kickable() {

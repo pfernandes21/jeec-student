@@ -2,7 +2,7 @@
   <div class="expbar" :style="'width:' + width">
     <v-progress-linear
       class="bar"
-      v-model="progress"
+      :value="progress"
       height="30"
       light
       color="secundary"

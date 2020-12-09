@@ -151,7 +151,10 @@ export default {
       return this.$store.state.auth.user;
     },
     nameArray() {
-      return this.$store.state.auth.user.name.split(" ");
+      var names = this.$store.state.auth.user.name.split(" ");
+
+      if(names.length > 1) return names;
+      else return [this.name, ""];
     },
   },
 };
@@ -233,6 +236,8 @@ export default {
   padding-left: 5vw;
   padding-right: 5vw;
   color: black;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .menu-middle img {
