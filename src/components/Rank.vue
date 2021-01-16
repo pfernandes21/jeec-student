@@ -1,5 +1,5 @@
 <template>
-  <div class="rank" @click="dialog = true">
+  <div class="rank" @click.stop="dialog = true">
     <p class="index" :style="{ color: color }">{{ index }}#</p>
     <img class="image" :src="img_src" alt="image" />
     <div class="personal-info">
@@ -7,6 +7,7 @@
         {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
       </p>
       <p v-if="level != null" class="level">level {{ level }}</p>
+      <p v-if="cry" class="cry">{{ cry }}</p>
     </div>
 
     <v-dialog v-model="dialog" v-if="members">
@@ -38,6 +39,7 @@ export default {
     img_src: String,
     name: String,
     level: Number,
+    cry: String,
     members: Array,
   },
   computed: {
@@ -99,6 +101,14 @@ export default {
 
 .name {
   font-size: 3.5vh;
+  font-weight: 500;
+  line-height: 3vh;
+}
+
+.cry {
+  color: #848484;
+  font-size: 2.5vh;
+  font-style: italic;
   font-weight: 500;
   line-height: 3vh;
 }

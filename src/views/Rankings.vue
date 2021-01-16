@@ -27,7 +27,7 @@
       :key="student.ist_id"
       :name="student.name"
       :index="rank(index, students)"
-      :level="student.level.value"
+      :level="student.level.data.value"
       :img_src="student.photo"
     />
     <Rank
@@ -35,6 +35,7 @@
       v-show="button === 'squads'"
       :key="squad.name"
       :name="squad.name"
+      :cry="squad.cry"
       :index="rank(index, squads)"
       :img_src="jeec_brain_url + squad.image"
       :members="squad.members.data"
@@ -125,7 +126,7 @@ export default {
 }
 
 .button {
-  background-color: rgba(88, 185, 224, 0.397);
+  background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
   font-size: 3.5vh;
   font-weight: 500;

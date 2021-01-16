@@ -6,7 +6,7 @@
         alt="menu icon"
         src="../assets/icons/menu.svg"
         class="top-start"
-        style="width: auto; height: 6vh"
+        style="width: auto; height: 7vh"
       />
       <img
         alt="jeec logo"
@@ -16,6 +16,7 @@
       />
     </div>
     <v-navigation-drawer
+      style="position:fixed ;height: 100vh"
       v-model="display_menu"
       absolute
       dark
@@ -37,7 +38,9 @@
               <p>{{ nameArray[nameArray.length - 1] }}</p>
             </div>
             <div class="level">
-              <p><b>level {{ currentUser.level.value }}</b></p>
+              <p>
+                <b>level {{ currentUser.level.data.value }}</b>
+              </p>
             </div>
           </div>
         </div>
@@ -93,6 +96,11 @@ export default {
           name: "Redeem Code",
           src: require("../assets/icons/barcode.svg"),
           page: "Code",
+        },
+        {
+          name: "Chat & Job Fair",
+          src: require("../assets/icons/chat.svg"),
+          page: "Chat",
         },
         {
           name: "Quests",
@@ -153,7 +161,7 @@ export default {
     nameArray() {
       var names = this.$store.state.auth.user.name.split(" ");
 
-      if(names.length > 1) return names;
+      if (names.length > 1) return names;
       else return [this.name, ""];
     },
   },
@@ -162,14 +170,14 @@ export default {
 
 <style scoped>
 .navbar {
-  margin: 0 !important;
-  padding: 0 !important;
   color: white;
+  margin-bottom: 10vh;
 }
 
 .top {
+  position: fixed;
+  width: 100vw;
   background-color: #27ade4;
-  position: relative;
   height: 10vh;
 }
 

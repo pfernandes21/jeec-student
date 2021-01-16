@@ -111,9 +111,9 @@
             <p>Today's Reward:</p>
             <div class="reward-info">
               <div class="reward-img">
-                <img src="../assets/test/Bepis.png" alt="today-reward" />
+                <img :src="jeec_brain_url + today_reward.image" alt="today-reward" />
               </div>
-              <p>Hover Board</p>
+              <p>{{ today_reward.name }}</p>
             </div>
           </div>
         </div>
@@ -240,6 +240,7 @@ export default {
       squadmates: [],
       search: null,
       invitations: [],
+      today_reward: {},
     };
   },
   methods: {
@@ -298,8 +299,10 @@ export default {
       UserService.leaveSquad().then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
+          console.log('here');
+          this.files = [];
           this.squad = null;
-          this.uploaded_image = false;
+          this.image_uploaded = false;
         },
         (error) => {
           console.log(error);
@@ -419,6 +422,15 @@ export default {
         console.log(error);
       }
     );
+
+    UserService.getTodaySquadReward().then(
+      (response) => {
+        this.today_reward = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
@@ -437,7 +449,7 @@ export default {
 }
 
 .button {
-  background-color: rgba(88, 185, 224, 0.397);
+  background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
   font-size: 3vh;
   font-weight: 500;
@@ -623,13 +635,14 @@ export default {
   box-shadow: 0 0.3vh 1.5vh 0.1vh #707070;
   border-radius: 50%;
   background-color: white;
+  overflow: hidden;
 }
 
 .reward-img img {
   position: absolute;
   margin: auto;
-  height: 8vh;
-  width: 8vh;
+  max-height: 11vh;
+  max-width: 11vh;
   top: 0;
   left: 0;
   right: 0;

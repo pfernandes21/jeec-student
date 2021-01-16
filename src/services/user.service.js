@@ -109,11 +109,39 @@ class UserService {
   }
 
   getStudentsRanking() {
-    return axios.get(jeec_brain_url + '/student/students-ranking', { headers: authHeader() });  
+    return axios.get(jeec_brain_url + '/student/students-ranking', { headers: authHeader() });
   }
 
   getSquadsRanking() {
-    return axios.get(jeec_brain_url + '/student/squads-ranking', { headers: authHeader() });  
+    return axios.get(jeec_brain_url + '/student/squads-ranking', { headers: authHeader() });
+  }
+
+  getTodaySquadReward() {
+    return axios.get(jeec_brain_url + '/student/today-squad-reward', { headers: authHeader() });
+  }
+
+  getLevels() {
+    return axios.get(jeec_brain_url + '/student/levels', { headers: authHeader() });
+  }
+
+  getSquadsRewards() {
+    return axios.get(jeec_brain_url + '/student/squads-rewards', { headers: authHeader() });
+  }
+
+  getJEECPOTRewards() {
+    return axios.get(jeec_brain_url + '/student/jeecpot-rewards', { headers: authHeader() });
+  }
+
+  getChatToken() {
+    return axios.get(jeec_brain_url + '/student/chat-token', { headers: authHeader() });
+  }
+
+  getPartners() {
+    return axios.get(jeec_brain_url + '/student/partners', { headers: authHeader() });
+  }
+
+  getPartner(name) {
+    return axios.get(jeec_brain_url + '/student/partner?name=' + name, { headers: authHeader() });
   }
 }
 

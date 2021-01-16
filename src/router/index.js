@@ -9,6 +9,8 @@ import Squad from '../views/Squad.vue'
 import Login from '../views/Login.vue'
 import Rankings from '../views/Rankings.vue'
 import Rewards from '../views/Rewards.vue'
+import Chat from '../views/Chat.vue'
+import qs from 'qs';
 
 Vue.use(VueRouter)
 
@@ -57,12 +59,22 @@ const routes = [
     path: '/rewards',
     name: 'Rewards',
     component: Rewards,
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: Chat,
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  routes: routes
+  linkActiveClass: 'active',
+  stringifyQuery: query => {
+    let result = qs.stringify(query, { format: 'RFC1738' })
+    return result ? ('?' + result) : ''
+  },
+  routes,
 })
 
 export default router

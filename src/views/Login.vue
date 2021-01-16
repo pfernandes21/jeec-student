@@ -25,6 +25,7 @@
 
 <script>
 import User from "../models/user";
+import UserService from "../services/user.service";
 
 export default {
   name: "Login",
@@ -41,33 +42,63 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/home");
-    }
-  },
-  mounted() {
-    // setTimeout(() => {
-    //   this.loading = false;
-    // }, 3000);
-
-    if (this.$route.query.jwt) {
-      this.$store
-        .dispatch("auth/login", [this.user, this.$route.query.jwt])
-        .then(
-          () => {
-            this.$router.push("/home");
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-  },
   methods: {
+    decrypt(code) {
+      var master_key = "12345678901234561234567890123456";
+      var rawData = atob(code.split("_").join("+"));
+
+      var iv = rawData.substring(0, 16);
+      var crypttext = rawData.substring(16);
+
+      crypttext = this.CryptoJS.enc.Latin1.parse(crypttext);
+      iv = this.CryptoJS.enc.Latin1.parse(iv);
+      var key = this.CryptoJS.enc.Utf8.parse(master_key);
+
+      var plaintextArray = this.CryptoJS.AES.decrypt(
+        { ciphertext: crypttext },
+        key,
+        {
+          iv: iv,
+          mode: this.CryptoJS.mode.CBC,
+          padding: this.CryptoJS.pad.Pkcs7,
+        }
+      );
+
+      var output_plaintext = this.CryptoJS.enc.Latin1.stringify(plaintextArray);
+
+      return output_plaintext;
+    },
     login() {
       window.location.replace(this.jeec_brain_url + "/student/login");
     },
+  },
+  mounted() {
+    if (this.$route.query.code) {
+      this.$store
+        .dispatch("auth/login", [
+          this.user,
+          this.decrypt(this.$route.query.code),
+        ])
+        .then(
+          () => {
+            UserService.getUserSquad().then(
+              (response) => {
+                this.squad = response.data.data;
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+            this.$router.push("/home");
+          },
+          () => {
+            this.$store.dispatch("auth/logout");
+          }
+        );
+    } else if (this.loggedIn) {
+      this.$router.push("/home");
+    }
   },
 };
 </script>

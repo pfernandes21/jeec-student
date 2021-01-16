@@ -1,70 +1,87 @@
 <template>
   <div class="home">
-    <div class="home-page">
-      <Navbar :page="currentPage" />
+    <Navbar :page="currentPage" />
 
-      <div class="top">
-        <router-link to="/profile" tag="p" class="plus">+</router-link>
-        <p class="main-title">
-          {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
-        </p>
-        <p class="sub-title">lvl. {{ currentUser.level.value }}</p>
-        <center class="expbar">
-          <Expbar
-            :xp="currentUser.total_points"
-            :progress="progress"
-            :end_points="currentUser.level.end_points"
-            width="92vw"
+    <div class="top">
+      <router-link to="/profile" tag="p" class="plus">+</router-link>
+      <p class="main-title">
+        {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
+      </p>
+      <p class="sub-title">lvl. {{ currentUser.level.data.value }}</p>
+      <center class="expbar">
+        <Expbar
+          :xp="currentUser.total_points"
+          :progress="progress"
+          :end_points="currentUser.level.data.end_points"
+          width="92vw"
+        />
+      </center>
+
+      <div class="next-reward">
+        <div class="reward-img">
+          <img
+            :src="
+              reward_level ? jeec_brain_url + reward_level.reward.image : ''
+            "
+            alt="next-reward"
           />
-        </center>
-
-        <div class="next-reward">
-          <div class="reward-img">
-            <img src="../assets/test/Bepis.png" alt="next-reward" />
-          </div>
-          <div class="next-reward-info">
-            <p class="n-reward-top">Next Reward:</p>
-            <p class="n-reward-middle">Caderno das JEEC</p>
-            <p class="n-reward-bottom">Missing 600 xp points</p>
-          </div>
+        </div>
+        <div class="next-reward-info">
+          <p class="n-reward-top">Next Reward:</p>
+          <p class="n-reward-middle">
+            {{ reward_level ? reward_level.reward.name : "" }}
+          </p>
+          <p class="n-reward-bottom">
+            Missing
+            {{
+              (reward_level ? reward_level.end_points : 0) -
+              currentUser.total_points
+            }}
+            xp points
+          </p>
         </div>
       </div>
+    </div>
 
-      <div class="middle">
-        <router-link to="/team" tag="p" class="plus">+</router-link>
-        <p class="main-title">{{ squad.name ? squad.name : 'No squad' }}</p>
-        <p class="sub-title">rank {{ squad.rank }}</p>
+    <div class="middle">
+      <router-link to="/squad" tag="p" class="plus">+</router-link>
+      <p class="main-title">{{ squad ? squad.name : "No squad" }}</p>
+      <p class="sub-title">rank {{ squad ? squad.rank : "" }}</p>
 
-        <div class="middle-info">
-          <div class="xp-wrapper">
-            <p class="xp-top">Daily:</p>
-            <span class="xp-value">{{ squad.daily_points }}</span>
-            <span class="xp">xp</span>
-            <p class="xp-top">Total:</p>
-            <span class="xp-value">{{ squad.total_points }}</span>
-            <span class="xp">xp</span>
-          </div>
+      <div class="middle-info">
+        <div class="xp-wrapper">
+          <p class="xp-top">Daily:</p>
+          <span class="xp-value">{{ squad ? squad.daily_points : "" }}</span>
+          <span class="xp">xp</span>
+          <p class="xp-top">Total:</p>
+          <span class="xp-value">{{ squad ? squad.total_points : "" }}</span>
+          <span class="xp">xp</span>
+        </div>
 
-          <div class="today-reward">
-            <p class="t-reward-top">Today's Reward:</p>
-            <center>
-              <div class="reward-img">
-                <img src="../assets/test/Bepis.png" alt="today-reward" />
-              </div>
-            </center>
-            <p class="t-reward-bottom">Hover Board</p>
-          </div>
+        <div class="today-reward">
+          <p class="t-reward-top">Today's Reward:</p>
+          <center>
+            <div class="reward-img">
+              <img
+                :src="today_reward ? jeec_brain_url + today_reward.image : ''"
+                alt="today-reward"
+              />
+            </div>
+          </center>
+          <p class="t-reward-bottom">
+            {{ today_reward ? today_reward.name : "" }}
+          </p>
         </div>
       </div>
+    </div>
 
-      <div class="bottom">
-        <router-link to="/code" tag="button" class="button"
-          >Redeem<br />Codes</router-link
-        >
-        <router-link to="/quests" tag="button" class="button"
-          >Daily<br />Quests</router-link
-        >
-      </div>
+    <div class="bottom">
+      <router-link to="/code" tag="button" class="button"
+        >Redeem<br />Codes</router-link
+      >
+      <router-link to="/quests" tag="button" class="button"
+        >Daily<br />Quests</router-link
+      >
     </div>
   </div>
 </template>
@@ -83,7 +100,10 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
-      squad: {},
+      jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
+      squad: null,
+      levels: null,
+      today_reward: {},
     };
   },
   computed: {
@@ -95,10 +115,20 @@ export default {
     },
     progress() {
       var xp = this.$store.state.auth.user.total_points;
-      var start_points = this.$store.state.auth.user.level.start_points;
-      var end_points = this.$store.state.auth.user.level.end_points;
+      var start_points = this.$store.state.auth.user.level.data.start_points;
+      var end_points = this.$store.state.auth.user.level.data.end_points;
 
       return ((xp - start_points) / (end_points - start_points)) * 100;
+    },
+    reward_level() {
+      if (!this.levels) return null;
+
+      for (var level of this.levels) {
+        if (level.value === this.$store.state.auth.user.level.data.value)
+          return level;
+      }
+
+      return null;
     },
   },
   mounted() {
@@ -114,16 +144,30 @@ export default {
         console.log(error);
       }
     );
+
+    UserService.getLevels().then(
+      (response) => {
+        this.levels = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getTodaySquadReward().then(
+      (response) => {
+        this.today_reward = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
 
 <style scoped>
 .home {
-  height: 100%;
-}
-
-.home-page {
   background-color: #e6e6e6;
   height: 100%;
 }
@@ -179,13 +223,14 @@ export default {
   border: 0.1vh solid #707070;
   border-radius: 50%;
   background-color: white;
+  overflow: hidden;
 }
 
 .reward-img img {
   position: absolute;
   margin: auto;
-  height: 8vh;
-  width: 8vh;
+  max-height: 11vh;
+  max-width: 11vh;
   top: 0;
   left: 0;
   right: 0;

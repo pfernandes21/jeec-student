@@ -96,7 +96,11 @@ export default {
     show_activity(activity) {
       var activity_date = new Date(activity.day.substring(0, 11));
 
-      return activity_date.getTime() === this.event_days[this.model].getTime() && (this.button === 'all' || (this.button === 'interests' && activity.interest));
+      return (
+        activity_date.getTime() === this.event_days[this.model].getTime() &&
+        (this.button === "all" ||
+          (this.button === "interests" && activity.interest))
+      );
     },
   },
   computed: {
@@ -136,7 +140,7 @@ export default {
 }
 
 .button {
-  background-color: rgba(88, 185, 224, 0.397);
+  background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
   font-size: 3vh;
   font-weight: 500;

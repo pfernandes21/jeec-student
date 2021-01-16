@@ -13,11 +13,11 @@
           <p>{{ nameArray[0] }}</p>
           <p>{{ nameArray[nameArray.length - 1] }}</p>
         </div>
-        <p class="level">level {{ currentUser.level.value }}</p>
+        <p class="level">level {{ currentUser.level.data.value }}</p>
         <Expbar
           :xp="currentUser.total_points"
           :progress="progress"
-          :end_points="currentUser.level.end_points"
+          :end_points="currentUser.level.data.end_points"
           width="60vw"
         />
       </div>
@@ -276,8 +276,8 @@ export default {
     },
     progress() {
       var xp = this.$store.state.auth.user.total_points;
-      var start_points = this.$store.state.auth.user.level.start_points;
-      var end_points = this.$store.state.auth.user.level.end_points;
+      var start_points = this.$store.state.auth.user.level.data.start_points;
+      var end_points = this.$store.state.auth.user.level.data.end_points;
 
       return ((xp - start_points) / (end_points - start_points)) * 100;
     },

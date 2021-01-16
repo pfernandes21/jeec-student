@@ -4,45 +4,120 @@
 
     <center>
       <div class="buttons">
-        <button class="button">Personal</button>
-        <button class="button">Team</button>
-        <button class="button">JEECPOT</button>
+        <button
+          class="button"
+          :class="{ active: button === 'personal' }"
+          @click.stop="button = 'personal'"
+        >
+          Personal
+        </button>
+        <button
+          class="button"
+          :class="{ active: button === 'squad' }"
+          @click.stop="button = 'squad'"
+        >
+          Squad
+        </button>
+        <button
+          class="button"
+          :class="{ active: button === 'jeecpot' }"
+          @click.stop="button = 'jeecpot'"
+        >
+          JEECPOT
+        </button>
       </div>
     </center>
 
-    <PersonalReward :name="'Bepis'" :rewards="rewards" :xp="20" />
+    <PersonalRewards
+      v-if="button === 'personal'"
+      :levels="levels"
+      :user_points="currentUser.total_points"
+      :user_level="currentUser.level.data.value"
+    />
 
+    <SquadRewards v-if="button === 'squad'" :squads_rewards="squads_rewards" :squad_points="squad ? squad.daily_points : 0" />
+  
+    <JEECPOTRewards v-if="button === 'jeecpot'" :jeecpot_rewards="jeecpot_rewards" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import PersonalReward from "@/components/PersonalReward.vue";
-//import TeamReward from "@/components/TeamReward.vue";
+import PersonalRewards from "@/components/PersonalRewards.vue";
+import SquadRewards from "@/components/SquadRewards.vue";
+import JEECPOTRewards from "@/components/JEECPOTRewards.vue";
+import UserService from "../services/user.service";
+//import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "Rewards",
   components: {
     Navbar,
-    PersonalReward,
-    //TeamReward,
+    PersonalRewards,
+    SquadRewards,
+    JEECPOTRewards,
   },
   data: function () {
     return {
       currentPage: this.$route.name,
-      rewards: [
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-          level: 1,
-          name: 'Bepis1',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-          level: 2,
-          name: 'Bepis2',
-        }
-      ]
+      levels: [],
+      squads_rewards: [],
+      jeecpot_rewards: null,
+      squad: null,
+      button: "jeecpot",
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    //...mapGetters(['levels','rewards'])
+  },
+  // methods: {
+  //   ...mapActions(['fetchLevels'])
+  // },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
+
+    UserService.getLevels().then(
+      (response) => {
+        this.levels = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    // this.fetchLevels()
+
+    UserService.getSquadsRewards().then(
+      (response) => {
+        this.squads_rewards = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getJEECPOTRewards().then(
+      (response) => {
+        this.jeecpot_rewards = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getUserSquad().then(
+      (response) => {
+        this.squad = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
@@ -61,7 +136,7 @@ export default {
 }
 
 .button {
-  background-color: #27ade4;
+  background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
   font-size: 3.5vh;
   font-weight: 500;
@@ -73,6 +148,10 @@ export default {
   margin-left: 1vw;
   margin-right: 1vw;
   margin-bottom: 2vh;
+}
+
+.active {
+  background-color: #27ade4;
 }
 
 .no-activities-warning {

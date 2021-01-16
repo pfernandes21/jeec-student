@@ -41,7 +41,8 @@
 
     <div class="buttons">
       <button class="button1" @click.stop="dialog = true">See More</button>
-      <button class="button2">Add to Calender</button>
+      <button class="button2" @click.stop="chat" type="button">Go to chat</button>
+      <!-- <button class="button2">Add to Calender</button> -->
     </div>
 
     <v-dialog v-model="dialog">
@@ -53,6 +54,7 @@
             <p class="dialog-day">{{ activity.day }}</p>
             <p class="dialog-hours">{{ activity.time }}</p>
           </div>
+          <p class="dialog-location">{{ activity.location }}</p>
           <p class="dialog-description">{{ activity.description }}</p>
           <p v-if="activity.companies.data.length > 0" class="dialog-title">Companies</p>
           <center>
@@ -126,6 +128,9 @@ export default {
         this.current_image = this.current_image + 1;
       }, 5000);
     },
+    chat() {
+      window.location.replace(process.env.VUE_APP_ROCKET_CHAT_URL);
+    }
   },
   mounted() {
     for (var i = 0; i < this.activity.companies.data.length; i++) {
@@ -307,9 +312,6 @@ export default {
   font-weight: 600;
 }
 
-.dialog-wrapper {
-}
-
 .dialog-img {
   height: 8vh;
   max-width: 70vw;
@@ -338,10 +340,18 @@ export default {
 
 .dialog-day,
 .dialog-hours {
+  margin: 0;
   margin-left: 1vw;
   margin-right: 1vw;
   font-size: 2.2vh;
   font-weight: 800;
+}
+
+.dialog-location {
+  font-size: 2.5vh;
+  font-weight: 800;
+  text-align: center;
+  margin: 0;
 }
 
 .dialog-description {

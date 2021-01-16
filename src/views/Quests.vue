@@ -111,7 +111,7 @@ export default {
 }
 
 .button {
-  background-color: rgba(88, 185, 224, 0.397);
+  background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
   font-size: 3.5vh;
   font-weight: 500;
