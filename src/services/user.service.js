@@ -143,6 +143,10 @@ class UserService {
   getPartner(name) {
     return axios.get(jeec_brain_url + '/student/partner?name=' + name, { headers: authHeader() });
   }
+
+  getChatRoom(partner="", user_id="") {
+    return axios.get(jeec_brain_url + '/student/chat-room?company=' + partner + '&member=' + user_id, { headers: authHeader() });
+  }
 }
 
 export default new UserService();
