@@ -40,9 +40,9 @@
     </div>
 
     <div class="buttons">
-      <button class="button1" @click.stop="dialog = true">See More</button>
-      <button class="button2" @click.stop="chat" type="button">Go to chat</button>
-      <!-- <button class="button2">Add to Calender</button> -->
+      <button v-if="activity.zoom_url" @click.stop="zoom">ZOOM</button>
+      <button @click.stop="dialog = true">See More</button>
+      <button @click.stop="calender">Add to Calender</button>
     </div>
 
     <v-dialog v-model="dialog">
@@ -128,9 +128,21 @@ export default {
         this.current_image = this.current_image + 1;
       }, 5000);
     },
-    chat() {
-      window.location.replace(process.env.VUE_APP_ROCKET_CHAT_URL);
-    }
+    zoom() {
+      window.location.replace(this.activity.zoom_url);
+    },
+    calender() {
+      var url = "https://calendar.google.com/calendar/render?action=TEMPLATE";
+      url = url + '&text=' + this.activity.name;
+      url = url + '&dates=' + '20201231T193000Z/20201231T223000Z';
+      url = url + '&details=' + this.activity.description ? this.activity.description : "";
+      url = url + '&ctz=' + 'Europe/Lisbon';
+      url = url + '&location=' + this.activity.location;
+      url = url + '&crm=' + 'AVAILABLE|BUSY|BLOCKING';
+      url = url + 'sprop=website:www.santa.org&sprop=name:Sata-online';
+
+      window.location.replace(url);
+    },
   },
   mounted() {
     for (var i = 0; i < this.activity.companies.data.length; i++) {
@@ -262,12 +274,12 @@ export default {
 
 .buttons {
   display: flex;
-  justify-content: center;
-  width: 90;
+  width: 66vw;
+  justify-content: flex-end;
+  margin-right: 20vw;
 }
 
-.button1,
-.button2 {
+.buttons button {
   background-color: #27ade4;
   border-radius: 3vh;
   font-size: 1.5vh;
@@ -277,14 +289,8 @@ export default {
   width: 20vw;
   line-height: 1.7vh;
   min-height: 4vh;
-}
-
-.button1 {
-  margin-right: 1vw;
-}
-
-.button2 {
   margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 .xp-wrapper {

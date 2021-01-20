@@ -2,7 +2,7 @@
   <div class="home">
     <Navbar :page="currentPage" />
 
-    <div class="top">
+    <div class="top" style="margin-top:10vh">
       <router-link to="/profile" tag="p" class="plus">+</router-link>
       <p class="main-title">
         {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}

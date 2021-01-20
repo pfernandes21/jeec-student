@@ -2,7 +2,7 @@
   <div class="rewards">
     <Navbar :page="currentPage" />
 
-    <center>
+    <center style="margin-top:10vh">
       <div class="buttons">
         <button
           class="button"

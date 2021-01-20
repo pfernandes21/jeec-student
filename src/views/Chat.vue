@@ -2,7 +2,7 @@
   <div class="chat">
     <Navbar :page="currentPage" />
 
-    <center>
+    <center style="margin-top:10vh">
       <div class="buttons">
         <button
           class="button"
@@ -119,7 +119,7 @@ export default {
       UserService.getChatRoom(partner_name).then(
         (response) => {
           if (response.data.result) {
-            this.rocket_chat_room_url = process.env.VUE_APP_ROCKET_CHAT_URL + "/channel/" + partner_name + "?layout=embedded";
+            this.rocket_chat_room_url = process.env.VUE_APP_ROCKET_CHAT_URL + "/channel/" + partner_name.replace(" ","_") + "?layout=embedded";
             if (this.chat_logged_in) {
               this.rocket_chat_url = this.rocket_chat_room_url;
             }

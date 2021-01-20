@@ -2,7 +2,7 @@
   <div class="profile">
     <Navbar :page="currentPage" />
 
-    <div class="top">
+    <div class="top" style="margin-top:10vh">
       <img
         alt="profile photo"
         :src="currentUser.photo"

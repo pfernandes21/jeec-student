@@ -171,7 +171,8 @@ export default {
 <style scoped>
 .navbar {
   color: white;
-  margin-bottom: 10vh;
+  position: absolute;
+  z-index: 1000;
 }
 
 .top {

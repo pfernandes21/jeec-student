@@ -74,7 +74,7 @@ export default {
     go_to_zoom() {
       if(this.partner.zoom_url)
       {
-        location.href = this.partner.zoom_url;
+        window.location.replace(this.partner.zoom_url);
       }
     },
     go_to_activities() {

@@ -2,7 +2,7 @@
   <div class="code">
     <Navbar :page="currentPage" />
 
-    <div class="code-page">
+    <div class="code-page" style="margin-top:10vh">
       <input
         type="text"
         class="input-code"
