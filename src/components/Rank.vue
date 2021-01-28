@@ -153,4 +153,11 @@ export default {
   position: absolute;
   right: 3vw;
 }
+
+@media screen and (min-width: 1100px) {
+  .index {
+    width: 3vw;
+  }
+}
+
 </style>

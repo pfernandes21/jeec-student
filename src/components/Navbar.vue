@@ -1,13 +1,15 @@
 <template>
   <div class="navbar">
     <div class="top">
-      <img
-        @click.stop="display_menu = !display_menu"
-        alt="menu icon"
-        src="../assets/icons/menu.svg"
-        class="top-start"
-        style="width: auto; height: 7vh"
-      />
+      <button>
+        <img
+          @click.stop="display_menu = !display_menu"
+          alt="menu icon"
+          src="../assets/icons/menu.svg"
+          class="top-start"
+          style="width: auto; height: 7vh"
+        />
+      </button>
       <img
         alt="jeec logo"
         src="../assets/jeec_white.svg"
@@ -16,14 +18,14 @@
       />
     </div>
     <v-navigation-drawer
-      style="position:fixed ;height: 100vh"
+      style="position: fixed; height: 100vh"
       v-model="display_menu"
       absolute
       dark
       color="primary"
       left
       temporary
-      :width="width * 0.82"
+      :width="width < 1200 ? width * 0.82 : width * 0.3"
     >
       <div class="menu">
         <div class="menu-top">
@@ -144,15 +146,15 @@ export default {
     redirect(target) {
       if (target !== this.page) this.$router.push({ name: target });
     },
-    myEventHandler() {
+    resize() {
       this.width = window.innerWidth;
     },
   },
   created() {
-    window.addEventListener("resize", this.myEventHandler);
+    window.addEventListener("resize", this.resize);
   },
   destroyed() {
-    window.removeEventListener("resize", this.myEventHandler);
+    window.removeEventListener("resize", this.resize);
   },
   computed: {
     currentUser() {
@@ -217,7 +219,7 @@ export default {
 
 .profile-info {
   align-self: center;
-  padding-left: 4vw;
+  padding-left: 2vw;
 }
 
 .name,
@@ -243,7 +245,7 @@ export default {
 
 .menu-middle {
   padding-left: 5vw;
-  padding-right: 5vw;
+  padding-right: 1vw;
   color: black;
   max-height: 70vh;
   overflow-y: auto;
@@ -255,6 +257,7 @@ export default {
 }
 
 .menu-items {
+  cursor: pointer;
   font-size: 3.7vh;
   font-weight: 700;
 }
@@ -279,5 +282,27 @@ export default {
   bottom: 0;
   padding-bottom: 2vh;
   align-items: center;
+}
+
+::-webkit-scrollbar {
+  width: 22px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #50575c;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 6px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 11px;
+  background-color: #3f4449;
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (min-width: 1100px) {
+
 }
 </style>

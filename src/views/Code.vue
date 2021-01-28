@@ -1,8 +1,8 @@
 <template>
   <div class="code">
     <Navbar :page="currentPage" />
-
-    <div class="code-page" style="margin-top:10vh">
+    <p class="code-title">Redeem Code:</p>
+    <div class="code-page" style="margin-top: 10vh">
       <input
         type="text"
         class="input-code"
@@ -15,14 +15,18 @@
       </center>
 
       <div class="xp-wrapper">
-        <p class="xp-top">Personal:</p>
-        <span class="xp-value">{{ currentUser.total_points }}</span
-        ><span class="xp">xp</span>
-        <p class="xp-top">Team:</p>
-        <span class="xp-value">{{
-          currentUser.squad ? currentUser.squad.total_points : "0"
-        }}</span
-        ><span class="xp">xp</span>
+        <div>
+          <p class="xp-top">Personal:</p>
+          <span class="xp-value">{{ currentUser.total_points }}</span
+          ><span class="xp">xp</span>
+        </div>
+        <div>
+          <p class="xp-top">Team:</p>
+          <span class="xp-value">{{
+            currentUser.squad ? currentUser.squad.total_points : "0"
+          }}</span
+          ><span class="xp">xp</span>
+        </div>
       </div>
     </div>
   </div>
@@ -104,8 +108,7 @@ export default {
 }
 
 .xp-wrapper {
-  width: 50%;
-  margin: 0 auto;
+  text-align: center;
   margin-top: 10vh;
 }
 
@@ -125,5 +128,54 @@ export default {
 
 .xp {
   font-weight: 700;
+}
+
+.code-title {
+  text-align: center;
+  color: #aaadb0;
+  font-size: 6vh;
+  font-weight: 700;
+  margin-top: 15vh;
+}
+
+@media screen and (max-width: 1100px) {
+  .code-title {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .code-page {
+    margin-top: 0 !important;
+  }
+
+  .input-code {
+    width: 50vw;
+    margin-left: 15vw;
+  }
+
+  .redeem {
+    width: 20vw;
+  }
+
+  .xp-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20vw;
+    margin-right: 20vw;
+  }
+
+  .xp-top {
+    font-size: 5vh;
+  }
+
+  .xp-value {
+    font-size: 14vh;
+  }
+
+  .xp {
+    font-size: 4vh;
+    font-weight: 700;
+  }
 }
 </style>

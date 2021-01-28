@@ -30,4 +30,21 @@ export default {
 #app button {
   outline: none;
 }
+
+#app a:link {
+  text-decoration: none;
+}
+
+#app a:visited {
+  text-decoration: none;
+}
+
+#app a:hover {
+  text-decoration: underline;
+}
+
+#app a:active {
+  text-decoration: underline;
+}
+
 </style>

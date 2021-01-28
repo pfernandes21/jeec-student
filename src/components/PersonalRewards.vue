@@ -36,9 +36,9 @@
       </p>
 
       <Expbar
-        v-if="user_level == levels[model].value"
+        v-if="user_level === levels[model].value"
         :xp="user_points"
-        :progress="user_points / levels[model].end_points"
+        :progress="user_points / levels[model].end_points * 100"
         :end_points="levels[model].end_points"
         width="65vw"
       />

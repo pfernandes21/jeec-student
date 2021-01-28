@@ -31,20 +31,31 @@
           <p class="member-name">{{ member.name }}</p>
           <p class="member-post">{{ member.post }}</p>
         </div>
-        <img
+        <button
           class="chat-icon"
-          src="../assets/icons/chat.svg"
           @click.stop="chat_member(member.user_id, member.name, member.post)"
-        />
+        >
+          <img src="../assets/icons/chat.svg" />
+        </button>
       </div>
     </div>
 
     <center>
       <div class="buttons">
-        <button @click.stop="add_interest" class="button" :style="partner.interest ? 'background-color: rgba(88, 185, 224, 0.638)' : ''">
-          {{ !partner.interest ? 'Add Interest' : 'Interest Added'}}
+        <button
+          @click.stop="add_interest"
+          class="button"
+          :style="
+            partner.interest
+              ? 'background-color: rgba(88, 185, 224, 0.638)'
+              : ''
+          "
+        >
+          {{ !partner.interest ? "Add Interest" : "Interest Added" }}
         </button>
-        <button @click.stop="go_to_activities" class="button">See Activities</button>
+        <button @click.stop="go_to_activities" class="button">
+          See Activities
+        </button>
       </div>
     </center>
   </div>
@@ -72,9 +83,8 @@ export default {
   },
   methods: {
     go_to_zoom() {
-      if(this.partner.zoom_url)
-      {
-        window.location.replace(this.partner.zoom_url);
+      if (this.partner.zoom_url) {
+        location.href = this.partner.zoom_url;
       }
     },
     go_to_activities() {
@@ -87,8 +97,7 @@ export default {
       this.$emit("chat_member", member_id, member_name, member_post);
     },
     add_interest() {
-      if(!this.partner.interest)
-      {
+      if (!this.partner.interest) {
         this.$emit("add_interest", this.partner.name);
       }
     },
@@ -106,7 +115,7 @@ export default {
   padding-bottom: 2vh;
   padding-left: 4vw;
   padding-right: 4vw;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   margin-bottom: 1vh;
 }
 
@@ -128,8 +137,8 @@ export default {
   height: 13vh;
   width: 13vh;
   border-radius: 50%;
-  border: 0.1vh solid #707070;
-  background-color: #F1F1F1;
+  border: 0.3vh solid #707070;
+  background-color: #f1f1f1;
   margin-right: 3vw;
   overflow: hidden;
 }
@@ -151,7 +160,7 @@ export default {
   padding-bottom: 2vh;
   padding-left: 4vw;
   padding-right: 4vw;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
 }
 
 .team-title {
@@ -187,12 +196,19 @@ export default {
     brightness(97%) contrast(88%);
 }
 
+.chat-icon img {
+  height: 4vh;
+  width: 4vh;
+}
+
 .buttons {
   margin-top: 1vh;
   padding-top: 2.5vh;
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
@@ -207,5 +223,14 @@ export default {
   padding-bottom: 1.2vh;
   margin-left: 1vw;
   margin-right: 1vw;
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (min-width: 1100px) {
+  .button {
+    width: 15vw;
+  }
 }
 </style>

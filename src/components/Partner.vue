@@ -5,7 +5,7 @@
         <img :src="img_src" />
       </div>
       <p class="name">{{ name }}</p>
-      <p @click.stop="learn" class="learn">Learn More</p>
+      <button @click.stop="learn" class="learn">Learn More</button>
     </center>
   </div>
 </template>
@@ -50,9 +50,8 @@ export default {
   height: 13vh;
   width: 13vh;
   border-radius: 50%;
-  border: 0.1vh solid #707070;
+  border: 0.3vh solid #707070;
   background-color: white;
-  margin-right: 3vw;
   overflow: hidden;
 }
 
@@ -83,5 +82,21 @@ export default {
   padding: 1vh;
   border-radius: 2vh;
   margin: 0;
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (min-width: 1100px) {
+  .partner {
+    width: 32.5vw;
+    margin-bottom: 0.5vh;
+    margin-left: 0.1vw;
+    margin-right: 0.1vw;
+  }
+
+  .learn {
+    width: 15vw;
+  }
 }
 </style>

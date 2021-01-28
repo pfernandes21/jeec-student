@@ -125,7 +125,7 @@ export default {
   width: 8vh;
   top: 0;
   margin-top: 0vh;
-  margin-left: -3.5vh;
+  margin-left: -3.8vh;
 }
 
 .student-crown {

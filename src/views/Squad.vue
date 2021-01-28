@@ -2,7 +2,7 @@
   <div class="squad">
     <Navbar :page="currentPage" />
 
-    <center style="margin-top:10vh">
+    <center style="margin-top: 10vh">
       <div class="buttons">
         <button
           class="button"
@@ -111,40 +111,60 @@
             <p>Today's Reward:</p>
             <div class="reward-info">
               <div class="reward-img">
-                <img :src="jeec_brain_url + today_reward.image" alt="today-reward" />
+                <img
+                  :src="jeec_brain_url + today_reward.image"
+                  alt="today-reward"
+                />
               </div>
               <p>{{ today_reward.name }}</p>
             </div>
           </div>
         </div>
-        <div class="members">
-          <p>Squad Members ({{ squad.members.data.length }}/4):</p>
-          <Member
-            v-for="member in squad.members.data"
-            :key="member.ist_id"
-            :member="member"
-            :captain_ist_id="squad.captain_ist_id"
-            @kick="kick_member"
-          />
-          <center>
-            <button
-              class="bottom-button"
-              style="background-color: #27ade4"
-              @click.stop="add_members_dialog = true"
-              v-if="squad.members.data.length <= 4"
-            >
-              Add Members
-            </button>
-            <button
-              @click.stop="leave_squad"
-              class="bottom-button"
-              style="background-color: red"
-            >
-              {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
-            </button>
-          </center>
+        <div class="big-wrapper">
+          <div class="big-today-reward">
+            <p>Today's Reward:</p>
+            <div class="reward-info">
+              <div class="reward-img">
+                <img
+                  :src="jeec_brain_url + today_reward.image"
+                  alt="today-reward"
+                />
+              </div>
+              <p>{{ today_reward.name }}</p>
+            </div>
+          </div>
+
+          <div class="members">
+            <p>Squad Members ({{ squad.members.data.length }}/4):</p>
+            <Member
+              v-for="member in squad.members.data"
+              :key="member.ist_id"
+              :member="member"
+              :captain_ist_id="squad.captain_ist_id"
+              @kick="kick_member"
+            />
+          </div>
         </div>
+
+        <center class="bottom-buttons">
+          <button
+            class="bottom-button"
+            style="background-color: #27ade4"
+            @click.stop="add_members_dialog = true"
+            v-if="squad.members.data.length <= 4"
+          >
+            Add Members
+          </button>
+          <button
+            @click.stop="leave_squad"
+            class="bottom-button"
+            style="background-color: red"
+          >
+            {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
+          </button>
+        </center>
       </div>
+
       <v-dialog v-model="add_members_dialog">
         <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
           <p class="dialog-title">Add Squadmates</p>
@@ -296,10 +316,14 @@ export default {
       this.add_members_dialog = false;
     },
     leave_squad() {
+      if (!confirm("Are you sure you want to proceed?")) {
+        return;
+      }
+
       UserService.leaveSquad().then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
-          console.log('here');
+          console.log("here");
           this.files = [];
           this.squad = null;
           this.image_uploaded = false;
@@ -380,7 +404,11 @@ export default {
   },
   watch: {
     search(val) {
-      if (val && ((val.length == 3 && val !== "ist") || (val.length == 4 && val.substring(0,3) === "ist"))) {
+      if (
+        val &&
+        ((val.length == 3 && val !== "ist") ||
+          (val.length == 4 && val.substring(0, 3) === "ist"))
+      ) {
         UserService.getStudents("").then(
           (response) => {
             this.students = response.data.data;
@@ -446,6 +474,8 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
@@ -510,6 +540,7 @@ export default {
   height: 13vh;
   width: 13vh;
   position: relative;
+  cursor: pointer;
 }
 
 .image-input p {
@@ -550,14 +581,18 @@ export default {
   box-shadow: 0 0.3vh 1.5vh 0.1vh #27ade4 !important;
 }
 
+.big-today-reward,
 .squad-info,
 .members {
   background-color: #f1f1f1;
   padding-top: 2vh;
-  padding-bottom: 2vh;
   padding-left: 5vw;
   padding-right: 5vw;
   margin-bottom: 0.5vh;
+}
+
+.squad-info {
+  padding-bottom: 2vh;
 }
 
 .squad-info-top {
@@ -625,6 +660,14 @@ export default {
   color: #848484;
 }
 
+.big-today-reward > p {
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  font-size: 3.5vh;
+  font-weight: 500;
+  color: #848484;
+}
+
 .reward-img {
   align-self: center;
   position: relative;
@@ -657,7 +700,7 @@ export default {
   align-self: center;
   margin: 0;
   margin-left: 5vw;
-  font-size: 4.5vh;
+  font-size: 4vh;
   font-weight: 600;
 }
 
@@ -694,5 +737,79 @@ export default {
   margin-bottom: 2.5vh;
   margin-top: -1.5vh;
   background-color: #27ade4;
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (min-width: 1100px) {
+  .button {
+    width: 19vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+  }
+
+  .today-reward {
+    display: none;
+  }
+
+  .squad-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .xp-wrapper {
+    width: auto;
+    display: flex;
+    margin-top: 0vh;
+    margin-bottom: 0vh;
+    justify-content: flex-end;
+  }
+
+  .xp-name {
+    margin-right: 5vw;
+    font-size: 4vh;
+  }
+
+  .xp-value {
+    font-size: 15vh;
+    line-height: 15vh;
+  }
+
+  .xp {
+    font-size: 5vh;
+  }
+
+  .squad-image {
+    height: 22vh;
+    width: 22vh;
+  }
+
+  .squad-name {
+    font-size: 5vh;
+  }
+
+  .squad-cry {
+    font-size: 3.5vh;
+  }
+
+  .squad-rank {
+    font-size: 3vh;
+  }
+
+  .members {
+    width: 49.75%;
+  }
+
+  .big-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .big-today-reward {
+    width: 49.75%;
+  }
 }
 </style>

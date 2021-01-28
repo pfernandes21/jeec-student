@@ -64,7 +64,7 @@ export default {
       squads_rewards: [],
       jeecpot_rewards: null,
       squad: null,
-      button: "jeecpot",
+      button: "personal",
     };
   },
   computed: {
@@ -133,6 +133,8 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+  display: flex;
+  justify-content: center;
 }
 
 .button {

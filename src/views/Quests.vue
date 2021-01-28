@@ -2,7 +2,7 @@
   <div class="quests">
     <Navbar :page="currentPage" />
 
-    <center style="margin-top:10vh">
+    <center style="margin-top: 10vh">
       <div class="buttons">
         <button
           class="button"
@@ -40,8 +40,18 @@
     </div>
 
     <div class="special" v-show="button === 'special'">
-      <Quest :image="require('../assets/icons/cv.svg')" :description="cv_description" :points="400" :done="currentUser.uploaded_cv" />
-      <Quest :image="require('../assets/icons/linkedin.svg')" :description="linkedin_description" :points="400" :done="has_linkedin" />
+      <Quest
+        :image="require('../assets/icons/cv.svg')"
+        :description="cv_description"
+        :points="400"
+        :done="currentUser.uploaded_cv"
+      />
+      <Quest
+        :image="require('../assets/icons/linkedin.svg')"
+        :description="linkedin_description"
+        :points="400"
+        :done="has_linkedin"
+      />
     </div>
   </div>
 </template>
@@ -64,8 +74,14 @@ export default {
       currentPage: this.$route.name,
       button: "daily",
       quests: [],
-      cv_description: '<b>Add your CV to your <a href='+'"/profile"'+' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
-      linkedin_description: '<b>Add your linkedin to your <a href='+'"/profile"'+' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
+      cv_description:
+        "<b>Add your CV to your <a href=" +
+        '"/profile"' +
+        ' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
+      linkedin_description:
+        "<b>Add your linkedin to your <a href=" +
+        '"/profile"' +
+        ' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
     };
   },
   computed: {
@@ -73,8 +89,7 @@ export default {
       return this.$store.state.auth.user;
     },
     has_linkedin() {
-      if(this.$store.state.auth.user.linkedin_url)
-      {
+      if (this.$store.state.auth.user.linkedin_url) {
         return true;
       }
       return false;
@@ -108,6 +123,8 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
@@ -151,5 +168,17 @@ export default {
   color: #27ade4;
   font-weight: 600;
   text-decoration: none;
+}
+
+@media screen and (min-width: 1100px) {
+  .button {
+    width: 19vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+  }
+
+  .special {
+    display: flex;
+  }
 }
 </style>

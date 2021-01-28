@@ -6,7 +6,7 @@
       <img
         alt="profile photo"
         :src="currentUser.photo"
-        style="width: 12vh; height: 12vh; border-radius: 50%"
+        class="profile-img"
       />
       <div class="profile-info">
         <div class="name">
@@ -52,6 +52,7 @@
         <p
           v-for="tag in currentUser.tags"
           :key="tag"
+          @dblclick="delete_tag(tag)"
           v-touch="{
             left: () => delete_tag(tag),
             right: () => delete_tag(tag),
@@ -334,6 +335,12 @@ export default {
   margin-left: 4vw;
 }
 
+.profile-img {
+  width: 12vh; 
+  height: 12vh; 
+  border-radius: 50%;
+}
+
 .name p {
   margin: 0;
   font-size: 3vh;
@@ -461,5 +468,38 @@ export default {
 .linkedin-input button {
   margin: 1vh;
   color: green;
+}
+
+@media screen and (max-width: 1100px) {
+
+}
+
+@media screen and (min-width: 1100px) {
+  .middle {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cv-wrapper{
+    margin-left: 10vw;
+  }
+
+  .linkedin-wrapper {
+    margin-right: 10vw;
+  }
+
+  .profile-img {
+    height: 16vh;
+    width: 16vh;
+  }
+
+  .interest-title {
+    font-size: 3.5vh;
+  }
+
+  .tag {
+    font-size: 2.5vh;
+    font-weight: 600;
+  }
 }
 </style>

@@ -28,6 +28,7 @@ export default {
 
 <style scoped>
 .quest {
+  width: 100%;
   display: flex;
   margin-bottom: 0.5vh;
   background-color: #ffbcbc;
@@ -82,5 +83,41 @@ export default {
 .xp {
   font-size: 1.6vh;
   font-weight: 600;
+}
+
+@media screen and (min-width: 1100px) {
+  .quest {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .quest-img img {
+    margin: auto;
+    height: 11vh;
+    width: 11vh;
+  }
+
+  .description {
+    font-size: 5vh;
+    line-height: normal;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 2vh;
+  }
+
+  .quest-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .xp-value {
+    font-size: 6vh;
+  }
+
+  .xp {
+    font-size: 3vh;
+  }
 }
 </style>

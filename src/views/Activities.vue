@@ -137,18 +137,21 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
   background-color: rgba(88, 185, 224, 0.638);
   border-radius: 3vh;
-  font-size: 3vh;
+  font-size: 3.5vh;
   font-weight: 500;
   color: white;
   width: 43vw;
   height: 8vh;
   padding-top: 1vh;
   padding-bottom: 1vh;
+  line-height: 3vh;
   margin-left: 1vw;
   margin-right: 1vw;
 }
@@ -181,5 +184,13 @@ export default {
 .profile {
   color: #27ade4;
   font-weight: 600;
+}
+
+@media screen and (min-width: 1100px) {
+  .button {
+    width: 19vw;
+    margin-left: 8vw;
+    margin-right: 8vw;
+  }
 }
 </style>

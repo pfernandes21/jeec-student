@@ -20,6 +20,7 @@
         <p v-if="activity.name" class="name">{{ activity.name }}</p>
         <p v-if="companies" class="companies">{{ companies }}</p>
         <p v-if="speakers" class="speakers">{{ speakers }}</p>
+        <p class="inner-description">{{ activity.description }}</p>
       </div>
     </div>
 
@@ -40,9 +41,9 @@
     </div>
 
     <div class="buttons">
-      <button v-if="activity.zoom_url" @click.stop="zoom">ZOOM</button>
+      <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calender</a></button> -->
       <button @click.stop="dialog = true">See More</button>
-      <button @click.stop="calender">Add to Calender</button>
+      <button><a :href="calender()">Add to Calender</a></button>
     </div>
 
     <v-dialog v-model="dialog">
@@ -52,11 +53,15 @@
           <p v-if="activity.name" class="dialog-name">{{ activity.name }}</p>
           <div class="dialog-time">
             <p class="dialog-day">{{ activity.day }}</p>
-            <p class="dialog-hours">{{ activity.time }}</p>
+            <p class="dialog-hours">
+              {{ activity.time }} - {{ activity.end_time }}
+            </p>
           </div>
           <p class="dialog-location">{{ activity.location }}</p>
           <p class="dialog-description">{{ activity.description }}</p>
-          <p v-if="activity.companies.data.length > 0" class="dialog-title">Companies</p>
+          <p v-if="activity.companies.data.length > 0" class="dialog-title">
+            Companies
+          </p>
           <center>
             <img
               class="dialog-img"
@@ -65,7 +70,9 @@
               :src="jeec_brain_url + company.logo"
             />
           </center>
-          <p v-if="activity.speakers.data.length > 0" class="dialog-title">Speakers</p>
+          <p v-if="activity.speakers.data.length > 0" class="dialog-title">
+            Speakers
+          </p>
           <center>
             <figure
               class="dialog-speaker"
@@ -133,15 +140,82 @@ export default {
     },
     calender() {
       var url = "https://calendar.google.com/calendar/render?action=TEMPLATE";
-      url = url + '&text=' + this.activity.name;
-      url = url + '&dates=' + '20201231T193000Z/20201231T223000Z';
-      url = url + '&details=' + this.activity.description ? this.activity.description : "";
-      url = url + '&ctz=' + 'Europe/Lisbon';
-      url = url + '&location=' + this.activity.location;
-      url = url + '&crm=' + 'AVAILABLE|BUSY|BLOCKING';
-      url = url + 'sprop=website:www.santa.org&sprop=name:Sata-online';
+      url = url + "&text=" + this.activity.name;
+      url = url + "&ctz=" + "Europe/Lisbon";
+      url = url + "&location=" + this.activity.location;
+      url = url + "&dates=" + this.getDate();
+      url =
+        url +
+        "&sprop=website:" +
+        this.activity.registration_link +
+        "&sprop=name:" +
+        this.activity.name;
 
-      window.location.replace(url);
+      if (this.activity.registration_open) {
+        url =
+          url +
+          "&details=" +
+          "Registrations in " +
+          this.activity.registration_link +
+          "\n" +
+          this.activity.description;
+      } else {
+        url = url + "&details=" + this.activity.description;
+      }
+
+      var date = new Date();
+
+      if (
+        date.getHours().toString() + ":" + date.getMinutes().toString() >
+        this.activity.time
+      ) {
+        url = url + "&crm=" + "BUSY"; //busy
+      } else if (!this.activity.registration_open) {
+        url = url + "&crm=" + "BLOCKING"; //blocking
+      } else {
+        url = url + "&crm=" + "AVAILABLE"; //available
+      }
+
+      return url;
+    },
+    getDate() {
+      var start_date = new Date(
+        this.activity.day.substring(0, 11) + " " + this.activity.time + ":00"
+      );
+      var end_date = new Date(
+        this.activity.day.substring(0, 11) +
+          " " +
+          this.activity.end_time +
+          ":00"
+      );
+
+      start_date =
+        start_date.getFullYear().toString() +
+        (start_date.getMonth() + 1 < 10
+          ? "0" + (start_date.getMonth() + 1).toString()
+          : (start_date.getMonth() + 1).toString()) +
+        start_date.getDate().toString() +
+        "T" +
+        start_date.getHours() +
+        (start_date.getMinutes() < 10
+          ? "0" + start_date.getMinutes()
+          : start_date.getMinutes()) +
+        "00";
+
+      end_date =
+        end_date.getFullYear().toString() +
+        (end_date.getMonth() + 1 < 10
+          ? "0" + (end_date.getMonth() + 1).toString()
+          : (end_date.getMonth() + 1).toString()) +
+        end_date.getDate().toString() +
+        "T" +
+        end_date.getHours() +
+        (end_date.getMinutes() < 10
+          ? "0" + end_date.getMinutes()
+          : end_date.getMinutes()) +
+        "00";
+
+      return start_date + "/" + end_date;
     },
   },
   mounted() {
@@ -247,6 +321,7 @@ export default {
   margin: 0;
   margin-bottom: -0.5vh;
   text-align: left;
+  font-size: 2.5vh;
 }
 
 .description {
@@ -291,6 +366,10 @@ export default {
   min-height: 4vh;
   margin-left: 1vw;
   margin-right: 1vw;
+}
+
+.buttons a {
+  color: white;
 }
 
 .xp-wrapper {
@@ -390,5 +469,54 @@ export default {
 .dialog-speaker-name {
   font-size: 2.5vh;
   font-weight: 600;
+}
+
+@media screen and (max-width: 1100px) {
+  .inner-description {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .activity-img {
+    height: 19vh;
+    width: 19vh;
+  }
+
+  .activity-img img {
+    max-height: 19vh;
+    max-width: 19vh;
+  }
+
+  .description {
+    display: none;
+  }
+
+  .inner-description {
+    font-size: 2.6vh;
+    text-align: justify;
+  }
+
+  .hours {
+    font-size: 5vh;
+  }
+
+  .xp-wrapper {
+    margin-top: -3vh;
+  }
+
+  .xp-value {
+    font-size: 5vh;
+  }
+
+  .xp {
+    font-size: 4vh;
+  }
+
+  .buttons button {
+    font-size: 3vh;
+    padding: 1.5vh;
+    line-height: 3vh;
+  }
 }
 </style>
