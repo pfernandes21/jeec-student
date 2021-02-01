@@ -122,15 +122,15 @@
         </div>
         <div class="big-wrapper">
           <div class="big-today-reward">
-            <p>Today's Reward:</p>
-            <div class="reward-info">
-              <div class="reward-img">
+            <p class="big-today-reward-title">Today's Reward:</p>
+            <div class="big-reward-info">
+              <div class="big-reward-img">
                 <img
                   :src="jeec_brain_url + today_reward.image"
                   alt="today-reward"
                 />
               </div>
-              <p>{{ today_reward.name }}</p>
+              <p class="big-reward-name">{{ today_reward.name }}</p>
             </div>
           </div>
 
@@ -166,7 +166,7 @@
       </div>
 
       <v-dialog v-model="add_members_dialog">
-        <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+        <v-card color="accent" class="squad-dialog">
           <p class="dialog-title">Add Squadmates</p>
           <v-autocomplete
             v-model="squadmates"
@@ -586,6 +586,7 @@ export default {
 .members {
   background-color: #f1f1f1;
   padding-top: 2vh;
+  padding-bottom: 1vh;
   padding-left: 5vw;
   padding-right: 5vw;
   margin-bottom: 0.5vh;
@@ -668,6 +669,43 @@ export default {
   color: #848484;
 }
 
+.big-today-reward-title {
+  line-height: 1vh;
+}
+
+.big-reward-img {
+  align-self: center;
+  position: relative;
+  height: 18vh;
+  width: 18vh;
+  padding: 1vh;
+  border: 0.01vh solid #707070;
+  box-shadow: 0 0.3vh 1.5vh 0.1vh #707070;
+  border-radius: 50%;
+  background-color: white;
+  overflow: hidden;
+  margin-top: 2vh;
+  margin-left: 2vw;
+  margin-bottom: 3vh;
+}
+
+.big-reward-img img {
+  position: absolute;
+  margin: auto;
+  max-height: 14vh;
+  max-width: 14vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.big-reward-name {
+  font-size: 4.5vh;
+  font-weight: 600;
+  margin-left: 2vw;
+}
+
 .reward-img {
   align-self: center;
   position: relative;
@@ -692,8 +730,10 @@ export default {
   bottom: 0;
 }
 
+.big-reward-info,
 .reward-info {
   display: flex;
+  align-items: center;
 }
 
 .reward-info p {
@@ -711,6 +751,11 @@ export default {
   color: #848484;
 }
 
+.bottom-buttons {
+  background-color: #f1f1f1;
+  height: 6vh;
+}
+
 .bottom-button {
   border-radius: 3vh;
   font-size: 2vh;
@@ -724,6 +769,11 @@ export default {
   margin-bottom: -0.5vh;
   margin-left: 2vw;
   margin-right: 2vw;
+}
+
+.squad-dialog {
+  padding-left: 2vw;
+  padding-right: 2vw;
 }
 
 .dialog-title {
@@ -740,6 +790,13 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
+  .big-today-reward {
+    display: none;
+  }
+
+  .members {
+    margin-bottom: 0;
+  }
 }
 
 @media screen and (min-width: 1100px) {
@@ -810,6 +867,20 @@ export default {
 
   .big-today-reward {
     width: 49.75%;
+  }
+
+  .bottom-buttons {
+    height: 10vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+  }
+
+  .members > p {
+    margin: 0;
+    font-size: 3.2vh;
+    font-weight: 500;
+    color: #848484;
+    margin-bottom: 1.5vh;
   }
 }
 </style>

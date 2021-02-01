@@ -411,6 +411,7 @@ export default {
   padding-right: 2vw;
   margin-right: 1vw;
   margin-bottom: 1vh;
+  cursor: pointer;
 }
 
 .add-tag {

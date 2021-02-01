@@ -14,7 +14,10 @@
         <button
           class="button"
           :class="{ active: button === 'messages' }"
-          @click.stop="messages(); button = 'messages'"
+          @click.stop="
+            messages();
+            button = 'messages';
+          "
         >
           Messages
         </button>
@@ -232,9 +235,9 @@ export default {
       );
     },
     messages() {
-      this.rocket_chat_room_url = process.env.VUE_APP_ROCKET_CHAT_URL + '/home';
+      this.rocket_chat_room_url = process.env.VUE_APP_ROCKET_CHAT_URL + "/home";
       this.rocket_chat_url = this.rocket_chat_room_url;
-    }
+    },
   },
   created() {
     window.addEventListener("message", this.login);
@@ -356,6 +359,7 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
+
 }
 
 @media screen and (min-width: 1100px) {

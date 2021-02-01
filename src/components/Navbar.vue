@@ -11,6 +11,7 @@
         />
       </button>
       <img
+        @click="page !== 'Home' ? $router.push('/home') : ''"
         alt="jeec logo"
         src="../assets/jeec_white.svg"
         class="top-center"
@@ -25,7 +26,7 @@
       color="primary"
       left
       temporary
-      :width="width < 1200 ? width * 0.82 : width * 0.3"
+      :width="width < 1100 ? width * 0.82 : width * 0.3"
     >
       <div class="menu">
         <div class="menu-top">
@@ -198,6 +199,7 @@ export default {
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
 .menu {

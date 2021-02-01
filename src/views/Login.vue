@@ -11,7 +11,7 @@
       <div @click.stop="login" class="login-button">
         Login
         <img
-          alt="JEEC logo"
+          alt="Fenix logo"
           src="../assets/fenix.png"
           style="height: 6vh; margin-left: 2vw"
         />
@@ -137,6 +137,7 @@ export default {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
 .loading-bottom {

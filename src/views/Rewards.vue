@@ -2,7 +2,7 @@
   <div class="rewards">
     <Navbar :page="currentPage" />
 
-    <center style="margin-top:10vh">
+    <center style="margin-top: 10vh">
       <div class="buttons">
         <button
           class="button"
@@ -35,9 +35,16 @@
       :user_level="currentUser.level.data.value"
     />
 
-    <SquadRewards v-if="button === 'squad'" :squads_rewards="squads_rewards" :squad_points="squad ? squad.daily_points : 0" />
-  
-    <JEECPOTRewards v-if="button === 'jeecpot'" :jeecpot_rewards="jeecpot_rewards" />
+    <SquadRewards
+      v-if="button === 'squad'"
+      :squads_rewards="squads_rewards"
+      :squad_points="squad ? squad.daily_points : 0"
+    />
+
+    <JEECPOTRewards
+      v-if="button === 'jeecpot'"
+      :jeecpot_rewards="jeecpot_rewards"
+    />
   </div>
 </template>
 
@@ -133,8 +140,6 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
-  display: flex;
-  justify-content: center;
 }
 
 .button {
@@ -178,5 +183,12 @@ export default {
   color: #27ade4;
   font-weight: 600;
   text-decoration: none;
+}
+
+@media screen and (min-width: 1100px) {
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
