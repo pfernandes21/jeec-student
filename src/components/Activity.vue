@@ -41,9 +41,9 @@
     </div>
 
     <div class="buttons">
-      <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calender</a></button> -->
+      <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
       <button @click.stop="dialog = true">See More</button>
-      <button><a :href="calender()">Add to Calender</a></button>
+      <button><a :href="calendar()">Add to Calendar</a></button>
     </div>
 
     <v-dialog v-model="dialog">
@@ -138,7 +138,7 @@ export default {
     zoom() {
       window.location.replace(this.activity.zoom_url);
     },
-    calender() {
+    calendar() {
       var url = "https://calendar.google.com/calendar/render?action=TEMPLATE";
       url = url + "&text=" + this.activity.name;
       url = url + "&ctz=" + "Europe/Lisbon";
