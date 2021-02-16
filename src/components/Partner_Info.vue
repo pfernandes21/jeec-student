@@ -33,7 +33,7 @@
         </div>
         <button
           class="chat-icon"
-          @click.stop="chat_member(member.user_id, member.name, member.post)"
+          @click.stop="chat_member(member.user_id)"
         >
           <img src="../assets/icons/chat.svg" />
         </button>
@@ -93,8 +93,8 @@ export default {
     chat() {
       this.$emit("chat_partner", this.partner.name);
     },
-    chat_member(member_id, member_name, member_post) {
-      this.$emit("chat_member", member_id, member_name, member_post);
+    chat_member(member_id) {
+      this.$emit("chat_member", member_id);
     },
     add_interest() {
       if (!this.partner.interest) {
@@ -138,7 +138,7 @@ export default {
   width: 13vh;
   border-radius: 50%;
   border: 0.3vh solid #707070;
-  background-color: #f1f1f1;
+  background-color: white;
   margin-right: 3vw;
   overflow: hidden;
 }

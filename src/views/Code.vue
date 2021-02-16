@@ -7,11 +7,17 @@
         type="text"
         class="input-code"
         placeholder="xxxx-xxxx-xxxx-xxxx"
-        ref="code"
+        v-model="code"
         autofocus
       />
       <center>
-        <button @click.stop="redeem" class="redeem">Redeem</button>
+        <v-btn
+          depressed
+          @click.stop="redeem"
+          class="redeem white--text"
+          color="secundary"
+          >Redeem</v-btn
+        >
       </center>
 
       <div class="xp-wrapper">
@@ -28,40 +34,98 @@
           ><span class="xp">xp</span>
         </div>
       </div>
+      <div class="referral">
+        <input ref="referral" type="text" :value="referral_code" readonly />
+        <v-btn
+          depressed
+          color="secundary"
+          class="clipboard white--text"
+          @click.stop="clipboard"
+          >Copy to Clipboard<v-icon style="margin-left: 3vw"
+            >mdi-content-copy</v-icon
+          ></v-btn
+        >
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import UserService from "../services/user.service";
+// import UserService from "../services/user.service";
 
 export default {
-  name: "Home",
+  name: "Code",
   components: {
     Navbar,
   },
   data: function () {
     return {
       currentPage: this.$route.name,
+      code: "",
+      prev_length: 0,
     };
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    referral_code() {
+      var code = this.$store.state.auth.user.referral_code;
+      return (
+        code.substring(0, 4) +
+        "-" +
+        code.substring(4, 8) +
+        "-" +
+        code.substring(8, 12) +
+        "-" +
+        code.substring(12, 16)
+      );
+    },
   },
   methods: {
     redeem() {
-      console.log(this.$refs.code.value);
-      UserService.redeemCode(this.$refs.code.value).then(
-        (response) => {
-          this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
-        (error) => {
-          console.log(error);
+      // UserService.redeemCode(this.$refs.code.value).then(
+      //   (response) => {
+      //     this.$store.dispatch("auth/userUpdate", response.data.data);
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
+    },
+    clipboard() {
+      this.$refs.referral.select();
+      document.execCommand("copy");
+    },
+  },
+  watch: {
+    code(val) {
+      if (
+        val.replaceAll("-", "").length % 4 === 0 &&
+        val[val.length - 1] !== "-" &&
+        val.replaceAll("-", "").length < 16 &&
+        val.length > 0 &&
+        val.length > this.prev_length
+      ) {
+        this.code = this.code + "-";
+      }
+
+      if (val.replaceAll("-", "").length > 16) {
+        this.code = this.code.substring(0, 19);
+      }
+
+      if (this.prev_length == 0) {
+        for (var i = 0; i < this.code.length; i++) {
+          if ((i == 4 || i == 9 || i == 14) && this.code[i] !== "-") {
+            this.code =
+              this.code.substring(0, i) + "-" + this.code.substring(i);
+            i--;
+          }
         }
-      );
+      }
+
+      this.prev_length = val.length;
     },
   },
   mounted() {
@@ -91,12 +155,12 @@ export default {
   background-color: white;
   text-align: center;
   border: 0.1vh solid #707070;
-  font-size: 3.5vh;
+  font-size: 3.2vh;
   font-weight: 500;
 }
 
+.clipboard,
 .redeem {
-  background-color: #27ade4;
   border-radius: 2vh;
   font-size: 4vh;
   font-weight: 600;
@@ -107,9 +171,14 @@ export default {
   padding: 0.5vh;
 }
 
+.clipboard {
+  width: auto;
+  margin-top: 1vh;
+}
+
 .xp-wrapper {
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 
 .xp-top {
@@ -136,6 +205,25 @@ export default {
   font-size: 6vh;
   font-weight: 700;
   margin-top: 15vh;
+}
+
+.referral {
+  text-align: center;
+  font-size: 3.5vh;
+  font-weight: 600;
+  margin-top: 2vh;
+}
+
+.referral input {
+  text-align: center;
+  width: 100%;
+}
+
+.referral::before {
+  content: "Referral Code:";
+  font-size: 4vh;
+  font-weight: 700;
+  color: #aaadb0;
 }
 
 @media screen and (max-width: 1100px) {

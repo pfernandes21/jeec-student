@@ -24,9 +24,9 @@
       </div>
     </div>
 
-    <p v-if="currentPage !== 'Quests'" class="description">
+    <!-- <p v-if="currentPage !== 'Quests'" class="description">
       {{ activity.description }}
-    </p>
+    </p> -->
 
     <div
       class="xp-wrapper"
@@ -133,7 +133,7 @@ export default {
     updateImages() {
       setInterval(() => {
         this.current_image = this.current_image + 1;
-      }, 5000);
+      }, 2500);
     },
     zoom() {
       window.location.replace(this.activity.zoom_url);
@@ -492,9 +492,30 @@ export default {
     display: none;
   }
 
+  .activity-text {
+    max-width: 100vw;
+    width: 69vw;
+  }
+
   .inner-description {
     font-size: 2.6vh;
     text-align: justify;
+    margin-top: 2vh;
+    margin-bottom: 0;
+    max-height: 7.5vh;
+    overflow-y: scroll;
+  }
+
+  .inner-description::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0.5vw;
+    background-color: #70707077;
+  }
+
+  .inner-description::-webkit-scrollbar-thumb {
+    border-radius: 1vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   }
 
   .hours {

@@ -143,6 +143,27 @@
               :captain_ist_id="squad.captain_ist_id"
               @kick="kick_member"
             />
+            <!-- <Member
+              v-for="member in squad.members.data"
+              :key="member.ist_id"
+              :member="member"
+              :captain_ist_id="squad.captain_ist_id"
+              @kick="kick_member"
+            />
+            <Member
+              v-for="member in squad.members.data"
+              :key="member.ist_id"
+              :member="member"
+              :captain_ist_id="squad.captain_ist_id"
+              @kick="kick_member"
+            />
+            <Member
+              v-for="member in squad.members.data"
+              :key="member.ist_id"
+              :member="member"
+              :captain_ist_id="squad.captain_ist_id"
+              @kick="kick_member"
+            /> -->
           </div>
         </div>
 
@@ -671,6 +692,7 @@ export default {
 
 .big-today-reward-title {
   line-height: 1vh;
+  margin-bottom: 2.5vh !important;
 }
 
 .big-reward-img {

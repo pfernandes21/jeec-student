@@ -14,10 +14,7 @@
         <button
           class="button"
           :class="{ active: button === 'messages' }"
-          @click.stop="
-            messages();
-            button = 'messages';
-          "
+          @click.stop="messages()"
         >
           Messages
         </button>
@@ -81,17 +78,11 @@
       </center>
     </div>
 
-    <div class="chat-room" v-show="button === 'chat' || button === 'messages'">
-      <div class="room-info" v-if="button === 'chat'">
-        <p class="room-name">{{ chat_room_name }}</p>
-        <p class="room-sub" v-if="chat_room_sub !== ''">
-          {{ chat_room_sub }} ({{ partner.name }})
-        </p>
-      </div>
+    <div class="chat-room" v-show="button === 'messages'">
       <iframe
-        :class="button === 'messages' ? 'message-frame' : 'chat-frame'"
+        class="chat-frame"
         ref="chat"
-        :src="rocket_chat_url"
+        :src="rocket_chat_room_url"
         frameborder="0"
       ></iframe>
     </div>
@@ -114,9 +105,7 @@ export default {
   data: function () {
     return {
       currentPage: this.$route.name,
-      rocket_chat_url:
-        process.env.VUE_APP_ROCKET_CHAT_URL +
-        "/home?layout=embedded&resumeToken=",
+      rocket_chat_url: process.env.VUE_APP_ROCKET_CHAT_URL,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       button: "partners",
       partners: [],
@@ -153,19 +142,26 @@ export default {
     },
   },
   methods: {
-    login(event) {
+    logs(event) {
       if (
-        event.origin == process.env.VUE_APP_ROCKET_CHAT_URL &&
-        event.data == "logged_in"
+        event.origin === process.env.VUE_APP_ROCKET_CHAT_URL &&
+        event.data === "logged_in"
       ) {
-        if (this.rocket_chat_room_url) {
-          this.rocket_chat_url = this.rocket_chat_room_url;
-        } else {
-          this.rocket_chat_url =
-            process.env.VUE_APP_ROCKET_CHAT_URL +
-            "/channel/general?layout=embedded";
-        }
         this.chat_logged_in = true;
+      } else if (
+        event.origin === process.env.VUE_APP_ROCKET_CHAT_URL &&
+        event.data === "logged_out"
+      ) {
+        UserService.getChatToken().then(
+          (response) => {
+            this.rocket_chat_room_url =
+              this.rocket_chat_url + "/home?resumeToken=" + response.data.token;
+            console.log(response.data.token);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
     },
     learn(name) {
@@ -184,16 +180,13 @@ export default {
         (response) => {
           if (response.data.result) {
             this.rocket_chat_room_url =
-              process.env.VUE_APP_ROCKET_CHAT_URL +
+              this.rocket_chat_url +
               "/channel/" +
-              partner_name.replace(" ", "_") +
-              "?layout=embedded";
+              partner_name.replace(" ", "_");
             if (this.chat_logged_in) {
               this.rocket_chat_url = this.rocket_chat_room_url;
+              this.button = "messages";
             }
-            this.chat_room_name = partner_name + " Room";
-            this.chat_room_sub = "";
-            this.button = "chat";
           }
         },
         (error) => {
@@ -201,21 +194,16 @@ export default {
         }
       );
     },
-    chat_member(member_id, member_name, member_post) {
+    chat_member(member_id) {
       UserService.getChatRoom("", member_id).then(
         (response) => {
           if (response.data.room_id) {
             this.rocket_chat_room_url =
-              process.env.VUE_APP_ROCKET_CHAT_URL +
-              "/direct/" +
-              response.data.room_id +
-              "?layout=embedded";
+              this.rocket_chat_url + "/direct/" + response.data.room_id;
             if (this.chat_logged_in) {
               this.rocket_chat_url = this.rocket_chat_room_url;
+              this.button = "messages";
             }
-            this.chat_room_name = member_name;
-            this.chat_room_sub = member_post;
-            this.button = "chat";
           }
         },
         (error) => {
@@ -235,15 +223,20 @@ export default {
       );
     },
     messages() {
-      this.rocket_chat_room_url = process.env.VUE_APP_ROCKET_CHAT_URL + "/home";
-      this.rocket_chat_url = this.rocket_chat_room_url;
+      if (this.chat_logged_in) {
+        if (!this.rocket_chat_room_url) {
+          this.rocket_chat_room_url =
+            process.env.VUE_APP_ROCKET_CHAT_URL + "/home";
+        }
+        this.button = "messages";
+      }
     },
   },
   created() {
-    window.addEventListener("message", this.login);
+    window.addEventListener("message", this.logs);
   },
   destroyed() {
-    window.removeEventListener("message", this.login);
+    window.removeEventListener("message", this.logs);
   },
   mounted() {
     if (!this.currentUser) {
@@ -252,7 +245,8 @@ export default {
 
     UserService.getChatToken().then(
       (response) => {
-        this.rocket_chat_url = this.rocket_chat_url + response.data.token;
+        this.rocket_chat_room_url =
+          this.rocket_chat_url + "/home?resumeToken=" + response.data.token;
       },
       (error) => {
         console.log(error);
@@ -311,41 +305,9 @@ export default {
   margin-left: 2vw;
 }
 
-.chat-room {
-  width: 100vw;
-  height: 77vh;
-}
-
-.room-info {
-  background-color: white;
-  margin-bottom: 1vh;
-  padding: 1vh;
-}
-
-.room-name {
-  margin: 0;
-  font-size: 4vh;
-  font-weight: 600;
-  text-align: center;
-}
-
-.room-sub {
-  margin: 0;
-  font-size: 2vh;
-  font-weight: 600;
-  color: #27ade4;
-  text-align: center;
-  line-height: 1vh;
-}
-
 .chat-frame {
   width: 100vw;
-  height: 66vh;
-}
-
-.message-frame {
-  width: 100vw;
-  height: 100%;
+  height: 76vh;
 }
 
 .sponsors-page {
@@ -359,7 +321,6 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
-
 }
 
 @media screen and (min-width: 1100px) {

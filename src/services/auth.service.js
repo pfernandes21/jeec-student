@@ -8,6 +8,7 @@ class AuthService {
         if (response.data) {
           user = response.data.data;
           user.accessToken = accessToken;
+          user.last_login = new Date();
           localStorage.setItem('user', JSON.stringify(user));
           return user;
         }

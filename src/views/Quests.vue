@@ -52,6 +52,14 @@
         :points="400"
         :done="has_linkedin"
       />
+      <Quest
+        v-for="date in currentUser.login_dates"
+        :key="date"
+        :image="require('../assets/icons/login.svg')"
+        :description="'<b>Logged in on ' + date.substring(0,6) + '</b>'"
+        :points="5"
+        :done="true"
+      />
     </div>
   </div>
 </template>

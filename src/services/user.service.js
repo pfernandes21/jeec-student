@@ -8,6 +8,10 @@ class UserService {
     return axios.get(jeec_brain_url + '/student/info', { headers: authHeader() });
   }
 
+  todayLogin() {
+    return axios.get(jeec_brain_url + '/student/today-login', { headers: authHeader() });
+  }
+
   redeemCode(code) {
     return axios.post(jeec_brain_url + '/student/redeem-code', { code: code }, { headers: authHeader() })
   }

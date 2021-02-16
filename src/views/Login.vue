@@ -90,7 +90,14 @@ export default {
               }
             );
 
-            this.$router.push("/home");
+            if (this.$route.query.firstlog) {
+              this.$router.push({
+                name: "Home",
+                params: { firstlog: true },
+              });
+            } else {
+              this.$router.push("/home");
+            }
           },
           () => {
             this.$store.dispatch("auth/logout");

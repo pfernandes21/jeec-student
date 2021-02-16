@@ -2,16 +2,12 @@
   <div class="profile">
     <Navbar :page="currentPage" />
 
-    <div class="top" style="margin-top:10vh">
-      <img
-        alt="profile photo"
-        :src="currentUser.photo"
-        class="profile-img"
-      />
+    <div class="top" style="margin-top: 10vh">
+      <img alt="profile photo" :src="currentUser.photo" class="profile-img" />
       <div class="profile-info">
         <div class="name">
           <p>{{ nameArray[0] }}</p>
-          <p>{{ nameArray[nameArray.length - 1] }}</p>
+          <p class="second-name">{{ nameArray[nameArray.length - 1] }}</p>
         </div>
         <p class="level">level {{ currentUser.level.data.value }}</p>
         <Expbar
@@ -116,6 +112,7 @@
               ref="linkedin_url"
               placeholder="https://www.linkedin.com/in/XXXXX/"
               autofocus
+              :value="currentUser.linkedin_url"
               required
             />
             <br />
@@ -128,7 +125,10 @@
     </v-dialog>
 
     <v-dialog v-model="tags_dialog">
-      <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+      <v-card
+        color="accent"
+        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
+      >
         <v-autocomplete
           v-model="added_tags"
           :items="tags"
@@ -143,7 +143,10 @@
     </v-dialog>
 
     <v-dialog v-model="companies_dialog">
-      <v-card color="accent" style="padding-left: 2vw; padding-right: 2vw">
+      <v-card
+        color="accent"
+        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
+      >
         <v-autocomplete
           v-model="added_companies"
           :items="companies"
@@ -272,7 +275,7 @@ export default {
     nameArray() {
       var names = this.$store.state.auth.user.name.split(" ");
 
-      if(names.length > 1) return names;
+      if (names.length > 1) return names;
       else return [this.name, ""];
     },
     progress() {
@@ -336,8 +339,8 @@ export default {
 }
 
 .profile-img {
-  width: 12vh; 
-  height: 12vh; 
+  width: 12vh;
+  height: 12vh;
   border-radius: 50%;
 }
 
@@ -359,10 +362,7 @@ export default {
 .cv-wrapper,
 .linkedin-wrapper {
   display: flex;
-}
-
-.cv-wrapper {
-  margin-bottom: 2.5vh;
+  align-items: center;
 }
 
 .cv-wrapper img,
@@ -447,6 +447,7 @@ export default {
 .logout {
   font-weight: 600;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .logout-img img {
@@ -455,6 +456,7 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer;
 }
 
 /* .linkedin-input {
@@ -464,6 +466,7 @@ export default {
   width: 100%;
   margin-top: 0.5vh;
   font-size: 2.7vh;
+  text-align: center;
 }
 
 .linkedin-input button {
@@ -472,16 +475,30 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
-
+  .cv-wrapper {
+    margin-bottom: 2.5vh;
+  }
 }
 
 @media screen and (min-width: 1100px) {
+  .top {
+    justify-content: center;
+  }
+
+  .name {
+    display: flex;
+  }
+
+  .second-name {
+    margin-left: 0.5vw !important;
+  }
+
   .middle {
     display: flex;
     justify-content: space-between;
   }
 
-  .cv-wrapper{
+  .cv-wrapper {
     margin-left: 10vw;
   }
 

@@ -7,11 +7,37 @@
 </template>
 
 <script>
+import UserService from "./services/user.service";
+
 export default {
   mounted() {
     this.$vuetify.theme.themes.light.primary = "#50575C";
     this.$vuetify.theme.themes.light.secundary = "#27ADE4";
     this.$vuetify.theme.themes.light.accent = "#F1F1F1";
+
+    var today = new Date();
+    var last_login = new Date(this.currentUser.last_login);
+
+    if (today.getDate() !== last_login.getDate()) {
+      UserService.todayLogin().then(
+        (response) => {
+          response.data.data["last_login"] = today;
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.$router.push({
+            name: "Home",
+            params: { firstlog: true },
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
   },
 };
 </script>
@@ -46,5 +72,4 @@ export default {
 #app a:active {
   text-decoration: underline;
 }
-
 </style>
