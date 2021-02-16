@@ -20,6 +20,8 @@
         >
       </center>
 
+      <p class="error-msg">{{ error }}</p>
+
       <div class="xp-wrapper">
         <div>
           <p class="xp-top">Personal:</p>
@@ -27,10 +29,8 @@
           ><span class="xp">xp</span>
         </div>
         <div>
-          <p class="xp-top">Team:</p>
-          <span class="xp-value">{{
-            currentUser.squad ? currentUser.squad.total_points : "0"
-          }}</span
+          <p class="xp-top">Squad:</p>
+          <span class="xp-value">{{ squad ? squad.total_points : "0" }}</span
           ><span class="xp">xp</span>
         </div>
       </div>
@@ -47,12 +47,23 @@
         >
       </div>
     </div>
+
+    <v-dialog v-model="dialog">
+      <v-card>
+        <img
+          class="bepis"
+          src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg"
+          alt=""
+        />
+        <b>{{ points }} points to grinfidor</b>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-// import UserService from "../services/user.service";
+import UserService from "../services/user.service";
 
 export default {
   name: "Code",
@@ -64,6 +75,10 @@ export default {
       currentPage: this.$route.name,
       code: "",
       prev_length: 0,
+      dialog: false,
+      points: 0,
+      squad: null,
+      error: "",
     };
   },
   computed: {
@@ -85,14 +100,31 @@ export default {
   },
   methods: {
     redeem() {
-      // UserService.redeemCode(this.$refs.code.value).then(
-      //   (response) => {
-      //     this.$store.dispatch("auth/userUpdate", response.data.data);
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   }
-      // );
+      if (this.code.replaceAll("-", "").length == 16) {
+        UserService.redeemCode(this.code).then(
+          (response) => {
+            this.points =
+              response.data.data.total_points - this.currentUser.total_points;
+            this.$store.dispatch("auth/userUpdate", response.data.data);
+
+            UserService.getUserSquad().then(
+              (response) => {
+                this.squad = response.data.data;
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+            this.dialog = true;
+            this.error = "";
+          },
+          (error) => {
+            this.error = "Invalid Code";
+            console.log(error);
+          }
+        );
+      }
     },
     clipboard() {
       this.$refs.referral.select();
@@ -132,6 +164,15 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/");
     }
+
+    UserService.getUserSquad().then(
+      (response) => {
+        this.squad = response.data.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
@@ -178,7 +219,7 @@ export default {
 
 .xp-wrapper {
   text-align: center;
-  margin-top: 5vh;
+  margin-top: 1.5vh;
 }
 
 .xp-top {
@@ -224,6 +265,15 @@ export default {
   font-size: 4vh;
   font-weight: 700;
   color: #aaadb0;
+}
+
+.error-msg {
+  font-size: 3vh;
+  font-weight: 700;
+  color: red;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 1vh;
 }
 
 @media screen and (max-width: 1100px) {

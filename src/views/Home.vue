@@ -176,7 +176,7 @@
 
     <v-dialog v-model="dialog">
       <v-card>
-        <img class="bepis" src="https://static1.fjcdn.com/comments/Reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee+_05ec2b6abf22abdcf4ed73cc18ae5807.png" alt="">
+        <img class="bepis" src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg" alt="">
         <b>50 points to grinfidor</b>
       </v-card>
     </v-dialog>
@@ -202,7 +202,7 @@ export default {
       levels: null,
       today_reward: {},
       xpbar_width: "92vw",
-      dialog: true,
+      dialog: false,
     };
   },
   computed: {

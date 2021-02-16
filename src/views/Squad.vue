@@ -78,6 +78,8 @@
               Create!
             </button>
           </center>
+
+          <p class="error-msg">{{ error }}</p>
         </div>
       </div>
 
@@ -97,7 +99,7 @@
           </div>
           <div class="xp-wrapper">
             <div>
-              <p class="xp-name">Diário:</p>
+              <p class="xp-name">Daily:</p>
               <span class="xp-value">{{ squad.daily_points }}</span
               ><span class="xp">xp</span>
             </div>
@@ -143,27 +145,6 @@
               :captain_ist_id="squad.captain_ist_id"
               @kick="kick_member"
             />
-            <!-- <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-              @kick="kick_member"
-            />
-            <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-              @kick="kick_member"
-            />
-            <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-              @kick="kick_member"
-            /> -->
           </div>
         </div>
 
@@ -282,6 +263,7 @@ export default {
       search: null,
       invitations: [],
       today_reward: {},
+      error: "",
     };
   },
   methods: {
@@ -308,14 +290,15 @@ export default {
 
       var image = this.$refs.image_input;
 
-      UserService.createSquad(image.files[0], this.name, this.cry).then(
-        (response) => {
+      UserService.createSquad(image.files[0], this.name, this.cry)
+        .then((response) => {
           this.squad = response.data.data;
-        },
-        (error) => {
+          this.error = "";
+        })
+        .catch((error) => {
+          this.error = error.response.data.error;
           console.log(error);
-        }
-      );
+        });
     },
     remove(item) {
       const index = this.squadmates.indexOf(item.ist_id);
@@ -344,7 +327,6 @@ export default {
       UserService.leaveSquad().then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
-          console.log("here");
           this.files = [];
           this.squad = null;
           this.image_uploaded = false;
@@ -809,6 +791,14 @@ export default {
   margin-bottom: 2.5vh;
   margin-top: -1.5vh;
   background-color: #27ade4;
+}
+
+.error-msg {
+  text-align: center;
+  font-size: 4vh;
+  font-weight: 700;
+  color: red;
+  margin-top: 2vh;
 }
 
 @media screen and (max-width: 1100px) {
