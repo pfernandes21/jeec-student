@@ -1,6 +1,5 @@
 <template>
   <div class="company">
-    <Navbar :page="currentPage" />
     <Buttons @_click="click" :names="{ Partners: false, Messages: false }" />
 
     <Partner_Info
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Buttons from "@/components/Buttons.vue";
 import Partner_Info from "@/components/Partner_Info.vue";
 import UserService from "../services/user.service";
@@ -23,13 +21,11 @@ import UserService from "../services/user.service";
 export default {
   name: "Company",
   components: {
-    Navbar,
     Buttons,
     Partner_Info,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       partner: null,
     };

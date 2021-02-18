@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <v-app>
+      <Navbar />
       <router-view />
     </v-app>
 
@@ -15,6 +16,7 @@
 
 <script>
 import UserService from "./services/user.service";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   data: function () {
@@ -22,15 +24,18 @@ export default {
       dialog: false,
     };
   },
+  components: {
+    Navbar,
+  },
   mounted() {
     this.$vuetify.theme.themes.light.primary = "#50575C";
     this.$vuetify.theme.themes.light.secundary = "#27ADE4";
     this.$vuetify.theme.themes.light.accent = "#F1F1F1";
 
     var today = new Date();
-    var last_login = new Date(this.currentUser.last_login);
+    var last_login = this.currentUser ? new Date(this.currentUser.last_login) : '';
 
-    if (today.getDate() !== last_login.getDate()) {
+if (this.currentUser && today.getDate() !== last_login.getDate()) {
       UserService.todayLogin().then(
         (response) => {
           response.data.data["last_login"] = today;

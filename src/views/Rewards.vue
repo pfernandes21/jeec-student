@@ -1,7 +1,5 @@
 <template>
   <div class="rewards">
-    <Navbar :page="currentPage" />
-
     <center style="margin-top: 10vh">
       <div class="buttons">
         <button
@@ -49,7 +47,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import PersonalRewards from "@/components/PersonalRewards.vue";
 import SquadRewards from "@/components/SquadRewards.vue";
 import JEECPOTRewards from "@/components/JEECPOTRewards.vue";
@@ -59,14 +56,12 @@ import UserService from "../services/user.service";
 export default {
   name: "Rewards",
   components: {
-    Navbar,
     PersonalRewards,
     SquadRewards,
     JEECPOTRewards,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       levels: [],
       squads_rewards: [],
       jeecpot_rewards: null,

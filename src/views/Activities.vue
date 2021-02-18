@@ -1,7 +1,5 @@
 <template>
   <div class="activities">
-    <Navbar :page="currentPage" />
-
     <center style="margin-top:10vh">
       <div class="buttons">
         <button
@@ -56,19 +54,16 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Activity from "@/components/Activity.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Activities",
   components: {
-    Navbar,
     Activity,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       button: "all",
       model: 0,
       event_days: [],

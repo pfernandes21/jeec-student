@@ -1,7 +1,5 @@
 <template>
   <div class="rankings">
-    <Navbar :page="currentPage" />
-
     <center style="margin-top: 10vh">
       <div class="buttons">
         <button
@@ -74,19 +72,16 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Rank from "@/components/Rank.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Rankings",
   components: {
-    Navbar,
     Rank,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       button: "personal",
       students: [],
       squads: [],

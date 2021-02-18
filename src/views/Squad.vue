@@ -1,7 +1,5 @@
 <template>
   <div class="squad">
-    <Navbar :page="currentPage" />
-
     <center style="margin-top: 10vh">
       <div class="buttons">
         <button
@@ -235,7 +233,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Member from "@/components/Member.vue";
 import Invitation from "@/components/Invitation.vue";
 import UserService from "../services/user.service";
@@ -243,13 +240,11 @@ import UserService from "../services/user.service";
 export default {
   name: "Squad",
   components: {
-    Navbar,
     Member,
     Invitation,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       button: "squad",
       files: [],
       image_uploaded: false,

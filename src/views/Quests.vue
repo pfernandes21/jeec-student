@@ -1,7 +1,5 @@
 <template>
   <div class="quests">
-    <Navbar :page="currentPage" />
-
     <center style="margin-top: 10vh">
       <div class="buttons">
         <button
@@ -65,7 +63,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Activity from "@/components/Activity.vue";
 import Quest from "@/components/Quest.vue";
 import UserService from "../services/user.service";
@@ -73,13 +70,11 @@ import UserService from "../services/user.service";
 export default {
   name: "Quests",
   components: {
-    Navbar,
     Activity,
     Quest,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       button: "daily",
       quests: [],
       cv_description:

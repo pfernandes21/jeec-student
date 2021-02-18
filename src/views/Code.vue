@@ -1,6 +1,5 @@
 <template>
   <div class="code">
-    <Navbar :page="currentPage" />
     <p class="code-title">Redeem Code:</p>
     <div class="code-page" style="margin-top: 10vh">
       <input
@@ -62,17 +61,14 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Code",
   components: {
-    Navbar,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       code: "",
       prev_length: 0,
       dialog: false,

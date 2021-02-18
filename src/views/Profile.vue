@@ -1,7 +1,5 @@
 <template>
   <div class="profile">
-    <Navbar :page="currentPage" />
-
     <div class="top" style="margin-top: 10vh">
       <img alt="profile photo" :src="currentUser.photo" class="profile-img" />
       <div class="profile-info">
@@ -38,7 +36,7 @@
         <v-icon v-else large style="color: green">mdi-check</v-icon>
       </div>
     </div>
-    <button @click="get_cv">Get CV</button>
+    <a :href="cv_url" :download="currentUser.ist_id + '_cv.pdf'" >CV</a>
     <div class="bottom">
       <center>
         <p class="interests">Your Interests</p>
@@ -163,19 +161,16 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Profile",
   components: {
-    Navbar,
     Expbar,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       color: "gray",
       dialog: false,
       tags: [],
@@ -184,6 +179,7 @@ export default {
       added_companies: [],
       tags_dialog: false,
       companies_dialog: false,
+      cv_url: "",
     };
   },
   methods: {
@@ -213,19 +209,6 @@ export default {
       UserService.addCV(this.$refs.cv).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    get_cv() {
-      UserService.getCV().then(
-        (response) => {
-          var fileBlob = new Blob([response.data], {type: response.headers['content-type']});
-          var objetURL = window.URL.createObjectURL(fileBlob);
-          window.location.replace(objetURL);
-          console.log(response);
         },
         (error) => {
           console.log(error);
@@ -321,6 +304,19 @@ export default {
         console.log(error);
       }
     );
+
+    if(this.currentUser.uploaded_cv) {
+      UserService.getCV().then(
+        (response) => {
+          var fileBlob = new Blob([response.data], {type: response.headers['content-type']});
+          var objetURL = window.URL.createObjectURL(fileBlob);
+          this.cv_url = objetURL;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   },
 };
 </script>
