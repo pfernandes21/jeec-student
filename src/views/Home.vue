@@ -246,6 +246,8 @@ export default {
     window.removeEventListener("resize", this.resize);
   },
   mounted() {
+    console.log(this.$store.state.auth.user.ist_id)
+    this.$gtag.config({ user_id: this.$store.state.auth.user.ist_id })
     this.resize();
 
     if (!this.currentUser) {
