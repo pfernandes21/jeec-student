@@ -329,10 +329,10 @@ export default {
 }
 
 ::-webkit-scrollbar-thumb {
-  border: 6px solid rgba(0, 0, 0, 0);
+  border: 6px solid #f1f1f1;
   background-clip: padding-box;
   border-radius: 11px;
-  background-color: #3f4449;
+  background-color: #c8c8c8;
 }
 
 .top {
