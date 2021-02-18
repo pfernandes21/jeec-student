@@ -1,5 +1,5 @@
 <template>
-  <div class="partner-info">
+  <div class="partner-info" v-if="partner">
     <div class="info-top">
       <div style="display: flex">
         <div class="partner-img">
@@ -31,10 +31,7 @@
           <p class="member-name">{{ member.name }}</p>
           <p class="member-post">{{ member.post }}</p>
         </div>
-        <button
-          class="chat-icon"
-          @click.stop="chat_member(member.user_id)"
-        >
+        <button class="chat-icon" @click.stop="chat_member(member.user_id)">
           <img src="../assets/icons/chat.svg" />
         </button>
       </div>
@@ -156,6 +153,7 @@ export default {
 
 .team {
   width: 100%;
+  min-height: 39.4vh;
   padding-top: 2vh;
   padding-bottom: 2vh;
   padding-left: 4vw;
@@ -166,6 +164,7 @@ export default {
 .team-title {
   font-size: 4vh;
   font-weight: 600;
+  text-align: center;
 }
 
 .member {

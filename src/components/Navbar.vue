@@ -19,9 +19,9 @@
       />
     </div>
     <v-navigation-drawer
-      style="position: fixed; height: 100vh"
+      style="height: 100vh;"
       v-model="display_menu"
-      absolute
+      fixed
       dark
       color="primary"
       left
@@ -103,7 +103,7 @@ export default {
         {
           name: "Chat & Job Fair",
           src: require("../assets/icons/chat.svg"),
-          page: "Chat",
+          page: "Companies",
         },
         {
           name: "Quests",
@@ -174,15 +174,14 @@ export default {
 <style scoped>
 .navbar {
   color: white;
-  position: absolute;
-  z-index: 1000;
 }
 
 .top {
-  position: fixed;
   width: 100vw;
   background-color: #27ade4;
   height: 10vh;
+  position: fixed;
+  z-index: 1;
 }
 
 .top-start {

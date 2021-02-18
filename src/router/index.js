@@ -10,6 +10,8 @@ import Login from '../views/Login.vue'
 import Rankings from '../views/Rankings.vue'
 import Rewards from '../views/Rewards.vue'
 import Chat from '../views/Chat.vue'
+import Company from '../views/Company.vue'
+import Companies from '../views/Companies.vue'
 import qs from 'qs';
 
 Vue.use(VueRouter)
@@ -64,6 +66,16 @@ const routes = [
     path: '/chat',
     name: 'Chat',
     component: Chat,
+  },
+  {
+    path: '/company/:name',
+    name: 'Company',
+    component: Company,
+  },
+  {
+    path: '/companies',
+    name: 'Companies',
+    component: Companies,
   }
 ]
 

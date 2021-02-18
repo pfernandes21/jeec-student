@@ -3,8 +3,8 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex';
-import store from './store'
-import VueCryptojs from 'vue-cryptojs'
+import store from './store';
+import VueCryptojs from 'vue-cryptojs';
  
 Vue.use(VueCryptojs)
 Vue.config.productionTip = false

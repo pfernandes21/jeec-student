@@ -173,13 +173,6 @@
         >
       </div>
     </div>
-
-    <v-dialog v-model="dialog">
-      <v-card>
-        <img class="bepis" src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg" alt="">
-        <b>50 points to grinfidor</b>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -202,7 +195,6 @@ export default {
       levels: null,
       today_reward: {},
       xpbar_width: "92vw",
-      dialog: false,
     };
   },
   computed: {
@@ -278,10 +270,6 @@ export default {
         console.log(error);
       }
     );
-
-    if (this.$route.params.firstlog) {
-      this.dialog = true;
-    }
   },
 };
 </script>
@@ -641,25 +629,4 @@ export default {
   }
 }
 
-.bepis:hover {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
-  animation: shake 0.5s;
-
-  /* When the animation is finished, start again */
-  animation-iteration-count: infinite;
-}
-
-@keyframes shake {
-  0% { transform: translate(10px, 10px) rotate(0deg); }
-  10% { transform: translate(-10px, -20px) rotate(-1deg); }
-  20% { transform: translate(-30px, 0px) rotate(1deg); }
-  30% { transform: translate(30px, 20px) rotate(0deg); }
-  40% { transform: translate(10px, -10px) rotate(1deg); }
-  50% { transform: translate(-10px, 20px) rotate(-1deg); }
-  60% { transform: translate(-30px, 10px) rotate(0deg); }
-  70% { transform: translate(30px, 10px) rotate(-1deg); }
-  80% { transform: translate(-10px, -10px) rotate(1deg); }
-  90% { transform: translate(10px, 20px) rotate(0deg); }
-  100% { transform: translate(10px, -20px) rotate(-1deg); }
-}
 </style>

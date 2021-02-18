@@ -25,7 +25,7 @@
 
 <script>
 import User from "../models/user";
-import UserService from "../services/user.service";
+// import UserService from "../services/user.service";
 
 export default {
   name: "Login",
@@ -72,7 +72,7 @@ export default {
       window.location.replace(this.jeec_brain_url + "/student/login");
     },
   },
-  mounted() {
+  created() {
     if (this.$route.query.code) {
       this.$store
         .dispatch("auth/login", [
@@ -81,29 +81,14 @@ export default {
         ])
         .then(
           () => {
-            UserService.getUserSquad().then(
-              (response) => {
-                this.squad = response.data.data;
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-
-            if (this.$route.query.firstlog) {
-              this.$router.push({
-                name: "Home",
-                params: { firstlog: true },
-              });
-            } else {
-              this.$router.push("/home");
-            }
+            this.$router.push('/home');
           },
           () => {
             this.$store.dispatch("auth/logout");
           }
         );
-    } else if (this.loggedIn) {
+    } 
+    else if (this.loggedIn) {
       this.$router.push("/home");
     }
   },

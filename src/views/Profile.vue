@@ -38,7 +38,7 @@
         <v-icon v-else large style="color: green">mdi-check</v-icon>
       </div>
     </div>
-
+    <button @click="get_cv">Get CV</button>
     <div class="bottom">
       <center>
         <p class="interests">Your Interests</p>
@@ -219,6 +219,19 @@ export default {
         }
       );
     },
+    get_cv() {
+      UserService.getCV().then(
+        (response) => {
+          var fileBlob = new Blob([response.data], {type: response.headers['content-type']});
+          var objetURL = window.URL.createObjectURL(fileBlob);
+          window.location.replace(objetURL);
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
     delete_tag(tag) {
       UserService.deleteTag(tag).then(
         (response) => {
@@ -286,7 +299,7 @@ export default {
       return ((xp - start_points) / (end_points - start_points)) * 100;
     },
   },
-  mounted() {
+  created() {
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -500,10 +513,12 @@ export default {
 
   .cv-wrapper {
     margin-left: 10vw;
+    cursor: pointer;
   }
 
   .linkedin-wrapper {
     margin-right: 10vw;
+    cursor: pointer;
   }
 
   .profile-img {

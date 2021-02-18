@@ -3,6 +3,13 @@
     <v-app>
       <router-view />
     </v-app>
+
+    <v-dialog v-model="dialog">
+      <v-card>
+        <img src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg" alt="" />
+        <b>50 points to grinfidor</b>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -10,6 +17,11 @@
 import UserService from "./services/user.service";
 
 export default {
+  data: function () {
+    return {
+      dialog: false,
+    };
+  },
   mounted() {
     this.$vuetify.theme.themes.light.primary = "#50575C";
     this.$vuetify.theme.themes.light.secundary = "#27ADE4";
@@ -23,10 +35,7 @@ export default {
         (response) => {
           response.data.data["last_login"] = today;
           this.$store.dispatch("auth/userUpdate", response.data.data);
-          this.$router.push({
-            name: "Home",
-            params: { firstlog: true },
-          });
+          this.dialog = true;
         },
         (error) => {
           console.log(error);
@@ -48,7 +57,8 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
 
-#app {
+#app,
+.application {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }

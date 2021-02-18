@@ -33,6 +33,10 @@ class UserService {
     });
   }
 
+  getCV() {
+    return axios.get(jeec_brain_url + '/student/cv', { headers: authHeader() });
+  }
+
   getUserSquad() {
     return axios.get(jeec_brain_url + '/student/squad', { headers: authHeader() });
   }

@@ -1,0 +1,60 @@
+<template>
+  <div class="buttons">
+    <v-btn
+      tile
+      class="button white--text"
+      v-for="name in Object.keys(names)"
+      :key="name"
+      :color="names[name] ? '#26A2D5' : '#6CBFE0'"
+      @click="click(name)"
+      >{{ name }}
+    </v-btn>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Buttons",
+  props: {
+    names: Object,
+  },
+  data: function () {
+    return {};
+  },
+  methods: {
+    resize() {},
+    click(name) {
+      this.$emit('_click', name);
+    },
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
+  mounted() {
+    window.addEventListener("resize", this.resize);
+    this.resize();
+  },
+};
+</script>
+
+<style scoped>
+.buttons {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 8vh;
+  background-color: #e6e6e6;
+  margin-top: 10vh;
+  z-index: 1;
+}
+
+.button {
+  flex: 1;
+  height: 7.6vh !important;
+  width: 100% !important;
+  margin: 0.1vh;
+  font-size: 2.6vh !important;
+}
+</style>
