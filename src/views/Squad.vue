@@ -1,25 +1,14 @@
 <template>
   <div class="squad">
-    <center style="margin-top: 10vh">
-      <div class="buttons">
-        <button
-          class="button"
-          :class="{ active: button === 'squad' }"
-          @click.stop="button = 'squad'"
-        >
-          My Squad
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'invitations' }"
-          @click.stop="button = 'invitations'"
-        >
-          Invitations({{ invitations.length }})
-        </button>
-      </div>
-    </center>
+    <Buttons
+      @_click="click"
+      :names="{
+        'my squad': button === 'my squad',
+        'invitations': button === 'invitations',
+      }"
+    />
 
-    <div v-show="button === 'squad'">
+    <div v-show="button === 'my squad'" style="margin-top: 18vh">
       <div class="no-squad" v-if="squad === null">
         <div class="n-squad-header">
           <img
@@ -220,7 +209,7 @@
       </v-dialog>
     </div>
 
-    <div v-show="button === 'invitations'">
+    <div v-show="button === 'invitations'" style="margin-top: 18vh">
       <Invitation
         @accept="accept_invitation"
         @reject="reject_invitation"
@@ -236,16 +225,18 @@
 import Member from "@/components/Member.vue";
 import Invitation from "@/components/Invitation.vue";
 import UserService from "../services/user.service";
+import Buttons from "@/components/Buttons.vue";
 
 export default {
   name: "Squad",
   components: {
     Member,
     Invitation,
+    Buttons,
   },
   data: function () {
     return {
-      button: "squad",
+      button: "my squad",
       files: [],
       image_uploaded: false,
       name: "",
@@ -262,6 +253,11 @@ export default {
     };
   },
   methods: {
+    click(name) {
+      if (name !== this.button) {
+        this.button = name;
+      }
+    },
     input_click() {
       this.$refs.image_input.click();
     },
@@ -467,38 +463,6 @@ export default {
   background-color: #e6e6e6;
 }
 
-.buttons {
-  padding-top: 2.5vh;
-  padding-bottom: 2.5vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  display: flex;
-  justify-content: center;
-}
-
-.button {
-  background-color: rgba(88, 185, 224, 0.638);
-  border-radius: 3vh;
-  font-size: 3vh;
-  font-weight: 500;
-  color: white;
-  width: 43vw;
-  height: auto;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
-}
-
-.active {
-  background-color: #27ade4;
-}
-
-.button1 {
-  margin-top: 4vh;
-  background-color: #27ade4;
-}
-
 .n-squad-header {
   background-color: #f1f1f1;
   padding: 2vh;
@@ -591,6 +555,7 @@ export default {
 }
 
 .squad-info {
+  padding-top: 3vh;
   padding-bottom: 2vh;
 }
 
@@ -743,8 +708,14 @@ export default {
   font-weight: 600;
 }
 
+.big-wrapper {
+  min-height: 21vh;
+  background-color: #f1f1f1;
+}
+
 .members > p {
   margin: 0;
+  margin-bottom: 1vh;
   font-size: 2.8vh;
   font-weight: 500;
   color: #848484;
@@ -807,12 +778,6 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
-  .button {
-    width: 19vw;
-    margin-left: 8vw;
-    margin-right: 8vw;
-  }
-
   .today-reward {
     display: none;
   }

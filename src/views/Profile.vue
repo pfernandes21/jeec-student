@@ -36,7 +36,7 @@
         <v-icon v-else large style="color: green">mdi-check</v-icon>
       </div>
     </div>
-    <a :href="cv_url" :download="currentUser.ist_id + '_cv.pdf'" >CV</a>
+    <!-- <a :href="cv_url" :download="currentUser.ist_id + '_cv.pdf'">CV</a> -->
     <div class="bottom">
       <center>
         <p class="interests">Your Interests</p>
@@ -44,43 +44,44 @@
       <p class="interest-title">Themes:</p>
       <div class="tags">
         <p
-          v-for="tag in currentUser.tags"
+          v-for="tag in tags"
           :key="tag"
-          @dblclick="delete_tag(tag)"
-          v-touch="{
-            left: () => delete_tag(tag),
-            right: () => delete_tag(tag),
-            up: () => {},
-            down: () => {},
-          }"
+          @click.stop="tag_click(tag)"
           class="tag"
+          :style="
+            currentUser.tags.includes(tag) ? 'background-color:#26A2D5' : ''
+          "
         >
           {{ tag }}
+          <v-icon color="white" style="margin-left: 2vw">{{
+            currentUser.tags.includes(tag) ? "mdi-check" : "mdi-plus"
+          }}</v-icon>
         </p>
-        <p @click.stop="tags_dialog = true" class="tag add-tag">Add +</p>
       </div>
       <p class="interest-title">Partners:</p>
       <div class="tags">
         <p
-          v-for="company in currentUser.companies"
+          v-for="company in companies"
           :key="company"
-          v-touch="{
-            left: () => delete_company(company),
-            right: () => delete_company(company),
-            up: () => {},
-            down: () => {},
-          }"
+          @click.stop="company_click(company)"
           class="tag"
+          :style="
+            currentUser.companies.includes(company)
+              ? 'background-color:#26A2D5'
+              : ''
+          "
         >
-          {{ company }}
+          {{ company
+          }}<v-icon color="white" style="margin-left: 2vw">{{
+            currentUser.companies.includes(company) ? "mdi-check" : "mdi-plus"
+          }}</v-icon>
         </p>
-        <p @click.stop="companies_dialog = true" class="tag add-tag">Add +</p>
       </div>
     </div>
 
     <div class="footer">
       <table>
-        <tr>
+        <!-- <tr>
           <td>
             <v-switch
               class="notifications-switch"
@@ -92,7 +93,7 @@
           </td>
           <td class="notifications">Notifications</td>
         </tr>
-        <tr class="spacer"></tr>
+        <tr class="spacer"></tr> -->
         <tr @click.stop="logout">
           <td class="logout-img">
             <img src="../assets/icons/logout.svg" alt="logout" />
@@ -121,42 +122,6 @@
         </div>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="tags_dialog">
-      <v-card
-        color="accent"
-        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
-      >
-        <v-autocomplete
-          v-model="added_tags"
-          :items="tags"
-          hide-no-data
-          hide-selected
-          label="Interests"
-          placeholder="Start typing to Search"
-          multiple
-          return-object
-        />
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="companies_dialog">
-      <v-card
-        color="accent"
-        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
-      >
-        <v-autocomplete
-          v-model="added_companies"
-          :items="companies"
-          hide-no-data
-          hide-selected
-          label="Partners"
-          placeholder="Start typing to Search"
-          multiple
-          return-object
-        />
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -175,10 +140,6 @@ export default {
       dialog: false,
       tags: [],
       companies: [],
-      added_tags: [],
-      added_companies: [],
-      tags_dialog: false,
-      companies_dialog: false,
       cv_url: "",
     };
   },
@@ -205,8 +166,44 @@ export default {
     cv_click() {
       this.$refs.cv.click();
     },
+    tag_click(tag) {
+      if(this.currentUser.tags.includes(tag)) {
+        this.delete_tag(tag);
+      }
+      else {
+        this.add_tag(tag);
+      }
+    },
+    company_click(company) {
+      if(this.currentUser.companies.includes(company)) {
+        this.delete_company(company);
+      }
+      else {
+        this.add_company(company);
+      }
+    },
     add_cv() {
       UserService.addCV(this.$refs.cv).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    add_tag(tag) {
+      UserService.addTags([tag]).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    add_company(company) {
+      UserService.addCompanies([company]).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
@@ -234,34 +231,6 @@ export default {
           console.log(error);
         }
       );
-    },
-  },
-  watch: {
-    tags_dialog(val) {
-      if (!val && this.added_tags.length > 0) {
-        UserService.addTags(this.added_tags).then(
-          (response) => {
-            this.$store.dispatch("auth/userUpdate", response.data.data);
-            this.added_tags = [];
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
-    },
-    companies_dialog(val) {
-      if (!val && this.added_companies.length > 0) {
-        UserService.addCompanies(this.added_companies).then(
-          (response) => {
-            this.$store.dispatch("auth/userUpdate", response.data.data);
-            this.added_companies = [];
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
     },
   },
   computed: {
@@ -305,10 +274,17 @@ export default {
       }
     );
 
-    if(this.currentUser.uploaded_cv) {
+    if (this.currentUser.uploaded_cv) {
       UserService.getCV().then(
         (response) => {
-          var fileBlob = new Blob([response.data], {type: response.headers['content-type']});
+          var raw = atob(response.data.data);
+          var uint8Array = new Uint8Array(raw.length);
+          for (var i = 0; i < raw.length; i++) {
+            uint8Array[i] = raw.charCodeAt(i);
+          }
+          var fileBlob = new Blob([uint8Array], {
+            type: response.data["content-type"],
+          });
           var objetURL = window.URL.createObjectURL(fileBlob);
           this.cv_url = objetURL;
         },
@@ -337,6 +313,26 @@ export default {
   padding-bottom: 2.5vh;
   padding-left: 5vw;
   padding-right: 5vw;
+}
+
+.bottom {
+  max-height: 37.9vh;
+  width: 100vw;
+  overflow-y: scroll;
+  padding: 0;
+  padding-bottom: 1vh;
+  padding-left: 5vw;
+}
+
+::-webkit-scrollbar {
+  width: 5vw;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 6px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 11px;
+  background-color: #3f4449;
 }
 
 .top {
@@ -414,13 +410,14 @@ export default {
   font-size: 2vh;
   color: white;
   height: 4vh;
-  background-color: #27aee4c2;
+  background-color: #70c3e4;
   border-radius: 3vh;
   padding-left: 2vw;
   padding-right: 2vw;
   margin-right: 1vw;
   margin-bottom: 1vh;
   cursor: pointer;
+  display: flex;
 }
 
 .add-tag {
@@ -430,8 +427,12 @@ export default {
 }
 
 .footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
   background-color: #50575c;
   margin-top: 0.8vh;
+  margin-bottom: 0;
 }
 
 .spacer {
@@ -464,7 +465,7 @@ export default {
   width: 4vh;
   display: block;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 3vw;
   cursor: pointer;
 }
 

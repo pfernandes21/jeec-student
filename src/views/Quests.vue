@@ -1,23 +1,6 @@
 <template>
   <div class="quests">
-    <center style="margin-top: 10vh">
-      <div class="buttons">
-        <button
-          class="button"
-          :class="{ active: button === 'daily' }"
-          @click.stop="button = 'daily'"
-        >
-          Daily
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'special' }"
-          @click.stop="button = 'special'"
-        >
-          Special
-        </button>
-      </div>
-    </center>
+    <Buttons @_click="click" :names="{ daily: button === 'daily', special: button === 'special' }" />
 
     <div class="daily" v-show="button === 'daily'">
       <div class="activities-wrapper">
@@ -54,7 +37,7 @@
         v-for="date in currentUser.login_dates"
         :key="date"
         :image="require('../assets/icons/login.svg')"
-        :description="'<b>Logged in on ' + date.substring(0,6) + '</b>'"
+        :description="'<b>Logged in on ' + date.substring(0, 6) + '</b>'"
         :points="5"
         :done="true"
       />
@@ -63,6 +46,7 @@
 </template>
 
 <script>
+import Buttons from "@/components/Buttons.vue";
 import Activity from "@/components/Activity.vue";
 import Quest from "@/components/Quest.vue";
 import UserService from "../services/user.service";
@@ -72,6 +56,7 @@ export default {
   components: {
     Activity,
     Quest,
+    Buttons,
   },
   data: function () {
     return {
@@ -98,7 +83,15 @@ export default {
       return false;
     },
   },
-  mounted() {
+  methods: {
+    click(name) {
+      if(name !== this.button)
+      {
+        this.button = name;
+      }
+    },
+  },
+  created() {
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -121,31 +114,9 @@ export default {
   height: 100%;
 }
 
-.buttons {
-  padding-top: 2.5vh;
-  padding-bottom: 2.5vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  display: flex;
-  justify-content: center;
-}
-
-.button {
-  background-color: rgba(88, 185, 224, 0.638);
-  border-radius: 3vh;
-  font-size: 3.5vh;
-  font-weight: 500;
-  color: white;
-  width: 43vw;
-  height: auto;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
-}
-
-.active {
-  background-color: #27ade4;
+.daily,
+.special {
+  margin-top: 18vh;
 }
 
 .no-activities-warning {
@@ -174,12 +145,6 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
-  .button {
-    width: 19vw;
-    margin-left: 8vw;
-    margin-right: 8vw;
-  }
-
   .special {
     display: flex;
   }

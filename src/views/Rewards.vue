@@ -1,32 +1,16 @@
 <template>
   <div class="rewards">
-    <center style="margin-top: 10vh">
-      <div class="buttons">
-        <button
-          class="button"
-          :class="{ active: button === 'personal' }"
-          @click.stop="button = 'personal'"
-        >
-          Personal
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'squad' }"
-          @click.stop="button = 'squad'"
-        >
-          Squad
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'jeecpot' }"
-          @click.stop="button = 'jeecpot'"
-        >
-          JEECPOT
-        </button>
-      </div>
-    </center>
+    <Buttons
+      @_click="click"
+      :names="{
+        personal: button === 'personal',
+        squad: button === 'squad',
+        jeecpot: button === 'jeecpot',
+      }"
+    />
 
     <PersonalRewards
+      style="margin-top: 25vh"
       v-if="button === 'personal'"
       :levels="levels"
       :user_points="currentUser.total_points"
@@ -34,12 +18,14 @@
     />
 
     <SquadRewards
+      style="margin-top: 25vh"
       v-if="button === 'squad'"
       :squads_rewards="squads_rewards"
       :squad_points="squad ? squad.daily_points : 0"
     />
 
     <JEECPOTRewards
+      style="margin-top: 20vh"
       v-if="button === 'jeecpot'"
       :jeecpot_rewards="jeecpot_rewards"
     />
@@ -47,6 +33,7 @@
 </template>
 
 <script>
+import Buttons from "@/components/Buttons.vue";
 import PersonalRewards from "@/components/PersonalRewards.vue";
 import SquadRewards from "@/components/SquadRewards.vue";
 import JEECPOTRewards from "@/components/JEECPOTRewards.vue";
@@ -59,6 +46,7 @@ export default {
     PersonalRewards,
     SquadRewards,
     JEECPOTRewards,
+    Buttons,
   },
   data: function () {
     return {
@@ -66,7 +54,7 @@ export default {
       squads_rewards: [],
       jeecpot_rewards: null,
       squad: null,
-      button: "personal",
+      button: "jeecpot",
     };
   },
   computed: {
@@ -75,10 +63,15 @@ export default {
     },
     //...mapGetters(['levels','rewards'])
   },
-  // methods: {
-  //   ...mapActions(['fetchLevels'])
-  // },
-  mounted() {
+  methods: {
+    // ...mapActions(['fetchLevels'])
+    click(name) {
+      if (name !== this.button) {
+        this.button = name;
+      }
+    },
+  },
+  created() {
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -128,56 +121,6 @@ export default {
 .rewards {
   background-color: #e6e6e6;
   height: 100%;
-}
-
-.buttons {
-  padding-top: 2.5vh;
-  padding-bottom: 2.5vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-}
-
-.button {
-  background-color: rgba(88, 185, 224, 0.638);
-  border-radius: 3vh;
-  font-size: 3.5vh;
-  font-weight: 500;
-  color: white;
-  width: 43vw;
-  height: auto;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
-  margin-bottom: 2vh;
-}
-
-.active {
-  background-color: #27ade4;
-}
-
-.no-activities-warning {
-  margin-top: 16vh;
-}
-
-.quests-warning {
-  margin-top: 3vh;
-}
-
-.searching {
-  font-size: 3vh;
-  font-weight: 600;
-}
-
-.warning-msg {
-  font-size: 2.7vh;
-  font-weight: 500;
-}
-
-.activities-link {
-  color: #27ade4;
-  font-weight: 600;
-  text-decoration: none;
 }
 
 @media screen and (min-width: 1100px) {

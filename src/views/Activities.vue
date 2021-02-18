@@ -1,59 +1,53 @@
 <template>
   <div class="activities">
-    <center style="margin-top:10vh">
-      <div class="buttons">
-        <button
-          class="button"
-          :class="{ active: button === 'all' }"
-          @click.stop="button = 'all'"
-        >
-          All
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'interests' }"
-          @click.stop="button = 'interests'"
-        >
-          My Interests
-        </button>
-      </div>
+    <Buttons
+      @_click="click"
+      :names="{
+        all: button === 'all',
+        'my interests': button === 'my interests',
+      }"
+    />
 
-      <div>
-        <v-carousel
-          style="height: 11vh"
-          hide-delimiter-background
-          hide-delimiters
-          v-model="model"
-        >
-          <v-carousel-item v-for="day in event_days" :key="day.getTime()">
-            <v-sheet color="#e6e6e6" tile>
-              <v-row class="day-wrapper" align="center" justify="center">
-                <div class="day">{{ weekdays[day.getDay()] }}</div>
-              </v-row>
-            </v-sheet>
-          </v-carousel-item>
-        </v-carousel>
-      </div>
+    <div style="margin-top: 18vh">
+      <center>
+        <div>
+          <v-carousel
+            style="height: 11vh"
+            hide-delimiter-background
+            hide-delimiters
+            v-model="model"
+          >
+            <v-carousel-item v-for="day in event_days" :key="day.getTime()">
+              <v-sheet color="#e6e6e6" tile>
+                <v-row class="day-wrapper" align="center" justify="center">
+                  <div class="day">{{ weekdays[day.getDay()] }}</div>
+                </v-row>
+              </v-sheet>
+            </v-carousel-item>
+          </v-carousel>
+        </div>
 
-      <div class="activities-wrapper">
-        <Activity
-          v-for="activity in activities"
-          :key="activity.name + activity.type"
-          v-show="show_activity(activity)"
-          :activity="activity"
-        />
-      </div>
+        <div class="activities-wrapper">
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+        </div>
 
-      <div class="no-activities-warning" style="display: none">
-        <span class="warning-msg">Go to your</span>
-        <span class="warning-msg profile"> Profile </span>
-        <span class="warning-msg">to add Interests!</span>
-      </div>
-    </center>
+        <div class="no-activities-warning" style="display: none">
+          <span class="warning-msg">Go to your</span>
+          <span class="warning-msg profile"> Profile </span>
+          <span class="warning-msg">to add Interests!</span>
+        </div>
+      </center>
+    </div>
   </div>
 </template>
 
 <script>
+import Buttons from "@/components/Buttons.vue";
 import Activity from "@/components/Activity.vue";
 import UserService from "../services/user.service";
 
@@ -61,6 +55,7 @@ export default {
   name: "Activities",
   components: {
     Activity,
+    Buttons,
   },
   data: function () {
     return {
@@ -94,8 +89,13 @@ export default {
       return (
         activity_date.getTime() === this.event_days[this.model].getTime() &&
         (this.button === "all" ||
-          (this.button === "interests" && activity.interest))
+          (this.button === "my interests" && activity.interest))
       );
+    },
+    click(name) {
+      if (name !== this.button) {
+        this.button = name;
+      }
     },
   },
   computed: {
@@ -103,7 +103,7 @@ export default {
       return this.$store.state.auth.user;
     },
   },
-  mounted() {
+  created() {
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -125,34 +125,6 @@ export default {
 .activities {
   background-color: #e6e6e6;
   height: 100%;
-}
-
-.buttons {
-  padding-top: 2.5vh;
-  padding-bottom: 2.5vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  display: flex;
-  justify-content: center;
-}
-
-.button {
-  background-color: rgba(88, 185, 224, 0.638);
-  border-radius: 3vh;
-  font-size: 3.5vh;
-  font-weight: 500;
-  color: white;
-  width: 43vw;
-  height: 8vh;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  line-height: 3vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
-}
-
-.active {
-  background-color: #27ade4;
 }
 
 .day-wrapper {
@@ -182,10 +154,5 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
-  .button {
-    width: 19vw;
-    margin-left: 8vw;
-    margin-right: 8vw;
-  }
 }
 </style>

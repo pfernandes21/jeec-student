@@ -1,23 +1,12 @@
 <template>
   <div class="rankings">
-    <center style="margin-top: 10vh">
-      <div class="buttons">
-        <button
-          class="button"
-          :class="{ active: button === 'personal' }"
-          @click.stop="button = 'personal'"
-        >
-          Personal
-        </button>
-        <button
-          class="button"
-          :class="{ active: button === 'squads' }"
-          @click.stop="button = 'squads'"
-        >
-          Squads
-        </button>
-      </div>
-    </center>
+    <Buttons
+      @_click="click"
+      :names="{
+        personal: button === 'personal',
+        squads: button === 'squads',
+      }"
+    />
 
     <div class="rank-wrapper">
       <Rank
@@ -72,6 +61,7 @@
 </template>
 
 <script>
+import Buttons from "@/components/Buttons.vue";
 import Rank from "@/components/Rank.vue";
 import UserService from "../services/user.service";
 
@@ -79,6 +69,7 @@ export default {
   name: "Rankings",
   components: {
     Rank,
+    Buttons,
   },
   data: function () {
     return {
@@ -94,6 +85,11 @@ export default {
     },
   },
   methods: {
+    click(name) {
+      if (name !== this.button) {
+        this.button = name;
+      }
+    },
     rank(index, items) {
       if (index == 0) return 1;
       else {
@@ -109,7 +105,7 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -143,39 +139,8 @@ export default {
   background-color: #e6e6e6;
 }
 
-.buttons {
-  padding-top: 2.5vh;
-  padding-bottom: 2.5vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  display: flex;
-  justify-content: center;
-}
-
-.button {
-  background-color: rgba(88, 185, 224, 0.638);
-  border-radius: 3vh;
-  font-size: 3.5vh;
-  font-weight: 500;
-  color: white;
-  width: 43vw;
-  height: auto;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
-  margin-left: 1vw;
-  margin-right: 1vw;
-}
-
-.active {
-  background-color: #27ade4;
-}
-
-.button1 {
-  margin-right: 2vw;
-}
-
-.button2 {
-  margin-left: 2vw;
+.rank-wrapper {
+  margin-top: 18vh;
 }
 
 @media screen and (max-width: 1100px) {
@@ -185,9 +150,6 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
-  .buttons {
-    display: none;
-  }
 
   .rank-wrapper {
     display: none;
