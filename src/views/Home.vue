@@ -237,7 +237,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.resize);
   },
-  mounted() {
+  async mounted() {
     this.resize();
 
     if (!this.currentUser) {
