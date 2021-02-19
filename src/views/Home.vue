@@ -42,7 +42,7 @@
             Missing
             {{
               (reward_level ? reward_level.end_points : 0) -
-              currentUser.total_points
+                currentUser.total_points
             }}
             xp points
           </p>
@@ -52,117 +52,115 @@
 
     <div class="middle">
       <router-link to="/squad" tag="button" class="plus">+</router-link>
-        <div class="middle-wrapper">
-          <div class="big-squad-wrapper">
-              <div class="squad-wrapper">
-                <img
-                  v-if="squad"
-                  class="squad-image"
-                  :src="squad ? jeec_brain_url + squad.image : ''"
-                  alt="squad-image"
-                />
-                <div>
-                  <p class="main-title">
-                    {{ squad ? squad.name : "No squad" }}
-                  </p>
-                  <p class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
-                  <p class="sub-sub-title">
-                    rank {{ squad ? squad.rank : "" }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="middle-info">
-                <div class="xp-wrapper">
-                  <div class="daily-xp">
-                    <p class="xp-top">Daily:</p>
-                    <span class="xp-value">{{
-                      squad ? squad.daily_points : ""
-                    }}</span>
-                    <span class="xp">xp</span>
-                  </div>
-                  <div>
-                    <p class="xp-top">Total:</p>
-                    <span class="xp-value">{{
-                      squad ? squad.total_points : ""
-                    }}</span>
-                    <span class="xp">xp</span>
-                  </div>
-                </div>
-
-                <div class="today-reward">
-                  <p class="t-reward-top">Today's Reward:</p>
-                  <center>
-                    <div class="reward-img">
-                      <img
-                        :src="
-                          today_reward
-                            ? jeec_brain_url + today_reward.image
-                            : '../assets/blank.png'
-                        "
-                        alt="today-reward"
-                      />
-                    </div>
-                  </center>
-                  <p class="t-reward-bottom">
-                    {{ today_reward ? today_reward.name : "" }}
-                  </p>
-                </div>
-              </div>
+      <div class="middle-wrapper">
+        <div class="big-squad-wrapper">
+          <div class="squad-wrapper">
+            <img
+              v-if="squad"
+              class="squad-image"
+              :src="squad ? jeec_brain_url + squad.image : ''"
+              alt="squad-image"
+            />
+            <div>
+              <p class="main-title">
+                {{ squad ? squad.name : "No squad" }}
+              </p>
+              <p class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
+              <p class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
+            </div>
           </div>
 
-          <div class="big-rewards">
-            <p class="big-rewards-title">Next Rewards:</p>
-            <div class="big-rewards-wrapper">
-              <div class="big-reward-wrapper">
-                <div class="big-reward">
-                  <p class="big-reward-title">Squad</p>
-                  <div class="big-reward-img">
-                    <img
-                      :src="
-                        today_reward
-                          ? jeec_brain_url + today_reward.image
-                          : '../assets/blank.png'
-                      "
-                      alt="today-reward"
-                    />
-                  </div>
-                  <p class="big-reward-name">
-                    {{ today_reward ? today_reward.name : "" }}
-                  </p>
-                  <p class="big-reward-description">Today's Top Team</p>
-                </div>
+          <div class="middle-info">
+            <div class="xp-wrapper">
+              <div class="daily-xp">
+                <p class="xp-top">Daily:</p>
+                <span class="xp-value">{{
+                  squad ? squad.daily_points : ""
+                }}</span>
+                <span class="xp">xp</span>
               </div>
+              <div>
+                <p class="xp-top">Total:</p>
+                <span class="xp-value">{{
+                  squad ? squad.total_points : ""
+                }}</span>
+                <span class="xp">xp</span>
+              </div>
+            </div>
 
-              <div class="big-reward-wrapper">
-                <div class="big-reward">
-                  <p class="big-reward-title">Personal</p>
-                  <div class="big-reward-img">
-                    <img
-                      :src="
-                        reward_level
-                          ? jeec_brain_url + reward_level.reward.image
-                          : '../assets/blank.png'
-                      "
-                      alt="next-reward"
-                    />
-                  </div>
-                  <p class="big-reward-name">
-                    {{ reward_level ? reward_level.reward.name : "" }}
-                  </p>
-                  <p class="big-reward-description">
-                    Missing
-                    {{
-                      (reward_level ? reward_level.end_points : 0) -
-                      currentUser.total_points
-                    }}
-                    xp points
-                  </p>
+            <div class="today-reward">
+              <p class="t-reward-top">Today's Reward:</p>
+              <center>
+                <div class="reward-img">
+                  <img
+                    :src="
+                      today_reward
+                        ? jeec_brain_url + today_reward.image
+                        : '../assets/blank.png'
+                    "
+                    alt="today-reward"
+                  />
                 </div>
+              </center>
+              <p class="t-reward-bottom">
+                {{ today_reward ? today_reward.name : "" }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="big-rewards">
+          <p class="big-rewards-title">Next Rewards:</p>
+          <div class="big-rewards-wrapper">
+            <div class="big-reward-wrapper">
+              <div class="big-reward">
+                <p class="big-reward-title">Squad</p>
+                <div class="big-reward-img">
+                  <img
+                    :src="
+                      today_reward
+                        ? jeec_brain_url + today_reward.image
+                        : '../assets/blank.png'
+                    "
+                    alt="today-reward"
+                  />
+                </div>
+                <p class="big-reward-name">
+                  {{ today_reward ? today_reward.name : "" }}
+                </p>
+                <p class="big-reward-description">Today's Top Team</p>
+              </div>
+            </div>
+
+            <div class="big-reward-wrapper">
+              <div class="big-reward">
+                <p class="big-reward-title">Personal</p>
+                <div class="big-reward-img">
+                  <img
+                    :src="
+                      reward_level
+                        ? jeec_brain_url + reward_level.reward.image
+                        : '../assets/blank.png'
+                    "
+                    alt="next-reward"
+                  />
+                </div>
+                <p class="big-reward-name">
+                  {{ reward_level ? reward_level.reward.name : "" }}
+                </p>
+                <p class="big-reward-description">
+                  Missing
+                  {{
+                    (reward_level ? reward_level.end_points : 0) -
+                      currentUser.total_points
+                  }}
+                  xp points
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
       <div class="bottom">
         <router-link to="/code" tag="button" class="button"
@@ -180,21 +178,22 @@
 import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
+import LogService from "../services/log.service";
 
 export default {
   name: "Home",
   components: {
     Navbar,
-    Expbar,
+    Expbar
   },
-  data: function () {
+  data: function() {
     return {
       currentPage: this.$route.name,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       squad: null,
       levels: null,
       today_reward: {},
-      xpbar_width: "92vw",
+      xpbar_width: "92vw"
     };
   },
   computed: {
@@ -220,7 +219,7 @@ export default {
       }
 
       return null;
-    },
+    }
   },
   methods: {
     resize() {
@@ -229,7 +228,7 @@ export default {
       } else {
         this.xpbar_width = "52vw";
       }
-    },
+    }
   },
   created() {
     window.addEventListener("resize", this.resize);
@@ -238,6 +237,8 @@ export default {
     window.removeEventListener("resize", this.resize);
   },
   async mounted() {
+    LogService.postLog(this.currentPage);
+
     this.resize();
 
     if (!this.currentUser) {
@@ -245,32 +246,32 @@ export default {
     }
 
     UserService.getUserSquad().then(
-      (response) => {
+      response => {
         this.squad = response.data.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
 
     UserService.getLevels().then(
-      (response) => {
+      response => {
         this.levels = response.data.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
 
     UserService.getTodaySquadReward().then(
-      (response) => {
+      response => {
         this.today_reward = response.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
-  },
+  }
 };
 </script>
 
@@ -628,5 +629,4 @@ export default {
     width: 45vw;
   }
 }
-
 </style>

@@ -1,11 +1,14 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+import axios from "axios";
 
-const jeec_brain_url = process.env.VUE_APP_JEEC_BRAIN_URL;
+const jeec_log_url = process.env.VUE_APP_JEEC_LOG_URL;
 
 class LogService {
-  async postLog(ist_id, endpoint) {
-    return axios.post(jeec_brain_url + '/log', { ist_id: ist_id, endpoint: endpoint }, { headers: authHeader() })
+  async postLog(entrypoint) {
+    return axios.post(jeec_log_url + "/log", {
+      jwt_token:
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiaXN0MTgxMzIzIn0.lSwkSQUTNxFgaqBdOFEDvEpGE_fE_F2cixgZkdJHARg",
+      entrypoint: entrypoint
+    });
   }
 }
 
