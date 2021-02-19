@@ -103,15 +103,6 @@ export default {
   margin-top: 18vh;
 }
 
-.sponsors-page {
-  background-color: #f1f1f1;
-}
-
-.sponsors {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
 @media screen and (max-width: 1100px) {
 }
