@@ -8,7 +8,7 @@
       }"
     />
 
-    <div v-show="button === 'my squad'" style="margin-top: 18vh">
+    <div v-show="button === 'my squad' && !loading" style="margin-top: 18vh">
       <SquadCreation v-if="squad === null" @create="create_squad" />
       <MySquad v-else :squad="squad" @delete="delete_squad" />
     </div>
@@ -45,6 +45,7 @@ export default {
       button: "my squad",
       squad: null,
       invitations: [],
+      loading: true,
     };
   },
   methods: {
@@ -127,6 +128,8 @@ export default {
             squad.members.data.unshift(item);
           }
         });
+
+        this.loading = false;
       },
       (error) => {
         console.log(error);
