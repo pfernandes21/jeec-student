@@ -153,7 +153,6 @@ export default {
     //or $route(to, from)
     $route(to) {
       this.page = to.name;
-      this.$emit('notification', 'Page changed');
     },
   },
   created() {
