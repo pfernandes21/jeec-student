@@ -1,6 +1,5 @@
 <template>
   <div class="chat">
-    <Navbar :page="currentPage" />
     <Buttons @_click="click" :names="{ Partners: true, Messages: false }" />
 
     <center style="margin-top: 18vh">
@@ -51,7 +50,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Buttons from "@/components/Buttons.vue";
 import Partner from "@/components/Partner.vue";
 import UserService from "../services/user.service";
@@ -59,13 +57,11 @@ import UserService from "../services/user.service";
 export default {
   name: "Companies",
   components: {
-    Navbar,
     Buttons,
     Partner,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       partners: [],
       partner: null,

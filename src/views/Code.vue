@@ -1,6 +1,5 @@
 <template>
   <div class="code">
-    <Navbar :page="currentPage" />
     <p class="code-title">Redeem Code:</p>
     <div class="code-page" style="margin-top: 10vh">
       <input
@@ -47,32 +46,18 @@
         >
       </div>
     </div>
-
-    <v-dialog v-model="dialog">
-      <v-card>
-        <img
-          class="bepis"
-          src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg"
-          alt=""
-        />
-        <b>{{ points }} points to grinfidor</b>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Code",
   components: {
-    Navbar,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       code: "",
       prev_length: 0,
       dialog: false,
@@ -203,7 +188,7 @@ export default {
 .clipboard,
 .redeem {
   border-radius: 2vh;
-  font-size: 4vh;
+  font-size: 3vh;
   font-weight: 600;
   color: white;
   width: 43vw;

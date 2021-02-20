@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <Navbar :page="currentPage" />
-
     <div class="top" style="margin-top: 10vh">
       <router-link to="/profile" tag="button" class="plus">+</router-link>
       <div class="user-wrapper">
@@ -175,7 +173,6 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
 import LogService from "../services/log.service";
@@ -183,12 +180,10 @@ import LogService from "../services/log.service";
 export default {
   name: "Home",
   components: {
-    Navbar,
     Expbar
   },
   data: function() {
     return {
-      currentPage: this.$route.name,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       squad: null,
       levels: null,

@@ -1,6 +1,5 @@
 <template>
   <div class="chat">
-    <Navbar :page="currentPage" />
     <Buttons @_click="click" :names="{ Partners: false, Messages: true }" />
 
     <div class="chat-room">
@@ -15,19 +14,16 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Buttons from "@/components/Buttons.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Chat",
   components: {
-    Navbar,
     Buttons,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       rocket_chat_url: process.env.VUE_APP_ROCKET_CHAT_URL,
       rocket_chat_room_url: "",
       chat_logged_in: false,
@@ -107,15 +103,6 @@ export default {
   margin-top: 18vh;
 }
 
-.sponsors-page {
-  background-color: #f1f1f1;
-}
-
-.sponsors {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
 @media screen and (max-width: 1100px) {
 }

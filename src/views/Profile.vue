@@ -1,7 +1,5 @@
 <template>
   <div class="profile">
-    <Navbar :page="currentPage" />
-
     <div class="top" style="margin-top: 10vh">
       <img alt="profile photo" :src="currentUser.photo" class="profile-img" />
       <div class="profile-info">
@@ -20,10 +18,35 @@
     </div>
 
     <div class="middle">
-      <div class="cv-wrapper" @click.stop="cv_click">
+      <div class="cv-wrapper">
         <img src="../assets/icons/cv.svg" alt="cv" />
-        <p v-if="currentUser.uploaded_cv === false">Add your CV</p>
-        <v-icon v-else large style="color: green">mdi-check</v-icon>
+        <div
+          class="add-cv"
+          v-if="currentUser.uploaded_cv === false"
+          @click.stop="cv_click"
+        >
+          <p>Add CV</p>
+          <p><v-icon large style="color: white">mdi-plus</v-icon></p>
+        </div>
+        <div class="added-cv" v-else>
+          <div>
+            <p>Added</p>
+            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+          </div>
+          <p @click.stop="cv_click">
+            <v-icon large style="color: white">mdi-lead-pencil</v-icon>
+          </p>
+          <p @click.stop="see_cv">
+            <v-icon large style="color: white">mdi-eye</v-icon>
+          </p>
+          <a
+            style="display: none"
+            ref="see_cv"
+            :href="cv_url"
+            :download="currentUser.ist_id + '_cv.pdf'"
+            >CV</a
+          >
+        </div>
         <input
           hidden
           type="file"
@@ -32,13 +55,28 @@
           @change="add_cv"
         />
       </div>
-      <div class="linkedin-wrapper" @click.stop="dialog = true">
+      <div class="linkedin-wrapper">
         <img src="../assets/icons/linkedin.svg" alt="linkedin" />
-        <p v-if="currentUser.linkedin_url === null">Add your linkedin</p>
-        <v-icon v-else large style="color: green">mdi-check</v-icon>
+        <div
+          class="add-linkedin"
+          v-if="currentUser.linkedin_url === null"
+          @click.stop="dialog = true"
+        >
+          <p>Add LinkedIn</p>
+          <p><v-icon large style="color: white">mdi-plus</v-icon></p>
+        </div>
+        <div class="added-linkedin" v-else>
+          <div>
+            <p>Added</p>
+            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+          </div>
+          <p @click.stop="dialog = true">
+            <v-icon large style="color: white">mdi-lead-pencil</v-icon>
+          </p>
+        </div>
       </div>
     </div>
-    <button @click="get_cv">Get CV</button>
+
     <div class="bottom">
       <center>
         <p class="interests">Your Interests</p>
@@ -46,43 +84,44 @@
       <p class="interest-title">Themes:</p>
       <div class="tags">
         <p
-          v-for="tag in currentUser.tags"
+          v-for="tag in tags"
           :key="tag"
-          @dblclick="delete_tag(tag)"
-          v-touch="{
-            left: () => delete_tag(tag),
-            right: () => delete_tag(tag),
-            up: () => {},
-            down: () => {},
-          }"
+          @click.stop="tag_click(tag)"
           class="tag"
+          :style="
+            currentUser.tags.includes(tag) ? 'background-color:#26A2D5' : ''
+          "
         >
           {{ tag }}
+          <v-icon color="white" style="margin-left: 2vw">{{
+            currentUser.tags.includes(tag) ? "mdi-check" : "mdi-plus"
+          }}</v-icon>
         </p>
-        <p @click.stop="tags_dialog = true" class="tag add-tag">Add +</p>
       </div>
       <p class="interest-title">Partners:</p>
       <div class="tags">
         <p
-          v-for="company in currentUser.companies"
+          v-for="company in companies"
           :key="company"
-          v-touch="{
-            left: () => delete_company(company),
-            right: () => delete_company(company),
-            up: () => {},
-            down: () => {},
-          }"
+          @click.stop="company_click(company)"
           class="tag"
+          :style="
+            currentUser.companies.includes(company)
+              ? 'background-color:#26A2D5'
+              : ''
+          "
         >
-          {{ company }}
+          {{ company
+          }}<v-icon color="white" style="margin-left: 2vw">{{
+            currentUser.companies.includes(company) ? "mdi-check" : "mdi-plus"
+          }}</v-icon>
         </p>
-        <p @click.stop="companies_dialog = true" class="tag add-tag">Add +</p>
       </div>
     </div>
 
     <div class="footer">
       <table>
-        <tr>
+        <!-- <tr>
           <td>
             <v-switch
               class="notifications-switch"
@@ -94,7 +133,7 @@
           </td>
           <td class="notifications">Notifications</td>
         </tr>
-        <tr class="spacer"></tr>
+        <tr class="spacer"></tr> -->
         <tr @click.stop="logout">
           <td class="logout-img">
             <img src="../assets/icons/logout.svg" alt="logout" />
@@ -123,67 +162,25 @@
         </div>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="tags_dialog">
-      <v-card
-        color="accent"
-        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
-      >
-        <v-autocomplete
-          v-model="added_tags"
-          :items="tags"
-          hide-no-data
-          hide-selected
-          label="Interests"
-          placeholder="Start typing to Search"
-          multiple
-          return-object
-        />
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="companies_dialog">
-      <v-card
-        color="accent"
-        style="padding: 1vw; padding-left: 2vw; padding-right: 2vw"
-      >
-        <v-autocomplete
-          v-model="added_companies"
-          :items="companies"
-          hide-no-data
-          hide-selected
-          label="Partners"
-          placeholder="Start typing to Search"
-          multiple
-          return-object
-        />
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
 
 export default {
   name: "Profile",
   components: {
-    Navbar,
     Expbar,
   },
   data: function () {
     return {
-      currentPage: this.$route.name,
       color: "gray",
       dialog: false,
       tags: [],
       companies: [],
-      added_tags: [],
-      added_companies: [],
-      tags_dialog: false,
-      companies_dialog: false,
+      cv_url: "",
     };
   },
   methods: {
@@ -209,6 +206,20 @@ export default {
     cv_click() {
       this.$refs.cv.click();
     },
+    tag_click(tag) {
+      if (this.currentUser.tags.includes(tag)) {
+        this.delete_tag(tag);
+      } else {
+        this.add_tag(tag);
+      }
+    },
+    company_click(company) {
+      if (this.currentUser.companies.includes(company)) {
+        this.delete_company(company);
+      } else {
+        this.add_company(company);
+      }
+    },
     add_cv() {
       UserService.addCV(this.$refs.cv).then(
         (response) => {
@@ -219,13 +230,43 @@ export default {
         }
       );
     },
-    get_cv() {
-      UserService.getCV().then(
+    see_cv() {
+      if (this.currentUser.uploaded_cv) {
+        UserService.getCV().then(
+          (response) => {
+            var raw = atob(response.data.data);
+            var uint8Array = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) {
+              uint8Array[i] = raw.charCodeAt(i);
+            }
+            var fileBlob = new Blob([uint8Array], {
+              type: response.data["content-type"],
+            });
+            var objetURL = window.URL.createObjectURL(fileBlob);
+            this.cv_url = objetURL;
+            console.log(response.data.data)
+            this.$refs.see_cv.click();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    },
+    add_tag(tag) {
+      UserService.addTags([tag]).then(
         (response) => {
-          var fileBlob = new Blob([response.data], {type: response.headers['content-type']});
-          var objetURL = window.URL.createObjectURL(fileBlob);
-          window.location.replace(objetURL);
-          console.log(response);
+          this.$store.dispatch("auth/userUpdate", response.data.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    add_company(company) {
+      UserService.addCompanies([company]).then(
+        (response) => {
+          this.$store.dispatch("auth/userUpdate", response.data.data);
         },
         (error) => {
           console.log(error);
@@ -251,34 +292,6 @@ export default {
           console.log(error);
         }
       );
-    },
-  },
-  watch: {
-    tags_dialog(val) {
-      if (!val && this.added_tags.length > 0) {
-        UserService.addTags(this.added_tags).then(
-          (response) => {
-            this.$store.dispatch("auth/userUpdate", response.data.data);
-            this.added_tags = [];
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
-    },
-    companies_dialog(val) {
-      if (!val && this.added_companies.length > 0) {
-        UserService.addCompanies(this.added_companies).then(
-          (response) => {
-            this.$store.dispatch("auth/userUpdate", response.data.data);
-            this.added_companies = [];
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
     },
   },
   computed: {
@@ -343,6 +356,26 @@ export default {
   padding-right: 5vw;
 }
 
+.bottom {
+  max-height: 37.9vh;
+  width: 100vw;
+  overflow-y: scroll;
+  padding: 0;
+  padding-bottom: 1vh;
+  padding-left: 5vw;
+}
+
+::-webkit-scrollbar {
+  width: 5vw;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 6px solid #f1f1f1;
+  background-clip: padding-box;
+  border-radius: 11px;
+  background-color: #c8c8c8;
+}
+
 .top {
   display: flex;
 }
@@ -385,11 +418,60 @@ export default {
   margin-right: 5vw;
 }
 
-.cv-wrapper p,
-.linkedin-wrapper p {
-  align-self: center;
-  font-size: 3vh;
-  font-weight: 600;
+.add-cv,
+.add-linkedin {
+  width: calc(85vw - 7.5vh);
+  font-size: 3.5vh;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #27ade4;
+  border-radius: 2vh;
+  padding: 0.5vh;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  color: white;
+  cursor: pointer;
+}
+
+.add-cv p,
+.add-linkedin p {
+  margin: 0;
+}
+
+.added-cv,
+.added-linkedin {
+  width: calc(85vw - 7.5vh);
+  font-size: 3.5vh;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.added-cv > *,
+.added-linkedin > * {
+  background-color: #27ade4;
+  border-radius: 2vh;
+  padding: 0.5vh;
+  margin: 0;
+  margin-right: 2vw;
+}
+
+.added-cv div:first-of-type,
+.added-linkedin div:first-of-type {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  background-color: #70c3e4;
+}
+
+.added-cv div:first-of-type p,
+.added-linkedin div:first-of-type p {
   margin: 0;
 }
 
@@ -418,13 +500,14 @@ export default {
   font-size: 2vh;
   color: white;
   height: 4vh;
-  background-color: #27aee4c2;
+  background-color: #70c3e4;
   border-radius: 3vh;
   padding-left: 2vw;
   padding-right: 2vw;
   margin-right: 1vw;
   margin-bottom: 1vh;
   cursor: pointer;
+  display: flex;
 }
 
 .add-tag {
@@ -434,8 +517,12 @@ export default {
 }
 
 .footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
   background-color: #50575c;
   margin-top: 0.8vh;
+  margin-bottom: 0;
 }
 
 .spacer {
@@ -468,7 +555,7 @@ export default {
   width: 4vh;
   display: block;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 3vw;
   cursor: pointer;
 }
 

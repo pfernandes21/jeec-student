@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <div class="navbar" v-if="page !== 'Login'">
     <div class="top">
       <button>
         <img
@@ -19,7 +19,7 @@
       />
     </div>
     <v-navigation-drawer
-      style="height: 100vh;"
+      style="height: 100vh"
       v-model="display_menu"
       fixed
       dark
@@ -82,11 +82,9 @@
 <script>
 export default {
   name: "Navbar",
-  props: {
-    page: String,
-  },
   data: function () {
     return {
+      page: this.$route.name,
       display_menu: false,
       width: window.innerWidth,
       menu_items: [
@@ -149,6 +147,13 @@ export default {
     },
     resize() {
       this.width = window.innerWidth;
+    },
+  },
+  watch: {
+    //or $route(to, from)
+    $route(to) {
+      this.page = to.name;
+      this.$emit('notification', 'Page changed');
     },
   },
   created() {
@@ -304,6 +309,5 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
-
 }
 </style>
