@@ -1,12 +1,12 @@
 <template>
   <div class="partner" :style="'background-color:' + color">
-    <center>
-      <div class="partner-img">
-        <img :src="img_src" />
-      </div>
+    <div class="partner-img">
+      <img :src="img_src" />
+    </div>
+    <div class="partner-info">
       <p class="name">{{ name }}</p>
       <button @click.stop="learn" class="learn">Learn More</button>
-    </center>
+    </div>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ export default {
       this.$emit("learn", this.name);
     },
   },
+  created() {},
 };
 </script>
 
@@ -43,6 +44,9 @@ export default {
   width: 100%;
   margin-bottom: 0.7vh;
   padding: 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: left;
 }
 
 .partner-img {
@@ -53,6 +57,8 @@ export default {
   border: 0.3vh solid #707070;
   background-color: white;
   overflow: hidden;
+  margin-left: 5vh;
+  margin-right: 5vh;
 }
 
 .partner-img img {
@@ -66,22 +72,30 @@ export default {
   bottom: 0;
 }
 
+.partner-info {
+  width: 28vh;
+}
+
 .name {
-  font-size: 5vh;
+  font-size: 3.5vh;
   font-weight: 600;
   margin: 0;
   margin-bottom: 0.5vh;
+  line-height: 5vh;
 }
 
 .learn {
   font-size: 2vh;
-  font-size: 600;
   color: white;
-  background-color: rgba(0, 0, 0, 0.192);
+  background-color: rgba(0, 0, 0, 0.226);
   width: 30vw;
-  padding: 1vh;
+  padding: 0.6vh;
   border-radius: 2vh;
   margin: 0;
+}
+
+.stretch-it {
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 1100px) {

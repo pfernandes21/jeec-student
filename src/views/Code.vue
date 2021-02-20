@@ -46,17 +46,6 @@
         >
       </div>
     </div>
-
-    <v-dialog v-model="dialog">
-      <v-card>
-        <img
-          class="bepis"
-          src="https://i.ytimg.com/vi/64Sb3IoOEqo/hqdefault.jpg"
-          alt=""
-        />
-        <b>{{ points }} points to grinfidor</b>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -199,7 +188,7 @@ export default {
 .clipboard,
 .redeem {
   border-radius: 2vh;
-  font-size: 4vh;
+  font-size: 3vh;
   font-weight: 600;
   color: white;
   width: 43vw;

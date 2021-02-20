@@ -54,7 +54,7 @@ export default {
       squads_rewards: [],
       jeecpot_rewards: null,
       squad: null,
-      button: "jeecpot",
+      button: "personal",
     };
   },
   computed: {

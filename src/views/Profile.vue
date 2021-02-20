@@ -18,10 +18,35 @@
     </div>
 
     <div class="middle">
-      <div class="cv-wrapper" @click.stop="cv_click">
+      <div class="cv-wrapper">
         <img src="../assets/icons/cv.svg" alt="cv" />
-        <p v-if="currentUser.uploaded_cv === false">Add your CV</p>
-        <v-icon v-else large style="color: green">mdi-check</v-icon>
+        <div
+          class="add-cv"
+          v-if="currentUser.uploaded_cv === false"
+          @click.stop="cv_click"
+        >
+          <p>Add CV</p>
+          <p><v-icon large style="color: white">mdi-plus</v-icon></p>
+        </div>
+        <div class="added-cv" v-else>
+          <div>
+            <p>Added</p>
+            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+          </div>
+          <p @click.stop="cv_click">
+            <v-icon large style="color: white">mdi-lead-pencil</v-icon>
+          </p>
+          <p @click.stop="see_cv">
+            <v-icon large style="color: white">mdi-eye</v-icon>
+          </p>
+          <a
+            style="display: none"
+            ref="see_cv"
+            :href="cv_url"
+            :download="currentUser.ist_id + '_cv.pdf'"
+            >CV</a
+          >
+        </div>
         <input
           hidden
           type="file"
@@ -30,13 +55,28 @@
           @change="add_cv"
         />
       </div>
-      <div class="linkedin-wrapper" @click.stop="dialog = true">
+      <div class="linkedin-wrapper">
         <img src="../assets/icons/linkedin.svg" alt="linkedin" />
-        <p v-if="currentUser.linkedin_url === null">Add your linkedin</p>
-        <v-icon v-else large style="color: green">mdi-check</v-icon>
+        <div
+          class="add-linkedin"
+          v-if="currentUser.linkedin_url === null"
+          @click.stop="dialog = true"
+        >
+          <p>Add LinkedIn</p>
+          <p><v-icon large style="color: white">mdi-plus</v-icon></p>
+        </div>
+        <div class="added-linkedin" v-else>
+          <div>
+            <p>Added</p>
+            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+          </div>
+          <p @click.stop="dialog = true">
+            <v-icon large style="color: white">mdi-lead-pencil</v-icon>
+          </p>
+        </div>
       </div>
     </div>
-    <!-- <a :href="cv_url" :download="currentUser.ist_id + '_cv.pdf'">CV</a> -->
+
     <div class="bottom">
       <center>
         <p class="interests">Your Interests</p>
@@ -167,18 +207,16 @@ export default {
       this.$refs.cv.click();
     },
     tag_click(tag) {
-      if(this.currentUser.tags.includes(tag)) {
+      if (this.currentUser.tags.includes(tag)) {
         this.delete_tag(tag);
-      }
-      else {
+      } else {
         this.add_tag(tag);
       }
     },
     company_click(company) {
-      if(this.currentUser.companies.includes(company)) {
+      if (this.currentUser.companies.includes(company)) {
         this.delete_company(company);
-      }
-      else {
+      } else {
         this.add_company(company);
       }
     },
@@ -191,6 +229,29 @@ export default {
           console.log(error);
         }
       );
+    },
+    see_cv() {
+      if (this.currentUser.uploaded_cv) {
+        UserService.getCV().then(
+          (response) => {
+            var raw = atob(response.data.data);
+            var uint8Array = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) {
+              uint8Array[i] = raw.charCodeAt(i);
+            }
+            var fileBlob = new Blob([uint8Array], {
+              type: response.data["content-type"],
+            });
+            var objetURL = window.URL.createObjectURL(fileBlob);
+            this.cv_url = objetURL;
+            console.log(response.data.data)
+            this.$refs.see_cv.click();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     },
     add_tag(tag) {
       UserService.addTags([tag]).then(
@@ -273,26 +334,6 @@ export default {
         console.log(error);
       }
     );
-
-    if (this.currentUser.uploaded_cv) {
-      UserService.getCV().then(
-        (response) => {
-          var raw = atob(response.data.data);
-          var uint8Array = new Uint8Array(raw.length);
-          for (var i = 0; i < raw.length; i++) {
-            uint8Array[i] = raw.charCodeAt(i);
-          }
-          var fileBlob = new Blob([uint8Array], {
-            type: response.data["content-type"],
-          });
-          var objetURL = window.URL.createObjectURL(fileBlob);
-          this.cv_url = objetURL;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
   },
 };
 </script>
@@ -377,11 +418,60 @@ export default {
   margin-right: 5vw;
 }
 
-.cv-wrapper p,
-.linkedin-wrapper p {
-  align-self: center;
-  font-size: 3vh;
-  font-weight: 600;
+.add-cv,
+.add-linkedin {
+  width: calc(85vw - 7.5vh);
+  font-size: 3.5vh;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #27ade4;
+  border-radius: 2vh;
+  padding: 0.5vh;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  color: white;
+  cursor: pointer;
+}
+
+.add-cv p,
+.add-linkedin p {
+  margin: 0;
+}
+
+.added-cv,
+.added-linkedin {
+  width: calc(85vw - 7.5vh);
+  font-size: 3.5vh;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.added-cv > *,
+.added-linkedin > * {
+  background-color: #27ade4;
+  border-radius: 2vh;
+  padding: 0.5vh;
+  margin: 0;
+  margin-right: 2vw;
+}
+
+.added-cv div:first-of-type,
+.added-linkedin div:first-of-type {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  background-color: #70c3e4;
+}
+
+.added-cv div:first-of-type p,
+.added-linkedin div:first-of-type p {
   margin: 0;
 }
 

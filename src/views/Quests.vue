@@ -124,7 +124,7 @@ export default {
 }
 
 .quests-warning {
-  margin-top: 3vh;
+  padding-top: 3vh;
   text-align: center;
 }
 
