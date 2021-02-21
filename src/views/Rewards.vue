@@ -10,7 +10,7 @@
     />
 
     <PersonalRewards
-      style="margin-top: 25vh"
+      style="margin-top: 15vh"
       v-if="button === 'personal'"
       :levels="levels"
       :user_points="currentUser.total_points"

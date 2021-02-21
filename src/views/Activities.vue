@@ -8,7 +8,7 @@
       }"
     />
 
-    <div style="margin-top: 18vh">
+    <div style="margin-top: 8vh">
       <center>
         <div>
           <v-carousel

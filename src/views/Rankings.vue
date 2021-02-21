@@ -135,12 +135,11 @@ export default {
 
 <style scoped>
 .rankings {
-  height: 100%;
   background-color: #e6e6e6;
 }
 
 .rank-wrapper {
-  margin-top: 18vh;
+  margin-top: 8vh;
 }
 
 @media screen and (max-width: 1100px) {
@@ -150,6 +149,10 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .rankings {
+    height: 100vh;
+    overflow-y: auto;
+  }
 
   .rank-wrapper {
     display: none;
@@ -161,7 +164,7 @@ export default {
   }
 
   .rank {
-    width: 49vw;
+    width: 37.3vw;
   }
 
   .rank-title {

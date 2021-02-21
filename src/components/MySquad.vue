@@ -277,6 +277,7 @@ export default {
   font-size: 3.7vh;
   font-weight: 600;
   color: #848484;
+  line-height: 3.5vh;
 }
 
 .squad-cry {
@@ -296,7 +297,7 @@ export default {
 .xp-wrapper {
   width: 90vw;
   display: flex;
-  margin-top: 3vh;
+  margin-top: 1vh;
   margin-bottom: -2vh;
   justify-content: space-between;
 }
@@ -351,9 +352,7 @@ export default {
   border-radius: 50%;
   background-color: white;
   overflow: hidden;
-  margin-top: 2vh;
-  margin-left: 2vw;
-  margin-bottom: 3vh;
+  margin-bottom: 2vh;
 }
 
 .big-reward-img img {
@@ -371,6 +370,8 @@ export default {
   font-size: 4.5vh;
   font-weight: 600;
   margin-left: 2vw;
+  width: calc(90% - 18vh);
+  line-height: 5vh;
 }
 
 .reward-img {
@@ -403,6 +404,10 @@ export default {
   align-items: center;
 }
 
+.big-reward-info {
+  margin-top: 5vh;
+}
+
 .reward-info p {
   align-self: center;
   margin: 0;
@@ -412,7 +417,7 @@ export default {
 }
 
 .big-wrapper {
-  min-height: 21vh;
+  min-height: 19vh;
   background-color: #f1f1f1;
 }
 
@@ -426,7 +431,7 @@ export default {
 
 .bottom-buttons {
   background-color: #f1f1f1;
-  height: 6vh;
+  height: 7vh;
 }
 
 .bottom-button {
@@ -495,6 +500,10 @@ export default {
     display: none;
   }
 
+  .squad-info-top {
+    margin-bottom: 2vh;
+  }
+
   .squad-info {
     display: flex;
     justify-content: space-between;
@@ -503,11 +512,11 @@ export default {
   }
 
   .xp-wrapper {
-    width: auto;
+    width: 100%;
     display: flex;
     margin-top: 0vh;
     margin-bottom: 0vh;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 
   .xp-name {
@@ -516,8 +525,8 @@ export default {
   }
 
   .xp-value {
-    font-size: 15vh;
-    line-height: 15vh;
+    font-size: 13vh;
+    line-height: 13vh;
   }
 
   .xp {
@@ -542,16 +551,21 @@ export default {
   }
 
   .members {
+    height: 35vh;
+    overflow-y: auto;
     width: 49.75%;
   }
 
   .big-wrapper {
     display: flex;
     justify-content: space-between;
+    background-color: #E6E6E6;
   }
 
-  .big-today-reward {
-    width: 49.75%;
+  .big-today-reward,
+  .members {
+    width: 37.3vw;
+    background-color: #f1f1f1;
   }
 
   .bottom-buttons {

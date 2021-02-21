@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .quest {
-  width: 100%;
+  width: 24.7vw;
   display: flex;
   margin-bottom: 0.5vh;
   background-color: #ffbcbc;

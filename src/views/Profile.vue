@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div class="top" style="margin-top: 10vh">
+    <div class="top">
       <img alt="profile photo" :src="currentUser.photo" class="profile-img" />
       <div class="profile-info">
         <div class="name">
@@ -12,7 +12,7 @@
           :xp="currentUser.total_points"
           :progress="progress"
           :end_points="currentUser.level.data.end_points"
-          width="60vw"
+          :width="'60vw'"
         />
       </div>
     </div>

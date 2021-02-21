@@ -8,12 +8,12 @@
       }"
     />
 
-    <div v-show="button === 'my squad' && !loading" style="margin-top: 18vh">
+    <div v-show="button === 'my squad' && !loading" style="margin-top: 8vh">
       <SquadCreation v-if="squad === null" @create="create_squad" />
       <MySquad v-else :squad="squad" @delete="delete_squad" />
     </div>
 
-    <div v-show="button === 'invitations'" style="margin-top: 18vh">
+    <div v-show="button === 'invitations'" style="margin-top: 8vh">
       <Invitation
         @accept="accept_invitation"
         @reject="reject_invitation"
@@ -150,7 +150,6 @@ export default {
 
 <style scoped>
 .squad {
-  height: 100%;
   background-color: #e6e6e6;
 }
 

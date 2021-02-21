@@ -9,7 +9,7 @@
       <p class="level">level {{ member.level }}</p>
     </div>
     <img
-      v-if="is_kickable"
+      v-if="is_kickable && $route.name === 'Squad'"
       @click.stop="kick"
       src="../assets/icons/kick.svg"
       alt="kick"
