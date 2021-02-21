@@ -1,11 +1,11 @@
 <template>
   <div class="partner-info" v-if="partner">
     <div class="info-top">
-      <div style="display: flex">
+      <div style="display: flex; align-items: center">
         <div class="partner-img">
           <img :src="jeec_brain_url + partner.logo" />
         </div>
-        <div style="margin-left: 2vw">
+        <div>
           <p class="name">{{ partner.name }}</p>
           <p class="bio">{{ partner.business_area }}</p>
         </div>
@@ -31,7 +31,7 @@
           <p class="member-name">{{ member.name }}</p>
           <p class="member-post">{{ member.post }}</p>
         </div>
-        <button class="chat-icon" @click.stop="chat_member(member.user_id)">
+        <button class="chat-icon" @click.stop="chat_member(member.user_id, member.name)">
           <img src="../assets/icons/chat.svg" />
         </button>
       </div>
@@ -90,8 +90,8 @@ export default {
     chat() {
       this.$emit("chat_partner", this.partner.name);
     },
-    chat_member(member_id) {
-      this.$emit("chat_member", member_id);
+    chat_member(member_id, member_name) {
+      this.$emit("chat_member", member_id, member_name);
     },
     add_interest() {
       if (!this.partner.interest) {
@@ -110,8 +110,8 @@ export default {
 .info-top {
   padding-top: 2vh;
   padding-bottom: 2vh;
-  padding-left: 4vw;
-  padding-right: 4vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
   background-color: #f1f1f1;
   margin-bottom: 1vh;
 }
@@ -136,7 +136,7 @@ export default {
   border-radius: 50%;
   border: 0.3vh solid #707070;
   background-color: white;
-  margin-right: 3vw;
+  margin-right: 5vw;
   overflow: hidden;
 }
 
@@ -156,8 +156,8 @@ export default {
   min-height: 39.4vh;
   padding-top: 2vh;
   padding-bottom: 2vh;
-  padding-left: 4vw;
-  padding-right: 4vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
   background-color: #f1f1f1;
 }
 
@@ -228,8 +228,40 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .buttons {
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
   .button {
     width: 15vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+  }
+
+  .info-top,
+  .team {
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+
+  .partner-img {
+    height: 17vh;
+    width: 17vh;
+    margin-right: 2vw;
+  }
+
+  .partner-img img {
+    max-height: 17vh;
+    max-width: 17vh;
+  }
+
+  .name {
+    font-size: 5.5vh;
+  }
+
+  .team {
+    height: 41vh;
+    overflow-y: auto;
   }
 }
 </style>

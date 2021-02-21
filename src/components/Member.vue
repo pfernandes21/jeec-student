@@ -1,10 +1,6 @@
 <template>
   <div class="member">
-    <img
-      :src="member.photo"
-      alt="profile photo"
-      class="profile-photo"
-    />
+    <img :src="member.photo" alt="profile photo" class="profile-photo" />
     <div class="profile-info">
       <p v-if="member.is_captain" class="captain">Captain</p>
       <p class="name">
@@ -37,18 +33,21 @@ export default {
     nameArray() {
       var names = this.member.name.split(" ");
 
-      if(names.length > 1) return names;
+      if (names.length > 1) return names;
       else return [this.name, ""];
     },
 
     is_kickable() {
       var user = this.$store.state.auth.user;
-      return user.ist_id === this.captain_ist_id && this.member.ist_id !== user.ist_id;
-    }
+      return (
+        user.ist_id === this.captain_ist_id &&
+        this.member.ist_id !== user.ist_id
+      );
+    },
   },
   methods: {
     kick() {
-      this.$emit('kick', this.member.ist_id);
+      this.$emit("kick", this.member.ist_id);
     },
   },
 };
@@ -86,6 +85,9 @@ export default {
 .name {
   font-size: 2.7vh;
   font-weight: 600;
+  line-height: 3vh;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
 }
 
 .level {
@@ -101,5 +103,11 @@ export default {
   justify-self: flex-end;
   transform: scaleX(-1);
   margin-left: auto;
+}
+
+@media screen and (min-width: 1100px) {
+  .profile-info {
+    margin-left: 2vw;
+  }
 }
 </style>

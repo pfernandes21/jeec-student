@@ -1,12 +1,19 @@
 <template>
   <div class="partner" :style="'background-color:' + color">
-    <div class="partner-img">
+    <div class="partner-img mobile">
       <img :src="img_src" />
     </div>
-    <div class="partner-info">
+    <div class="partner-info mobile">
       <p class="name">{{ name }}</p>
       <button @click.stop="learn" class="learn">Learn More</button>
     </div>
+    <center class="browser">
+      <div class="partner-img">
+        <img :src="img_src" />
+      </div>
+      <p class="name">{{ name }}</p>
+      <button @click.stop="learn" class="learn">Learn More</button>
+    </center>
   </div>
 </template>
 
@@ -99,11 +106,22 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
+  .browser {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1100px) {
+  .mobile {
+    display: none;
+  }
+
+  .browser {
+    width: 100%;
+  }
+
   .partner {
-    width: 32.5vw;
+    width: 24.8vw;
     margin-bottom: 0.5vh;
     margin-left: 0.1vw;
     margin-right: 0.1vw;

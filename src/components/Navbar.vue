@@ -26,62 +26,23 @@
       color="primary"
       left
       temporary
-      :width="width < 1100 ? width * 0.82 : width * 0.3"
+      :width="width * 0.82"
+      v-if="width < 1100"
     >
-      <div class="menu">
-        <div class="menu-top">
-          <img
-            alt="profile photo"
-            :src="currentUser.photo"
-            style="width: 12vh; height: 12vh; border-radius: 50%"
-          />
-          <div class="profile-info">
-            <div class="name">
-              <p>{{ nameArray[0] }}</p>
-              <p>{{ nameArray[nameArray.length - 1] }}</p>
-            </div>
-            <div class="level">
-              <p>
-                <b>level {{ currentUser.level.data.value }}</b>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="menu-middle">
-          <table class="menu-items">
-            <tr
-              v-for="item in menu_items"
-              :key="item.name"
-              v-bind:class="{
-                'active-item': page === item.page,
-                'inactive-item': page !== item.page,
-              }"
-              @click.stop="redirect(item.page)"
-            >
-              <td>
-                <img :src="item.src" />
-              </td>
-              <td class="menu-names">{{ item.name }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="menu-bottom">
-          <center>
-            <img
-              alt="IST logo"
-              src="../assets/tecnico.svg"
-              style="height: 6vh"
-            />
-          </center>
-        </div>
-      </div>
+      <NavbarMenu />
     </v-navigation-drawer>
+    <NavbarMenu v-else class="navbar-menu" />
   </div>
 </template>
 
 <script>
+import NavbarMenu from "./NavbarMenu.vue";
+
 export default {
   name: "Navbar",
+  components: {
+    NavbarMenu,
+  },
   data: function () {
     return {
       page: this.$route.name,
@@ -205,108 +166,17 @@ export default {
   cursor: pointer;
 }
 
-.menu {
-  position: relative;
-  height: 100vh;
-}
-
-.menu-top {
-  display: flex;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  padding-top: 3vh;
-  padding-bottom: 3vh;
-}
-
-.menu-top img {
-  align-self: center;
-}
-
-.profile-info {
-  align-self: center;
-  padding-left: 2vw;
-}
-
-.name,
-.level {
-  text-align: left;
-}
-
-.name p {
-  margin: 0;
-  padding: 0;
-  line-height: 3vh;
-  font-size: 3vh;
-  font-weight: 400;
-}
-
-.level p {
-  padding-top: 0.5vh;
-  margin: 0;
-  font-size: 2vh;
-  font-weight: 700;
-  color: #ffffff79;
-}
-
-.menu-middle {
-  padding-left: 5vw;
-  padding-right: 1vw;
-  color: black;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.menu-middle img {
-  height: 5vh;
-  width: auto;
-}
-
-.menu-items {
-  cursor: pointer;
-  font-size: 3.7vh;
-  font-weight: 700;
-}
-
-.active-item > * {
-  filter: invert(70%) sepia(55%) saturate(3669%) hue-rotate(164deg)
-    brightness(93%) contrast(91%);
-}
-
-.inactive-item > * {
-  filter: invert(1);
-}
-
-.menu-names {
-  padding-left: 4vw;
-  padding-bottom: 2vh;
-}
-
-.menu-bottom {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  padding-bottom: 2vh;
-  align-items: center;
-}
-
-::-webkit-scrollbar {
-  width: 22px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #50575c;
-}
-
-::-webkit-scrollbar-thumb {
-  border: 6px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-  border-radius: 11px;
-  background-color: #3f4449;
-}
-
 @media screen and (max-width: 1100px) {
 }
 
 @media screen and (min-width: 1100px) {
+  .navbar-menu {
+    height: 100vh !important;
+    background-color: #50575c;
+  }
+
+  .top {
+    display: none;
+  }
 }
 </style>

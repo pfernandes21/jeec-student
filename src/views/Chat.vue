@@ -47,7 +47,7 @@ export default {
         event.data === "logged_in"
       ) {
         this.chat_logged_in = true;
-        if(this.room_id) {
+        if (this.room_id) {
           this.rocket_chat_room_url = this.rocket_chat_url + this.room_id;
         }
       } else if (
@@ -100,14 +100,16 @@ export default {
 .chat-frame {
   width: 100vw;
   height: 82vh;
-  margin-top: 18vh;
+  margin-top: 8vh;
 }
-
 
 @media screen and (max-width: 1100px) {
 }
 
 @media screen and (min-width: 1100px) {
-
+  .chat-frame {
+    width: 75vw;
+    height: 92vh;
+  }
 }
 </style>

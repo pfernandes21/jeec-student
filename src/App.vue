@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <v-app>
-      <Navbar />
-      <router-view />
+      <div class="app-wrapper">
+        <Navbar class="navbar-wrapper" />
+        <router-view class="page-wrapper" />
+      </div>
 
       <Notification
         v-for="notification in notifications"
-        :key="notification + Math.ceil(Math.random()*10)"
+        :key="notification + Math.ceil(Math.random() * 10)"
         :notification_text="notification"
         @end="notification_end"
       />
@@ -112,5 +114,28 @@ export default {
 
 #app a:active {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 1100px) {
+  .page-wrapper {
+    height: 90vh;
+    overflow-y: hidden;
+    margin-top: 10vh;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .app-wrapper {
+    width: 100vw;
+    display: flex;
+  }
+
+  .navbar-wrapper {
+    width: 25vw;
+  }
+
+  .page-wrapper {
+    width: 75vw;
+  }
 }
 </style>

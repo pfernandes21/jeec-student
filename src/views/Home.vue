@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="top" style="margin-top: 10vh">
+    <div class="top">
       <router-link to="/profile" tag="button" class="plus">+</router-link>
       <div class="user-wrapper">
         <img alt="profile photo" :src="currentUser.photo" class="user-photo" />
@@ -15,8 +15,13 @@
               :progress="progress"
               :end_points="currentUser.level.data.end_points"
               :width="xpbar_width"
+              :height="height"
             />
           </center>
+          <div class="redirect-buttons upper">
+            <router-link to="/code" tag="button">Redeem Codes</router-link>
+            <router-link to="/quests" tag="button">Daily Quests</router-link>
+          </div>
         </div>
       </div>
 
@@ -42,7 +47,7 @@
               (reward_level ? reward_level.end_points : 0) -
               currentUser.total_points
             }}
-            xp points
+            xp
           </p>
         </div>
       </div>
@@ -50,125 +55,129 @@
 
     <div class="middle">
       <router-link to="/squad" tag="button" class="plus">+</router-link>
-        <div class="middle-wrapper">
-          <div class="big-squad-wrapper">
-              <div class="squad-wrapper">
-                <img
-                  v-if="squad"
-                  class="squad-image"
-                  :src="squad ? jeec_brain_url + squad.image : ''"
-                  alt="squad-image"
-                />
-                <div>
-                  <p class="main-title">
-                    {{ squad ? squad.name : "No squad" }}
-                  </p>
-                  <p class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
-                  <p class="sub-sub-title">
-                    rank {{ squad ? squad.rank : "" }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="middle-info">
-                <div class="xp-wrapper">
-                  <div class="daily-xp">
-                    <p class="xp-top">Daily:</p>
-                    <span class="xp-value">{{
-                      squad ? squad.daily_points : ""
-                    }}</span>
-                    <span class="xp">xp</span>
-                  </div>
-                  <div>
-                    <p class="xp-top">Total:</p>
-                    <span class="xp-value">{{
-                      squad ? squad.total_points : ""
-                    }}</span>
-                    <span class="xp">xp</span>
-                  </div>
-                </div>
-
-                <div class="today-reward">
-                  <p class="t-reward-top">Today's Reward:</p>
-                  <center>
-                    <div class="reward-img">
-                      <img
-                        :src="
-                          today_reward
-                            ? jeec_brain_url + today_reward.image
-                            : '../assets/blank.png'
-                        "
-                        alt="today-reward"
-                      />
-                    </div>
-                  </center>
-                  <p class="t-reward-bottom">
-                    {{ today_reward ? today_reward.name : "" }}
-                  </p>
-                </div>
-              </div>
+      <div class="middle-wrapper">
+        <div class="big-squad-wrapper">
+          <div class="squad-wrapper">
+            <img
+              v-if="squad"
+              class="squad-image"
+              :src="squad ? jeec_brain_url + squad.image : ''"
+              alt="squad-image"
+            />
+            <div>
+              <p class="main-title">
+                {{ squad ? squad.name : "No squad" }}
+              </p>
+              <p class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
+              <p class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
+            </div>
           </div>
 
-          <div class="big-rewards">
-            <p class="big-rewards-title">Next Rewards:</p>
-            <div class="big-rewards-wrapper">
-              <div class="big-reward-wrapper">
-                <div class="big-reward">
-                  <p class="big-reward-title">Squad</p>
-                  <div class="big-reward-img">
-                    <img
-                      :src="
-                        today_reward
-                          ? jeec_brain_url + today_reward.image
-                          : '../assets/blank.png'
-                      "
-                      alt="today-reward"
-                    />
-                  </div>
-                  <p class="big-reward-name">
-                    {{ today_reward ? today_reward.name : "" }}
-                  </p>
-                  <p class="big-reward-description">Today's Top Team</p>
-                </div>
+          <div class="middle-info">
+            <div class="xp-wrapper">
+              <div class="daily-xp">
+                <p class="xp-top">Daily:</p>
+                <span class="xp-value">{{
+                  squad ? squad.daily_points : ""
+                }}</span>
+                <span class="xp">xp</span>
               </div>
-
-              <div class="big-reward-wrapper">
-                <div class="big-reward">
-                  <p class="big-reward-title">Personal</p>
-                  <div class="big-reward-img">
-                    <img
-                      :src="
-                        reward_level
-                          ? jeec_brain_url + reward_level.reward.image
-                          : '../assets/blank.png'
-                      "
-                      alt="next-reward"
-                    />
-                  </div>
-                  <p class="big-reward-name">
-                    {{ reward_level ? reward_level.reward.name : "" }}
-                  </p>
-                  <p class="big-reward-description">
-                    Missing
-                    {{
-                      (reward_level ? reward_level.end_points : 0) -
-                      currentUser.total_points
-                    }}
-                    xp points
-                  </p>
-                </div>
+              <div>
+                <p class="xp-top">Total:</p>
+                <span class="xp-value">{{
+                  squad ? squad.total_points : ""
+                }}</span>
+                <span class="xp">xp</span>
               </div>
             </div>
+
+            <div class="today-reward">
+              <p class="t-reward-top">Today's Reward:</p>
+              <center>
+                <div class="reward-img">
+                  <img
+                    :src="
+                      today_reward
+                        ? jeec_brain_url + today_reward.image
+                        : '../assets/blank.png'
+                    "
+                    alt="today-reward"
+                  />
+                </div>
+              </center>
+              <p class="t-reward-bottom">
+                {{ today_reward ? today_reward.name : "" }}
+              </p>
+            </div>
+          </div>
+
+          <div class="members" v-if="squad">
+            <Member
+              v-for="member in squad.members.data"
+              :key="member.ist_id"
+              :member="member"
+              :captain_ist_id="squad.captain_ist_id"
+            />
           </div>
         </div>
 
-      <div class="bottom">
-        <router-link to="/code" tag="button" class="button"
-          >Redeem Codes</router-link
-        >
-        <router-link to="/quests" tag="button" class="button"
-          >Daily Quests</router-link
-        >
+        <div class="big-rewards">
+          <p class="big-rewards-title">Next Rewards:</p>
+
+          <div class="big-reward">
+            <div class="big-reward-img">
+              <img
+                :src="
+                  today_reward
+                    ? jeec_brain_url + today_reward.image
+                    : '../assets/blank.png'
+                "
+                alt="today-reward"
+              />
+            </div>
+            <div class="big-reward-info">
+              <p class="big-reward-name">
+                {{ today_reward ? today_reward.name : "" }}
+              </p>
+              <p class="big-reward-description">Today's Top Team</p>
+            </div>
+          </div>
+
+          <div class="big-reward">
+            <div class="big-reward-img">
+              <img
+                :src="
+                  reward_level
+                    ? jeec_brain_url + reward_level.reward.image
+                    : '../assets/blank.png'
+                "
+                alt="next-reward"
+              />
+            </div>
+            <div class="big-reward-info">
+              <p class="big-reward-name">
+                {{ reward_level ? reward_level.reward.name : "" }}
+              </p>
+              <p class="big-reward-description">
+                Missing
+                {{
+                  (reward_level ? reward_level.end_points : 0) -
+                  currentUser.total_points
+                }}
+                xp
+              </p>
+            </div>
+          </div>
+
+          <div class="redirect-buttons see-more">
+            <router-link to="/rewards" tag="button">See More</router-link>
+          </div>
+        </div>
+      </div>
+
+      <div class="redirect-buttons bottom">
+        <router-link to="/code" tag="button">Redeem Codes</router-link>
+        <router-link to="/quests" tag="button">Daily Quests</router-link>
       </div>
     </div>
   </div>
@@ -177,11 +186,13 @@
 <script>
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
+import Member from "@/components/Member.vue";
 
 export default {
   name: "Home",
   components: {
     Expbar,
+    Member,
   },
   data: function () {
     return {
@@ -190,6 +201,7 @@ export default {
       levels: null,
       today_reward: {},
       xpbar_width: "92vw",
+      height: 30,
     };
   },
   computed: {
@@ -222,7 +234,15 @@ export default {
       if (window.innerWidth < 1100) {
         this.xpbar_width = "92vw";
       } else {
-        this.xpbar_width = "52vw";
+        this.xpbar_width = "47vw";
+      }
+
+      if (window.innerWidth < 600) {
+        this.height = 30;
+      } else if (window.innerWidth < 1100) {
+        this.height = 45;
+      } else {
+        this.height = 60;
       }
     },
   },
@@ -272,7 +292,6 @@ export default {
 <style scoped>
 .home {
   background-color: #e6e6e6;
-  height: 100%;
 }
 
 .top,
@@ -401,6 +420,7 @@ export default {
   font-size: 6vh;
   font-weight: 600;
   margin: 0;
+  color: #26a2d5;
 }
 
 .xp {
@@ -432,7 +452,12 @@ export default {
   justify-content: center;
 }
 
-.button {
+.redirect-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.redirect-buttons button {
   background-color: #27ade4;
   border-radius: 3vh;
   font-size: 4vh;
@@ -464,74 +489,16 @@ export default {
   height: 15vh;
   width: 15vh;
   border-radius: 50%;
-}
-
-/* .big-rewards {
-  margin-right: 5vw;
-} */
-
-.big-rewards-title {
-  text-align: center;
-  font-size: 4vh;
-  font-weight: 600;
-  margin: 0;
-}
-
-.big-rewards-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.big-reward-wrapper:first-of-type {
-  margin-right: 5vw;
-}
-
-.big-reward-title {
-  text-align: center;
-  font-size: 3vh;
-  font-weight: 600;
-  margin: 0;
-}
-
-.big-reward-img {
-  align-self: center;
-  position: relative;
-  height: 19vh;
-  width: 19vh;
-  padding: 1vh;
-  border: 0.3vh solid #707070;
-  border-radius: 50%;
-  background-color: white;
-  overflow: hidden;
-}
-
-.big-reward-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 16vh;
-  max-width: 16vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.big-reward-name {
-  text-align: center;
-  font-size: 2.7vh;
-  font-weight: 600;
-  margin: 0;
-}
-
-.big-reward-description {
-  text-align: center;
-  font-size: 2vh;
-  font-weight: 600;
-  margin: 0;
+  border: 0.5vh solid #27ade4;
+  box-shadow: 0 0 2.5vh 0.1vh #27ade4;
 }
 
 @media screen and (max-width: 1100px) {
   .user-photo {
+    display: none;
+  }
+
+  .upper {
     display: none;
   }
 
@@ -543,35 +510,144 @@ export default {
     display: none;
   }
 
-  .big-reward-wrapper {
-    display: flex;
+  .sub-title {
+    display: none;
   }
 
-  .sub-title {
+  .members {
     display: none;
   }
 }
 
 @media screen and (min-width: 1100px) {
-  .top,
+  .home {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+
+  .top {
+    margin-top: 0;
+    padding-left: 4vw;
+    padding-top: 4vh;
+    background-color: #e6e6e6;
+  }
+
   .middle {
+    width: 100%;
+    height: 66vh;
+    background-color: #e6e6e6;
+    margin: 0;
+    padding: 0;
+  }
+
+  .middle-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 75vw;
+  }
+
+  .big-squad-wrapper,
+  .big-rewards {
+    background-color: #f1f1f1;
+    width: 37.2vw;
     padding-top: 2vh;
-    padding-bottom: 4vh;
-    padding-left: 6vw;
-    padding-right: 6vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    height: 66vh;
+  }
+
+  .big-rewards-title {
+    line-height: 5vh;
+    text-align: center;
+    font-size: 5vh;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .big-reward {
+    display: flex;
+    align-items: center;
+    margin-top: 3vh;
+  }
+
+  .big-reward-img {
+    align-self: center;
+    position: relative;
+    height: 15vh;
+    width: 15vh;
+    padding: 1vh;
+    border: 0.3vh solid #707070;
+    border-radius: 50%;
+    background-color: white;
+    overflow: hidden;
+  }
+
+  .big-reward-img img {
+    position: absolute;
+    margin: auto;
+    max-height: 13vh;
+    max-width: 13vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .big-reward-info {
+    width: calc(33vw - 19vh);
+    padding-left: 2vw;
+  }
+
+  .big-reward-name {
+    font-size: 3.5vh;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .big-reward-description {
+    font-size: 2vh;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .squad-wrapper,
+  .middle-info {
+    justify-content: center;
+  }
+
+  .plus {
+    display: none;
+  }
+
+  .bottom {
+    display: none;
+  }
+
+  .redirect-buttons button {
+    width: 13vw;
+    margin: 0;
+    margin-right: 2vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    font-size: 3vh;
+    line-height: 4vh;
+    min-height: 0;
+    height: 8vh;
+  }
+
+  .see-more {
+    margin-top: 3vh;
+    margin-left: calc(50% - 6.5vw);
   }
 
   .user-wrapper {
-    margin-bottom: 3vh;
-    margin-left: 10vw;
-  }
-
-  .squad-wrapper {
-    margin-top: 2vh;
+    align-items: center;
   }
 
   .user-photo {
-    margin-right: 2vw;
+    width: 14vw;
+    height: 14vw;
+    margin-right: 3vw;
   }
 
   .squad-image {
@@ -612,16 +688,11 @@ export default {
     font-weight: 700;
   }
 
-  .middle-wrapper {
-    display: flex;
-    justify-content: space-between;
-    width: 80vw;
-  }
-
-  .big-squad-wrapper,
-  .big-rewards {
-    width: 45vw;
+  .members {
+    width: 80%;
+    margin-left: 10%;
+    height: 26vh;
+    overflow-y: auto;
   }
 }
-
 </style>

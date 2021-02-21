@@ -1,49 +1,47 @@
 <template>
-  <div class="chat">
+  <div class="companies">
     <Buttons @_click="click" :names="{ Partners: true, Messages: false }" />
 
-    <center style="margin-top: 18vh">
-      <div class="sponsors-page">
-        <div class="main-sponsors sponsors">
-          <Partner
-            v-for="partner in main_sponsors"
-            :key="partner.name"
-            @learn="learn"
-            :name="partner.name"
-            :partnership="partner.partnership_tier"
-            :img_src="jeec_brain_url + partner.logo"
-          />
-        </div>
-        <div class="gold-sponsors sponsors">
-          <Partner
-            v-for="partner in gold_sponsors"
-            :key="partner.name"
-            @learn="learn"
-            :name="partner.name"
-            :partnership="partner.partnership_tier"
-            :img_src="jeec_brain_url + partner.logo"
-          />
-        </div>
-        <div class="silver-sponsors sponsors">
-          <Partner
-            v-for="partner in silver_sponsors"
-            :key="partner.name"
-            @learn="learn"
-            :name="partner.name"
-            :partnership="partner.partnership_tier"
-            :img_src="jeec_brain_url + partner.logo"
-          />
-        </div>
-        <div class="bronze-sponsors sponsors">
-          <Partner
-            v-for="partner in bronze_sponsors"
-            :key="partner.name"
-            @learn="learn"
-            :name="partner.name"
-            :partnership="partner.partnership_tier"
-            :img_src="jeec_brain_url + partner.logo"
-          />
-        </div>
+    <center class="sponsors-page" style="margin-top: 8vh">
+      <div class="main-sponsors sponsors">
+        <Partner
+          v-for="partner in main_sponsors"
+          :key="partner.name"
+          @learn="learn"
+          :name="partner.name"
+          :partnership="partner.partnership_tier"
+          :img_src="jeec_brain_url + partner.logo"
+        />
+      </div>
+      <div class="gold-sponsors sponsors">
+        <Partner
+          v-for="partner in gold_sponsors"
+          :key="partner.name"
+          @learn="learn"
+          :name="partner.name"
+          :partnership="partner.partnership_tier"
+          :img_src="jeec_brain_url + partner.logo"
+        />
+      </div>
+      <div class="silver-sponsors sponsors">
+        <Partner
+          v-for="partner in silver_sponsors"
+          :key="partner.name"
+          @learn="learn"
+          :name="partner.name"
+          :partnership="partner.partnership_tier"
+          :img_src="jeec_brain_url + partner.logo"
+        />
+      </div>
+      <div class="bronze-sponsors sponsors">
+        <Partner
+          v-for="partner in bronze_sponsors"
+          :key="partner.name"
+          @learn="learn"
+          :name="partner.name"
+          :partnership="partner.partnership_tier"
+          :img_src="jeec_brain_url + partner.logo"
+        />
       </div>
     </center>
   </div>
@@ -120,7 +118,7 @@ export default {
 </script>
 
 <style scoped>
-.chat {
+.companies {
   background-color: #e6e6e6;
 }
 
@@ -138,6 +136,11 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .companies {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
   .partner-info {
     width: 50vw;
   }
