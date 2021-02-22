@@ -2,14 +2,25 @@
   <div class="company">
     <Buttons @_click="click" :names="{ Partners: false, Messages: false }" />
 
-    <Partner_Info
-      style="margin-top: 18vh"
-      class="partner-info"
-      :partner="partner"
-      @chat_partner="chat_partner"
-      @chat_member="chat_member"
-      @add_interest="add_interest"
-    />
+    <div class="partner-wrapper">
+      <Partner_Info
+        class="partner-info-wrapper"
+        :partner="partner"
+        @chat_partner="chat_partner"
+        @chat_member="chat_member"
+        @add_interest="add_interest"
+      />
+
+      <div class="chat-room">
+        <p>{{ room_name }} Chat Room</p>
+        <iframe
+          class="chat-frame"
+          ref="chat"
+          :src="rocket_chat_room_url"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,6 +39,10 @@ export default {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       partner: null,
+      rocket_chat_url: process.env.VUE_APP_ROCKET_CHAT_URL,
+      rocket_chat_room_url: "",
+      chat_logged_in: false,
+      room_name: "",
     };
   },
   computed: {
@@ -43,35 +58,89 @@ export default {
         this.$router.push("/chat");
       }
     },
-    chat_partner(partner_name) {
-      UserService.getChatRoom(partner_name).then(
-        (response) => {
-          if (response.data.result) {
-            this.$router.push({
-              name: "Chat",
-              query: { room_id: "/channel/" + partner_name.replace(" ", "_") },
-            });
-          }
-        },
-        (error) => {
-          console.log(error);
+    logs(event) {
+      if (
+        event.origin === process.env.VUE_APP_ROCKET_CHAT_URL &&
+        event.data === "logged_in"
+      ) {
+        this.chat_logged_in = true;
+        if (this.room_name === "") {
+          this.chat_partner(this.partner.name);
         }
-      );
+      } else if (
+        event.origin === process.env.VUE_APP_ROCKET_CHAT_URL &&
+        event.data === "logged_out"
+      ) {
+        UserService.getChatToken().then(
+          (response) => {
+            this.rocket_chat_room_url =
+              this.rocket_chat_url +
+              "/home?layout=embedded&resumeToken=" +
+              response.data.token;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     },
-    chat_member(member_id) {
-      UserService.getChatRoom("", member_id).then(
-        (response) => {
-          if (response.data.room_id) {
-            this.$router.push({
-              name: "Chat",
-              query: { room_id: "/direct/" + response.data.room_id },
-            });
+    chat_partner(partner_name) {
+      if (this.chat_logged_in) {
+        UserService.getChatRoom(partner_name).then(
+          (response) => {
+            if (response.data.result) {
+              if (window.innerWidth <= 1100) {
+                this.$router.push({
+                  name: "Chat",
+                  query: {
+                    room_id: "/channel/" + partner_name.replace(" ", "_"),
+                  },
+                });
+              } 
+              
+              else {
+                this.room_name = partner_name;
+                this.rocket_chat_room_url =
+                  this.rocket_chat_url +
+                  "/channel/" +
+                  partner_name.replace(" ", "_") +
+                  "?layout=embedded";
+              }
+            }
+          },
+          (error) => {
+            console.log(error);
           }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+        );
+      }
+    },
+    chat_member(member_id, member_name) {
+      if (this.chat_logged_in) {
+        UserService.getChatRoom("", member_id).then(
+          (response) => {
+            if (response.data.room_id) {
+              if (window.innerWidth <= 1100) {
+                this.$router.push({
+                  name: "Chat",
+                  query: { room_id: "/direct/" + response.data.room_id },
+                });
+              } 
+              
+              else {
+                this.room_name = member_name;
+                this.rocket_chat_room_url =
+                  this.rocket_chat_url +
+                  "/direct/" +
+                  response.data.room_id +
+                  "?layout=embedded";
+              }
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     },
     add_interest(partner) {
       UserService.addCompanies([partner]).then(
@@ -84,8 +153,30 @@ export default {
         }
       );
     },
+    resize() {
+      if (window.innerWidth > 1100 && this.rocket_chat_room_url === "") {
+        UserService.getChatToken().then(
+          (response) => {
+            this.rocket_chat_room_url =
+              this.rocket_chat_url +
+              "/home?layout=embedded&resumeToken=" +
+              response.data.token;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+    },
+  },
+  destroyed() {
+    window.removeEventListener("message", this.logs);
+    window.removeEventListener("resize", this.resize);
   },
   created() {
+    window.addEventListener("message", this.logs);
+    window.addEventListener("resize", this.resize);
+
     if (!this.currentUser) {
       this.$router.push("/");
     }
@@ -98,6 +189,8 @@ export default {
         console.log(error);
       }
     );
+
+    this.resize();
   },
 };
 </script>
@@ -107,18 +200,30 @@ export default {
   background-color: #e6e6e6;
 }
 
+.partner-wrapper {
+    margin-top: 8vh;
+  }
+
 @media screen and (max-width: 1100px) {
+  .chat-room {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1100px) {
+  .company {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+
   .button {
     width: 17vw;
     margin-left: 8vw;
     margin-right: 8vw;
   }
 
-  .partner-info {
-    width: 50vw;
+  .partner-info-wrapper {
+    width: 37.3vw;
   }
 
   .sponsors:first-of-type {
@@ -127,6 +232,27 @@ export default {
 
   .sponsors:last-of-type {
     padding-bottom: 3vh;
+  }
+
+  .partner-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chat-room p {
+    height: 7.5vh;
+    margin: 0;
+    margin-bottom: 0.5vh;
+    background-color: white;
+    font-size: 3vh;
+    font-weight: 600;
+    text-align: center;
+    line-height: 7.5vh;
+  }
+
+  .chat-frame {
+    width: 37.3vw;
+    height: 84vh;
   }
 }
 </style>

@@ -43,10 +43,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   height: 8vh;
   background-color: #e6e6e6;
-  margin-top: 10vh;
   z-index: 1;
 }
 
@@ -56,5 +55,11 @@ export default {
   width: 100% !important;
   margin: 0.1vh;
   font-size: 2.6vh !important;
+}
+
+@media screen and (min-width: 1100px) {
+  .buttons {
+    width: 75vw;
+  }
 }
 </style>

@@ -116,7 +116,7 @@ export default {
 
 .daily,
 .special {
-  margin-top: 18vh;
+  margin-top: 8vh;
 }
 
 .no-activities-warning {
@@ -147,6 +147,8 @@ export default {
 @media screen and (min-width: 1100px) {
   .special {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 }
 </style>

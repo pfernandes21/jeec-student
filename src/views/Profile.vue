@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div class="top" style="margin-top: 10vh">
+    <div class="top">
       <img alt="profile photo" :src="currentUser.photo" class="profile-img" />
       <div class="profile-info">
         <div class="name">
@@ -12,7 +12,7 @@
           :xp="currentUser.total_points"
           :progress="progress"
           :end_points="currentUser.level.data.end_points"
-          width="60vw"
+          :width="'60vw'"
         />
       </div>
     </div>
@@ -37,7 +37,7 @@
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
           </p>
           <p @click.stop="see_cv">
-            <v-icon large style="color: white">mdi-eye</v-icon>
+            <v-icon large style="color: white">mdi-download</v-icon>
           </p>
           <a
             style="display: none"
@@ -244,7 +244,7 @@ export default {
             });
             var objetURL = window.URL.createObjectURL(fileBlob);
             this.cv_url = objetURL;
-            console.log(response.data.data)
+
             this.$refs.see_cv.click();
           },
           (error) => {

@@ -156,7 +156,19 @@ export default {
 
 @media screen and (min-width: 1100px) {
   .index {
-    width: 3vw;
+    width: 6vw;
+    text-align: left;
+  }
+
+  .name,
+  .cry,
+  .level {
+    margin-left: 1vw !important;
+  }
+
+  .index {
+    margin-left: 1vw;
+    margin-right: 0vw;
   }
 }
 

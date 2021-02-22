@@ -8,7 +8,7 @@
       }"
     />
 
-    <div style="margin-top: 18vh">
+    <div style="margin-top: 8vh">
       <center>
         <div>
           <v-carousel
@@ -124,7 +124,6 @@ export default {
 <style scoped>
 .activities {
   background-color: #e6e6e6;
-  height: 100%;
 }
 
 .day-wrapper {

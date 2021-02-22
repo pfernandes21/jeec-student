@@ -19,31 +19,15 @@ export default {
     progress: Number,
     end_points: Number,
     width: String,
-  },
-  data: function () {
-    return {
-      height: 30,
-    };
-  },
-  methods: {
-    resize() {
-      if (window.innerWidth < 600) {
-        this.height = 30;
-      } else if (window.innerWidth < 1100) {
-        this.height = 35;
-      } else {
-        this.height = 40;
-      }
+    height: {
+      type: Number,
+      default: 30,
     },
   },
-  created() {
-    window.addEventListener("resize", this.resize);
-  },
-  destroyed() {
-    window.removeEventListener("resize", this.resize);
+  data: function () {
+    return {};
   },
   mounted() {
-    this.resize();
   },
 };
 </script>

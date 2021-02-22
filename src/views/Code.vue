@@ -1,7 +1,7 @@
 <template>
   <div class="code">
     <p class="code-title">Redeem Code:</p>
-    <div class="code-page" style="margin-top: 10vh">
+    <div class="code-page">
       <input
         type="text"
         class="input-code"
@@ -54,8 +54,7 @@ import UserService from "../services/user.service";
 
 export default {
   name: "Code",
-  components: {
-  },
+  components: {},
   data: function () {
     return {
       code: "",
@@ -164,7 +163,6 @@ export default {
 
 <style scoped>
 .code {
-  height: 100%;
   background-color: #f1f1f1;
 }
 
@@ -268,13 +266,24 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .code-title {
+    margin-top: 8vh;
+  }
+
   .code-page {
-    margin-top: 0 !important;
+    padding: 0;
   }
 
   .input-code {
-    width: 50vw;
+    width: 45vw;
     margin-left: 15vw;
+  }
+
+  .clipboard,
+  .redeem {
+    font-size: 2.5vh !important;
+    height: 5vh !important;
+    margin-top: 2.5vh;
   }
 
   .redeem {
@@ -284,8 +293,8 @@ export default {
   .xp-wrapper {
     display: flex;
     justify-content: space-between;
-    margin-left: 20vw;
-    margin-right: 20vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
   }
 
   .xp-top {

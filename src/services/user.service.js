@@ -155,6 +155,10 @@ class UserService {
   getChatRoom(partner="", user_id="") {
     return axios.get(jeec_brain_url + '/student/chat-room?company=' + partner + '&member=' + user_id, { headers: authHeader() });
   }
+
+  getNotifications() {
+    return axios.get(jeec_brain_url + '/student/notifications', { headers: authHeader() });
+  }
 }
 
 export default new UserService();
