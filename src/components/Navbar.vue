@@ -54,7 +54,7 @@
               :key="item.name"
               v-bind:class="{
                 'active-item': page === item.page,
-                'inactive-item': page !== item.page,
+                'inactive-item': page !== item.page
               }"
               @click.stop="redirect(item.page)"
             >
@@ -80,9 +80,11 @@
 </template>
 
 <script>
+import LogService from "../services/log.service";
+
 export default {
   name: "Navbar",
-  data: function () {
+  data: function() {
     return {
       page: this.$route.name,
       display_menu: false,
@@ -91,54 +93,54 @@ export default {
         {
           name: "Home",
           src: require("../assets/icons/placeholder.svg"),
-          page: "Home",
+          page: "Home"
         },
         {
           name: "Redeem Code",
           src: require("../assets/icons/barcode.svg"),
-          page: "Code",
+          page: "Code"
         },
         {
           name: "Chat & Job Fair",
           src: require("../assets/icons/chat.svg"),
-          page: "Companies",
+          page: "Companies"
         },
         {
           name: "Quests",
           src: require("../assets/icons/sword.svg"),
-          page: "Quests",
+          page: "Quests"
         },
         {
           name: "Rewards",
           src: require("../assets/icons/trophy.svg"),
-          page: "Rewards",
+          page: "Rewards"
         },
         {
           name: "Activities",
           src: require("../assets/icons/calendar.svg"),
-          page: "Activities",
+          page: "Activities"
         },
         {
           name: "My Profile",
           src: require("../assets/icons/user.svg"),
-          page: "Profile",
+          page: "Profile"
         },
         {
           name: "Squad",
           src: require("../assets/icons/puzzle.svg"),
-          page: "Squad",
+          page: "Squad"
         },
         {
           name: "Rankings",
           src: require("../assets/icons/rank.svg"),
-          page: "Rankings",
+          page: "Rankings"
         },
         {
           name: "Rules",
           src: require("../assets/icons/warning.svg"),
-          page: "Rules",
-        },
-      ],
+          page: "Rules"
+        }
+      ]
     };
   },
   methods: {
@@ -147,14 +149,16 @@ export default {
     },
     resize() {
       this.width = window.innerWidth;
-    },
+    }
   },
   watch: {
     //or $route(to, from)
-    $route(to) {
+    async $route(to) {
+      LogService.postLog(this.$store.state.auth.user.jwt, to.fullPath);
+
       this.page = to.name;
-      this.$emit('notification', 'Page changed');
-    },
+      this.$emit("notification", "Page changed");
+    }
   },
   created() {
     window.addEventListener("resize", this.resize);
@@ -171,8 +175,8 @@ export default {
 
       if (names.length > 1) return names;
       else return [this.name, ""];
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -175,7 +175,6 @@
 <script>
 import Expbar from "@/components/Expbar.vue";
 import UserService from "../services/user.service";
-import LogService from "../services/log.service";
 
 export default {
   name: "Home",
@@ -232,8 +231,6 @@ export default {
     window.removeEventListener("resize", this.resize);
   },
   async mounted() {
-    LogService.postLog(this.currentPage);
-
     this.resize();
 
     if (!this.currentUser) {
