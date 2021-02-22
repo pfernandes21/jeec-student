@@ -124,7 +124,6 @@ export default {
 <style scoped>
 .activities {
   background-color: #e6e6e6;
-  height: 100%;
 }
 
 .day-wrapper {

@@ -6,7 +6,7 @@
       quest: !activity.participated && activity.quest,
     }"
   >
-    <p class="hours">{{ activity.time }}</p>
+    <p class="hours mobile">{{ activity.time }}</p>
 
     <div class="activity-info">
       <div class="activity-img">
@@ -22,6 +22,27 @@
         <p v-if="speakers" class="speakers">{{ speakers }}</p>
         <p class="inner-description">{{ activity.description }}</p>
       </div>
+      <div class="activity-right browser">
+        <p class="hours">{{ activity.time }}</p>
+
+        <div class="buttons">
+          <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
+          <button @click.stop="dialog = true">See More</button>
+          <button><a :href="calendar()">Add to Calendar</a></button>
+        </div>
+
+        <div
+          class="xp-wrapper"
+          :class="{ quest2: !activity.participated && activity.quest }"
+        >
+          <span
+            class="xp-value"
+            :class="{ quest3: !activity.participated && activity.quest }"
+            >{{ activity.points }}</span
+          >
+          <span class="xp">xp</span>
+        </div>
+      </div>
     </div>
 
     <!-- <p v-if="currentPage !== 'Quests'" class="description">
@@ -29,7 +50,7 @@
     </p> -->
 
     <div
-      class="xp-wrapper"
+      class="xp-wrapper mobile"
       :class="{ quest2: !activity.participated && activity.quest }"
     >
       <span
@@ -40,7 +61,7 @@
       <span class="xp">xp</span>
     </div>
 
-    <div class="buttons">
+    <div class="buttons mobile">
       <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
       <button @click.stop="dialog = true">See More</button>
       <button><a :href="calendar()">Add to Calendar</a></button>
@@ -475,6 +496,10 @@ export default {
   .inner-description {
     display: none;
   }
+
+  .browser {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1100px) {
@@ -494,7 +519,52 @@ export default {
 
   .activity-text {
     max-width: 100vw;
-    width: 69vw;
+    width: calc(48vw - 19vh);
+  }
+
+  .activity-right {
+    width: 16vw;
+  }
+
+  .hours {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-size: 4vh;
+    margin: 0;
+  }
+
+  .xp-wrapper {
+    position: relative;
+    margin: 0;
+    margin-top: -1vh;
+    width: 100%;
+    text-align: center;
+  }
+
+  .xp-value {
+    font-size: 5vh;
+  }
+
+  .xp {
+    font-size: 4vh;
+  }
+
+  .buttons {
+    display: block;
+  }
+
+  .buttons {
+    width: 16vw;
+  }
+
+  .buttons button {
+    width: 14vw;
+    min-height: 7vh;
+    font-size: 2.5vh;
+    padding: 0.5vhvh;
+    line-height: 2.6vh;
+    margin-bottom: 1vh;
   }
 
   .inner-description {
@@ -503,7 +573,7 @@ export default {
     margin-top: 2vh;
     margin-bottom: 0;
     max-height: 7.5vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .inner-description::-webkit-scrollbar {
@@ -518,26 +588,8 @@ export default {
     box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   }
 
-  .hours {
-    font-size: 5vh;
-  }
-
-  .xp-wrapper {
-    margin-top: -3vh;
-  }
-
-  .xp-value {
-    font-size: 5vh;
-  }
-
-  .xp {
-    font-size: 4vh;
-  }
-
-  .buttons button {
-    font-size: 3vh;
-    padding: 1.5vh;
-    line-height: 3vh;
+  .mobile {
+    display: none;
   }
 }
 </style>

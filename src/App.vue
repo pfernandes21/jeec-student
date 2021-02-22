@@ -109,11 +109,11 @@ export default {
 }
 
 #app a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 #app a:active {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 1100px) {
