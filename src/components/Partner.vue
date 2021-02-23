@@ -101,10 +101,6 @@ export default {
   margin: 0;
 }
 
-.stretch-it {
-  white-space: nowrap;
-}
-
 @media screen and (max-width: 1100px) {
   .browser {
     display: none;
@@ -121,10 +117,10 @@ export default {
   }
 
   .partner {
-    width: 24.8vw;
+    width: 24vw;
     margin-bottom: 0.5vh;
-    margin-left: 0.1vw;
-    margin-right: 0.1vw;
+    margin-left: 0.2vw;
+    margin-right: 0.2vw;
   }
 
   .learn {

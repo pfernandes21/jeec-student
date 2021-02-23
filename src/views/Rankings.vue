@@ -140,6 +140,8 @@ export default {
 
 .rank-wrapper {
   margin-top: 8vh;
+  height: 82vh;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 1100px) {

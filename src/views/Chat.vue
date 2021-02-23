@@ -93,7 +93,7 @@ export default {
 .chat {
   background-color: white;
   margin-bottom: 0;
-  height: 100vh;
+  height: 90vh;
   overflow-y: hidden;
 }
 
@@ -107,6 +107,10 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .chat {
+    height: 100vh;
+  }
+
   .chat-frame {
     width: 75vw;
     height: 92vh;

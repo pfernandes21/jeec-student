@@ -133,6 +133,10 @@ export default {
 }
 
 @media screen and (max-width: 1100px) {
+  .sponsors-page {
+    height: 82vh;
+    overflow-y: auto;
+  }
 }
 
 @media screen and (min-width: 1100px) {
