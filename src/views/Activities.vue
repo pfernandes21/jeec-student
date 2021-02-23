@@ -158,6 +158,7 @@ export default {
 
 .arrow {
   font-size: 10vh !important;
+  margin-top: 2.5vh;
 }
 
 .day-wrapper {

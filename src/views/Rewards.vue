@@ -18,14 +18,14 @@
     />
 
     <SquadRewards
-      style="margin-top: 25vh"
+      style="margin-top: 15vh"
       v-if="button === 'squad'"
       :squads_rewards="squads_rewards"
       :squad_points="squad ? squad.daily_points : 0"
     />
 
     <JEECPOTRewards
-      style="margin-top: 20vh"
+      style="margin-top: 10vh"
       v-if="button === 'jeecpot'"
       :jeecpot_rewards="jeecpot_rewards"
     />
