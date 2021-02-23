@@ -17,6 +17,30 @@
             hide-delimiters
             v-model="model"
           >
+            <template v-slot:prev="{ on, attrs }">
+              <v-btn
+                depressed
+                color="#27ADE4"
+                class="arrow-btn"
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon class="arrow" color="blue"
+                  >mdi-chevron-left</v-icon
+                ></v-btn
+              >
+            </template>
+            <template v-slot:next="{ on, attrs }">
+              <v-btn
+                depressed
+                color="#27ADE4"
+                class="arrow-btn"
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon class="arrow" color="blue"
+                  >mdi-chevron-right</v-icon
+                ></v-btn
+              >
+            </template>
             <v-carousel-item v-for="day in event_days" :key="day.getTime()">
               <v-sheet color="#e6e6e6" tile>
                 <v-row class="day-wrapper" align="center" justify="center">
@@ -34,43 +58,7 @@
             v-show="show_activity(activity)"
             :activity="activity"
           />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <Activity
-            v-for="activity in activities"
-            :key="activity.name + activity.type"
-            v-show="show_activity(activity)"
-            :activity="activity"
-          />
-          <div class="mobile" style="height:10vh"></div>
+          <div class="mobile" style="height: 10vh"></div>
         </div>
 
         <div class="no-activities-warning" style="display: none">
@@ -161,6 +149,15 @@ export default {
 <style scoped>
 .activities {
   background-color: #e6e6e6;
+}
+
+.arrow-btn {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.arrow {
+  font-size: 10vh !important;
 }
 
 .day-wrapper {

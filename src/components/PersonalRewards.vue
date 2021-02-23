@@ -289,7 +289,7 @@ export default {
     margin-left: -5vw;
     margin-right: -5vw;
     height: 7px;
-    background-color: blue;
+    background-color: #27ade4;
   }
 }
 </style>

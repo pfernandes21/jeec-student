@@ -389,7 +389,6 @@ export default {
 
 <style scoped>
 .profile {
-  height: 100%;
   background-color: #e6e6e6;
 }
 
@@ -416,6 +415,7 @@ export default {
 
 ::-webkit-scrollbar {
   width: 5vw;
+  max-width: 30px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -677,10 +677,6 @@ export default {
     width: 23vw;
     padding-left: 1vw;
     padding-right: 1vw;
-  }
-
-  .added-cv,
-  .added-linkedin {
   }
 
   .added-linkedin > p:last-of-type {

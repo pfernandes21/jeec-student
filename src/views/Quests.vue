@@ -9,31 +9,6 @@
           :key="quest.name + quest.type"
           :activity="quest"
         />
-        <Activity
-          v-for="quest in quests"
-          :key="quest.name + quest.type"
-          :activity="quest"
-        />
-        <Activity
-          v-for="quest in quests"
-          :key="quest.name + quest.type"
-          :activity="quest"
-        />
-        <Activity
-          v-for="quest in quests"
-          :key="quest.name + quest.type"
-          :activity="quest"
-        />
-        <Activity
-          v-for="quest in quests"
-          :key="quest.name + quest.type"
-          :activity="quest"
-        />
-        <Activity
-          v-for="quest in quests"
-          :key="quest.name + quest.type"
-          :activity="quest"
-        />
       </div>
 
       <div class="quests-warning">
