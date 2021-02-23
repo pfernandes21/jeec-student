@@ -45,7 +45,7 @@
             Missing
             {{
               (reward_level ? reward_level.end_points : 0) -
-              currentUser.total_points
+                currentUser.total_points
             }}
             xp
           </p>
@@ -72,7 +72,6 @@
               <p class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
             </div>
           </div>
-
           <div class="middle-info">
             <div class="xp-wrapper">
               <div class="daily-xp">
@@ -123,7 +122,6 @@
 
         <div class="big-rewards">
           <p class="big-rewards-title">Next Rewards:</p>
-
           <div class="big-reward">
             <div class="big-reward-img">
               <img
@@ -162,7 +160,7 @@
                 Missing
                 {{
                   (reward_level ? reward_level.end_points : 0) -
-                  currentUser.total_points
+                    currentUser.total_points
                 }}
                 xp
               </p>
@@ -192,16 +190,16 @@ export default {
   name: "Home",
   components: {
     Expbar,
-    Member,
+    Member
   },
-  data: function () {
+  data: function() {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       squad: null,
       levels: null,
       today_reward: {},
       xpbar_width: "92vw",
-      height: 30,
+      height: 30
     };
   },
   computed: {
@@ -227,7 +225,7 @@ export default {
       }
 
       return null;
-    },
+    }
   },
   methods: {
     resize() {
@@ -244,7 +242,7 @@ export default {
       } else {
         this.height = 60;
       }
-    },
+    }
   },
   created() {
     window.addEventListener("resize", this.resize);
@@ -252,7 +250,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.resize);
   },
-  mounted() {
+  async mounted() {
     this.resize();
 
     if (!this.currentUser) {
@@ -260,32 +258,32 @@ export default {
     }
 
     UserService.getUserSquad().then(
-      (response) => {
+      response => {
         this.squad = response.data.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
 
     UserService.getLevels().then(
-      (response) => {
+      response => {
         this.levels = response.data.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
 
     UserService.getTodaySquadReward().then(
-      (response) => {
+      response => {
         this.today_reward = response.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
-  },
+  }
 };
 </script>
 
