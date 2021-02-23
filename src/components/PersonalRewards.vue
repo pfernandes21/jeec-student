@@ -7,25 +7,81 @@
 
       <v-carousel
         v-model="model"
-        style="height: 31vh"
-        hide-delimiters
         hide-delimiter-background
+        hide-delimiters
+        :style="xpbar_width === '65vw' ? 'height:30vh' : 'height:35vh'"
       >
-        <v-carousel-item v-for="(level, i) in levels" :key="i"
-          ><div
-            class="image"
-            :class="[
-              user_level > levels[model].value ? 'image_done' : '',
-              user_level < levels[model].value ? 'next_reward' : '',
-            ]"
+        <template v-slot:prev="{ on, attrs }">
+          <v-btn
+            depressed
+            color="#27ADE4"
+            class="arrow-btn"
+            v-bind="attrs"
+            v-on="on"
+            ><v-icon class="arrow" color="blue">mdi-chevron-left</v-icon></v-btn
           >
-            <img
-              v-if="level.reward"
-              :class="{ next_image: user_level < levels[model].value }"
-              :src="jeec_brain_url + level.reward.image"
-              alt="reward"
-            /></div
-        ></v-carousel-item>
+        </template>
+        <template v-slot:next="{ on, attrs }">
+          <v-btn
+            depressed
+            color="#27ADE4"
+            class="arrow-btn"
+            v-bind="attrs"
+            v-on="on"
+            ><v-icon class="arrow" color="blue"
+              >mdi-chevron-right</v-icon
+            ></v-btn
+          >
+        </template>
+
+        <v-carousel-item v-for="(level, i) in levels" :key="i">
+          <div class="image-wrapper">
+            <div
+              class="image first"
+              :class="[
+                user_level > levels[model].value ? 'image_done' : '',
+                user_level < levels[model].value ? 'next_reward' : '',
+              ]"
+            >
+              <img
+                v-if="level.reward"
+                :class="{ next_image: user_level < levels[model].value }"
+                :src="jeec_brain_url + level.reward.image"
+                alt="reward"
+              />
+            </div>
+            <span class="rect"></span>
+            <div
+              class="image second"
+              :class="[
+                user_level > levels[model].value ? 'image_done' : '',
+                user_level < levels[model].value ? 'next_reward' : '',
+              ]"
+            >
+              <img
+                v-if="level.reward"
+                :class="{ next_image: user_level < levels[model].value }"
+                :src="jeec_brain_url + level.reward.image"
+                alt="reward"
+              />
+            </div>
+            <span class="rect"></span>
+            <div
+              class="image third"
+              :class="[
+                user_level > levels[model].value ? 'image_done' : '',
+                user_level < levels[model].value ? 'next_reward' : '',
+              ]"
+            >
+              <img
+                v-if="level.reward"
+                :class="{ next_image: user_level < levels[model].value }"
+                :src="jeec_brain_url + level.reward.image"
+                alt="reward"
+              />
+            </div>
+          </div>
+        </v-carousel-item>
       </v-carousel>
 
       <p
@@ -38,9 +94,10 @@
       <Expbar
         v-if="user_level === levels[model].value"
         :xp="user_points"
-        :progress="user_points / levels[model].end_points * 100"
+        :progress="(user_points / levels[model].end_points) * 100"
         :end_points="levels[model].end_points"
-        width="65vw"
+        :width="xpbar_width"
+        :height="height"
       />
 
       <div v-if="user_level > levels[model].value" class="done">Done!</div>
@@ -69,7 +126,36 @@ export default {
     return {
       model: 0,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
+      xpbar_width: "65vw",
+      height: 30,
     };
+  },
+  methods: {
+    resize() {
+      if (window.innerWidth < 1100) {
+        this.xpbar_width = "65vw";
+      } else {
+        this.xpbar_width = "40vw";
+      }
+
+      if (window.innerWidth < 600) {
+        this.height = 30;
+      } else if (window.innerWidth < 1100) {
+        this.height = 35;
+      } else if (window.innerWidth < 1500) {
+        this.height = 45;
+      } else {
+        this.height = 60;
+      }
+    },
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
+  created() {
+    window.addEventListener("resize", this.resize);
+
+    this.resize();
   },
 };
 </script>
@@ -83,6 +169,16 @@ export default {
   font-size: 4vh;
   margin: 0;
   margin-top: 2vh;
+  color: black;
+}
+
+.arrow-btn {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.arrow {
+  font-size: 15vh !important;
 }
 
 .image {
@@ -125,16 +221,16 @@ export default {
   filter: gray;
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
-  filter: blur(1px);
 }
 
 .level {
   font-size: 5vh;
   margin: 0;
+  color: black;
 }
 
 .level_done {
-  color: rgba(0, 0, 0, 0.44);
+  color: #27ade4;
 }
 
 .done {
@@ -148,5 +244,52 @@ export default {
   line-height: 1.7vh;
   font-size: 2.2vh;
   font-weight: 700;
+  color: black;
+}
+
+@media screen and (max-width: 1100px) {
+  .first,
+  .third,
+  .rect {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .first,
+  .third {
+    height: 18vh;
+    width: 18vh;
+  }
+
+  .first img,
+  .third img {
+    max-height: 15vh;
+    max-width: 15vh;
+  }
+
+  .second {
+    height: 28vh;
+    width: 28vh;
+  }
+
+  .second img {
+    max-height: 24vh;
+    max-width: 24vh;
+  }
+
+  .rect {
+    width: 10vw;
+    margin-left: -5vw;
+    margin-right: -5vw;
+    height: 7px;
+    background-color: blue;
+  }
 }
 </style>

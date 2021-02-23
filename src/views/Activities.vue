@@ -12,7 +12,7 @@
       <center>
         <div>
           <v-carousel
-            style="height: 11vh"
+            style="height: 10vh"
             hide-delimiter-background
             hide-delimiters
             v-model="model"
@@ -34,6 +34,43 @@
             v-show="show_activity(activity)"
             :activity="activity"
           />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <Activity
+            v-for="activity in activities"
+            :key="activity.name + activity.type"
+            v-show="show_activity(activity)"
+            :activity="activity"
+          />
+          <div class="mobile" style="height:10vh"></div>
         </div>
 
         <div class="no-activities-warning" style="display: none">
@@ -128,6 +165,12 @@ export default {
 
 .day-wrapper {
   vertical-align: middle;
+  margin: 0;
+}
+
+.activities-wrapper {
+  height: 82vh;
+  overflow-y: auto;
 }
 
 .day {
@@ -153,5 +196,8 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .mobile {
+    display: none;
+  }
 }
 </style>

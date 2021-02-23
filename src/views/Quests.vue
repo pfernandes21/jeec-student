@@ -9,6 +9,31 @@
           :key="quest.name + quest.type"
           :activity="quest"
         />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
+        <Activity
+          v-for="quest in quests"
+          :key="quest.name + quest.type"
+          :activity="quest"
+        />
       </div>
 
       <div class="quests-warning">
@@ -111,12 +136,17 @@ export default {
 <style scoped>
 .quests {
   background-color: #e6e6e6;
-  height: 100%;
 }
 
 .daily,
 .special {
   margin-top: 8vh;
+}
+
+.daily,
+.special {
+  height: 82vh;
+  overflow-y: auto;
 }
 
 .no-activities-warning {
@@ -126,6 +156,7 @@ export default {
 .quests-warning {
   padding-top: 3vh;
   text-align: center;
+  margin-bottom: 3vh;
 }
 
 .searching {
@@ -149,6 +180,11 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    height: 92vh;
+  }
+
+  .daily {
+    height: 92vh;
   }
 }
 </style>

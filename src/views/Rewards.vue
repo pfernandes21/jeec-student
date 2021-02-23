@@ -120,7 +120,6 @@ export default {
 <style scoped>
 .rewards {
   background-color: #e6e6e6;
-  height: 100%;
 }
 
 @media screen and (min-width: 1100px) {

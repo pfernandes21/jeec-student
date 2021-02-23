@@ -229,4 +229,20 @@ export default {
   margin-top: 2vh;
 }
 
+@media screen and (min-width: 1100px) {
+  .button {
+    width: 20vw;
+  }
+
+  p {
+    font-size: 3vh !important;
+  }
+
+  .squad-image,
+  .image-input {
+    height: 20vh;
+    width: 20vh;
+  }
+}
+
 </style>

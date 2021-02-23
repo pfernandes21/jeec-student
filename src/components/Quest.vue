@@ -28,7 +28,6 @@ export default {
 
 <style scoped>
 .quest {
-  width: 24.7vw;
   display: flex;
   margin-bottom: 0.5vh;
   background-color: #ffbcbc;
@@ -87,6 +86,7 @@ export default {
 
 @media screen and (min-width: 1100px) {
   .quest {
+    width: 24.2vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

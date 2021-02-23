@@ -12,7 +12,8 @@
           :xp="currentUser.total_points"
           :progress="progress"
           :end_points="currentUser.level.data.end_points"
-          :width="'60vw'"
+          :width="xpbar_width"
+          :height="height"
         />
       </div>
     </div>
@@ -93,7 +94,16 @@
           "
         >
           {{ tag }}
-          <v-icon color="white" style="margin-left: 2vw">{{
+          <v-icon
+            v-if="xpbar_width === '62vw'"
+            color="white"
+            style="margin-left: 2vw"
+            >{{
+              currentUser.tags.includes(tag) ? "mdi-check" : "mdi-plus"
+            }}</v-icon
+          >
+
+          <v-icon v-else large color="white" style="margin-left: 1vw">{{
             currentUser.tags.includes(tag) ? "mdi-check" : "mdi-plus"
           }}</v-icon>
         </p>
@@ -112,7 +122,16 @@
           "
         >
           {{ company
-          }}<v-icon color="white" style="margin-left: 2vw">{{
+          }}<v-icon
+            v-if="xpbar_width === '62vw'"
+            color="white"
+            style="margin-left: 2vw"
+            >{{
+              currentUser.companies.includes(company) ? "mdi-check" : "mdi-plus"
+            }}</v-icon
+          >
+
+          <v-icon v-else large color="white" style="margin-left: 1vw">{{
             currentUser.companies.includes(company) ? "mdi-check" : "mdi-plus"
           }}</v-icon>
         </p>
@@ -142,7 +161,8 @@
         </tr>
       </table>
     </div>
-    <v-dialog v-model="dialog">
+
+    <v-dialog v-model="dialog" :width="dialog_width">
       <v-card>
         <div class="linkedin-input">
           <form @submit="add_linkedin">
@@ -181,6 +201,9 @@ export default {
       tags: [],
       companies: [],
       cv_url: "",
+      height: 30,
+      xpbar_width: "62vw",
+      dialog_width: "",
     };
   },
   methods: {
@@ -293,6 +316,25 @@ export default {
         }
       );
     },
+    resize() {
+      if (window.innerWidth < 1100) {
+        this.xpbar_width = "62vw";
+        this.dialog_width = ""
+      } else {
+        this.xpbar_width = "47vw";
+        this.dialog_width = "40vw";
+      }
+
+      if (window.innerWidth < 600) {
+        this.height = 25;
+      } else if (window.innerWidth < 1100) {
+        this.height = 35;
+      } else if (window.innerWidth < 1500) {
+        this.height = 45;
+      } else {
+        this.height = 60;
+      }
+    },
   },
   computed: {
     currentUser() {
@@ -312,10 +354,17 @@ export default {
       return ((xp - start_points) / (end_points - start_points)) * 100;
     },
   },
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
   created() {
+    window.addEventListener("resize", this.resize);
+
     if (!this.currentUser) {
       this.$router.push("/");
     }
+
+    this.resize();
 
     UserService.getTags().then(
       (response) => {
@@ -357,7 +406,7 @@ export default {
 }
 
 .bottom {
-  max-height: 37.9vh;
+  height: 37vh;
   width: 100vw;
   overflow-y: scroll;
   padding: 0;
@@ -572,6 +621,7 @@ export default {
 .linkedin-input button {
   margin: 1vh;
   color: green;
+  font-size: 2.4vh;
 }
 
 @media screen and (max-width: 1100px) {
@@ -583,10 +633,19 @@ export default {
 @media screen and (min-width: 1100px) {
   .top {
     justify-content: center;
+    align-items: center;
   }
 
   .name {
     display: flex;
+  }
+
+  .name p {
+    font-size: 4vh;
+  }
+
+  .level {
+    font-size: 2.7vh;
   }
 
   .second-name {
@@ -596,21 +655,46 @@ export default {
   .middle {
     display: flex;
     justify-content: space-between;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
   }
 
-  .cv-wrapper {
-    margin-left: 10vw;
-    cursor: pointer;
-  }
-
+  .cv-wrapper,
   .linkedin-wrapper {
-    margin-right: 10vw;
     cursor: pointer;
+    width: 30vw;
+  }
+
+  .cv-wrapper img,
+  .linkedin-wrapper img {
+    margin-right: 2vw;
+  }
+
+  .add-cv,
+  .add-linkedin {
+    width: 23vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+
+  .added-cv,
+  .added-linkedin {
+  }
+
+  .added-linkedin > p:last-of-type {
+    margin-right: 0;
   }
 
   .profile-img {
-    height: 16vh;
-    width: 16vh;
+    height: 19vh;
+    width: 19vh;
+  }
+
+  .bottom {
+    width: 75vw;
+    height: 49vh;
   }
 
   .interest-title {
@@ -618,8 +702,28 @@ export default {
   }
 
   .tag {
-    font-size: 2.5vh;
+    font-size: 2.8vh;
     font-weight: 600;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    height: 5vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 2vw;
+  }
+
+  .footer {
+    margin-left: 0.1vw;
+  }
+
+  .footer table {
+    width: 20vw;
+    margin-left: 22vw;
+  }
+
+  tr {
+    cursor: pointer;
   }
 }
 </style>

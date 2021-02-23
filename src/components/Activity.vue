@@ -269,6 +269,7 @@ export default {
   padding-bottom: 2vh;
   padding-left: 4vw;
   padding-right: 4vw;
+  position: relative;
 }
 
 .participated {

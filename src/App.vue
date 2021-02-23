@@ -116,7 +116,21 @@ export default {
   text-decoration: none;
 }
 
+.v-window__prev,
+.v-window__next {
+  background-color: #e6e6e6 !important;
+  height: 1px;
+}
+
+.v-carousel__item {
+  height: auto !important;
+}
+
 @media screen and (max-width: 1100px) {
+  .app-wrapper {
+    height: 100vh;
+  }
+
   .page-wrapper {
     height: 90vh;
     overflow-y: hidden;
