@@ -1,5 +1,5 @@
 <template>
-  <div class="squads-rewards" v-if="squads_rewards[model]">
+  <div class="squads-rewards" v-if="squads_rewards">
     <center>
       <p class="date">
         {{ selected_date ? days[selected_date.getDay()] : "" }}
@@ -7,18 +7,90 @@
 
       <v-carousel
         v-model="model"
-        style="height: 24vh"
-        hide-delimiters
         hide-delimiter-background
+        hide-delimiters
+        :style="window_width > 1100 ? 'height:30vh' : 'height:35vh'"
       >
-        <v-carousel-item v-for="(squad_reward, i) in squads_rewards" :key="i"
-          ><div class="image" :class="rewardClass">
-            <img
-              :src="jeec_brain_url + squad_reward.reward.image"
-              alt="reward"
-            />
-            <img v-if="rewardClass === 'lost_reward'" src="../assets/icons/cross.svg" class="cross"></div
-        ></v-carousel-item>
+        <template v-slot:prev="{ on, attrs }">
+          <v-btn
+            depressed
+            color="#27ADE4"
+            class="arrow-btn"
+            v-bind="attrs"
+            v-on="on"
+            ><v-icon class="arrow" color="blue">mdi-chevron-left</v-icon></v-btn
+          >
+        </template>
+        <template v-slot:next="{ on, attrs }">
+          <v-btn
+            depressed
+            color="#27ADE4"
+            class="arrow-btn"
+            v-bind="attrs"
+            v-on="on"
+            ><v-icon class="arrow" color="blue"
+              >mdi-chevron-right</v-icon
+            ></v-btn
+          >
+        </template>
+
+        <div class="image-wrapper browser">
+            <div class="image first" :class="rewardClass(image_index(model - 1))">
+              <img
+                :src="jeec_brain_url + squads_rewards[image_index(model - 1)].reward.image"
+                alt="reward"
+              />
+              <img
+                v-if="rewardClass(image_index(model - 1)) === 'lost_reward'"
+                src="../assets/icons/cross.svg"
+                class="small-cross"
+              />
+            </div>
+
+            <span class="rect"></span>
+
+            <div class="image second" :class="rewardClass(model)">
+              <img
+                :src="jeec_brain_url + squads_rewards[model].reward.image"
+                alt="reward"
+              />
+              <img
+                v-if="rewardClass(model) === 'lost_reward'"
+                src="../assets/icons/cross.svg"
+                class="cross"
+              />
+            </div>
+
+            <span class="rect"></span>
+
+            <div class="image third" :class="rewardClass(image_index(model + 1))">
+              <img
+                :src="jeec_brain_url + squads_rewards[image_index(model + 1)].reward.image"
+                alt="reward"
+              />
+              <img
+                v-if="rewardClass(image_index(model + 1)) === 'lost_reward'"
+                src="../assets/icons/cross.svg"
+                class="small-cross"
+              />
+            </div>
+          </div>
+
+        <v-carousel-item v-for="(squad_reward, i) in squads_rewards" :key="i" class="mobile">
+          <div class="image-wrapper">
+            <div class="image second" :class="rewardClass(i)">
+              <img
+                :src="jeec_brain_url + squad_reward.reward.image"
+                alt="reward"
+              />
+              <img
+                v-if="rewardClass(i) === 'lost_reward'"
+                src="../assets/icons/cross.svg"
+                class="cross"
+              />
+            </div>
+          </div>
+        </v-carousel-item>
       </v-carousel>
 
       <div class="name">{{ squads_rewards[model].reward.name }}</div>
@@ -27,17 +99,17 @@
       </div>
       <div
         v-if="
-          rewardClass === 'current_reward' || rewardClass === 'future_reward'
+          rewardClass(model) === 'current_reward' || rewardClass(model) === 'future_reward'
         "
         class="today-points"
       >
         Today's Points:
       </div>
-      <div v-if="rewardClass === 'current_reward'" class="xp-wrapper">
+      <div v-if="rewardClass(model) === 'current_reward'" class="xp-wrapper">
         <div class="points">{{ squad_points }}</div>
         <div class="xp">xp</div>
       </div>
-      <div v-if="rewardClass === 'future_reward'" class="points">--</div>
+      <div v-if="rewardClass(model) === 'future_reward'" class="points">--</div>
     </center>
   </div>
 </template>
@@ -66,14 +138,24 @@ export default {
     };
   },
   computed: {
+    window_width() {
+      return window.innerHeight;
+    },
     selected_date() {
       return this.squads_rewards[this.model]
         ? new Date(this.squads_rewards[this.model].date.substring(0, 11))
         : null;
     },
-    rewardClass() {
-      var selected_date = this.squads_rewards[this.model]
-        ? new Date(this.squads_rewards[this.model].date.substring(0, 11))
+  },
+  methods: {
+    image_index(i) {
+      return (i + this.squads_rewards.length) % this.squads_rewards.length;
+    },
+    rewardClass(index) {
+      if (this.squads_rewards[index].winner) return "win_reward";
+
+      var selected_date = this.squads_rewards[index]
+        ? new Date(this.squads_rewards[index].date.substring(0, 11))
         : null;
 
       var millisecondsPerDay = 1000 * 60 * 60 * 24;
@@ -82,8 +164,7 @@ export default {
 
       days = Math.floor(days);
 
-      if (this.squads_rewards[this.model].winner) return "win_reward";
-      else if (days > 0) return "lost_reward";
+      if (days > 0) return "lost_reward";
       else if (days < 0) return "future_reward";
       else return "current_reward";
     },
@@ -97,17 +178,26 @@ export default {
 }
 
 .date {
-  font-size: 6vh;
-  font-weight: 600;
+  font-size: 5.5vh;
   margin: 0;
   margin-top: 2vh;
+  color: black;
+}
+
+.arrow-btn {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.arrow {
+  font-size: 15vh !important;
 }
 
 .image {
   align-self: center;
   position: relative;
-  width: 18vh;
-  height: 18vh;
+  width: 25vh;
+  height: 25vh;
   border-radius: 50%;
   margin: 3vh;
   padding: 1vh;
@@ -118,8 +208,8 @@ export default {
 .image img {
   position: absolute;
   margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
+  max-height: 20vh;
+  max-width: 20vh;
   top: 0;
   left: 0;
   right: 0;
@@ -127,6 +217,11 @@ export default {
 }
 
 .cross {
+  height: 17vh;
+  width: 17vh;
+}
+
+.small-cross {
   height: 11vh;
   width: 11vh;
 }
@@ -151,7 +246,8 @@ export default {
 }
 
 .name {
-  font-size: 3.5vh;
+  font-size: 5vh;
+  margin-top: -2vh;
 }
 
 .congratulations {
@@ -184,5 +280,84 @@ export default {
 
 .next-points {
   color: #aaadb0;
+}
+
+@media screen and (max-width: 1100px) {
+  .first,
+  .third,
+  .rect,
+  .browser {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .mobile {
+    display: none;
+  }
+
+  .date {
+    margin-bottom: 2vh;
+  }
+
+  .image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .first,
+  .third {
+    height: 18vh;
+    width: 18vh;
+  }
+
+  .first img,
+  .third img {
+    max-height: 15vh;
+    max-width: 15vh;
+  }
+
+  .second {
+    height: 28vh;
+    width: 28vh;
+  }
+
+  .second img {
+    max-height: 24vh;
+    max-width: 24vh;
+  }
+
+  .rect {
+    width: 10vw;
+    margin-left: -5vw;
+    margin-right: -5vw;
+    height: 0.5vh;
+    background-color: #27ade4;
+  }
+
+  .name {
+    margin-top: 0;
+  }
+
+  /* .other-points {
+    width: 82vh;
+    display: flex;
+    justify-content: space-between;
+    margin-top: -6vh;
+  }
+
+  .other-points > div {
+    width: 24vh;
+  }
+
+  .other-points .level {
+    font-size: 3vh;
+  }
+
+  .other-points .points,
+  .other-points .done {
+    font-size: 2vh;
+  } */
 }
 </style>

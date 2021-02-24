@@ -69,46 +69,133 @@
 
     <v-dialog v-model="dialog">
       <v-card>
+        <v-icon @click.stop="dialog=false" class="close-dialog">mdi-close</v-icon>
         <div class="dialog-wrapper">
-          <p class="dialog-type">{{ activity.type }}</p>
-          <p v-if="activity.name" class="dialog-name">{{ activity.name }}</p>
-          <div class="dialog-time">
-            <p class="dialog-day">{{ activity.day }}</p>
+          <div>
+            <center
+              class="dialog-companies"
+              v-if="activity.companies.data.length > 0"
+            >
+              <div
+                class="dialog-company-img"
+                v-for="company in activity.companies.data"
+                :key="company.name"
+              >
+                <img
+                  alt="activity-company"
+                  :src="jeec_brain_url + company.logo"
+                />
+              </div>
+            </center>
+            <p class="dialog-type">{{ activity.type }}</p>
+            <p v-if="activity.name" class="dialog-name">{{ activity.name }}</p>
+            <p v-if="activity.companies.data.length > 0" class="dialog-by">
+              by {{ companies }}
+            </p>
+            <p class="dialog-description">{{ activity.description }}</p>
+            <p class="dialog-raffle">Raffle: {{ activity.reward.name }}</p>
+            <p class="dialog-warning" v-if="activity.type === '15/15'">
+              This activity is held in the company's Job Fair booth
+            </p>
+            <p
+              class="dialog-warning"
+              v-if="
+                activity.type === 'Discussion Panel' ||
+                activity.type === 'Speaker'
+              "
+            >
+              This activity is held in the Job Fair's auditorium
+            </p>
+
+            <div class="dialog-time browser">
+              <p class="dialog-day">
+                <v-icon>mdi-calendar-arrow-right</v-icon> {{ activity.day }}
+              </p>
+              <p class="dialog-hours">
+                <v-icon>mdi-clock-time-four-outline</v-icon>
+                {{ activity.time }} -
+                {{ activity.end_time }}
+              </p>
+            </div>
+          </div>
+          <div class="rect browser"></div>
+          <div>
+            <center
+              v-if="activity.speakers.data.length > 0"
+              class="dialog-speakers"
+            >
+              <figure
+                class="dialog-speaker"
+                v-for="speaker in normal_speakers"
+                :key="speaker.name"
+              >
+                <img
+                  class="dialog-speaker-img"
+                  :src="jeec_brain_url + speaker.image"
+                />
+                <figcaption class="dialog-speaker-caption">
+                  <p>{{ speaker.name }}</p>
+                  <p>
+                    {{ speaker.position
+                    }}{{ speaker.company ? " @ " + speaker.company : "" }}
+                  </p>
+                </figcaption>
+              </figure>
+            </center>
+
+            <center class="moderator" v-if="moderator">
+              <figure class="dialog-speaker">
+                <img
+                  class="dialog-speaker-img moderator"
+                  :src="jeec_brain_url + moderator.image"
+                />
+                <figcaption class="dialog-speaker-caption">
+                  <p>{{ moderator.name }}</p>
+                  <p>
+                    {{ moderator.position
+                    }}{{ moderator.company ? " @ " + moderator.company : "" }}
+                  </p>
+                </figcaption>
+              </figure>
+            </center>
+
+            <center class="dialog-speakers-companies" v-if="speakers_companies">
+              <img
+                v-for="company in speakers_companies"
+                :key="company"
+                :src="jeec_brain_url + company"
+              />
+            </center>
+
+            <div class="dialog-buttons">
+              <button
+                v-if="activity.zoom_url"
+                @click.stop="zoom()"
+                style="background-color: #27ade4"
+              >
+                Zoom Link
+              </button>
+              <button
+                v-if="activity.registration_open && activity.registration_link"
+                :href="activity.registration_link"
+                style="background-color: #e42741"
+              >
+                Registration
+              </button>
+              <button style="background-color: #27ade4">
+                <a :href="calendar()">Add to Calendar</a>
+              </button>
+            </div>
+          </div>
+          <div class="dialog-time mobile">
+            <p class="dialog-day">
+              <v-icon>mdi-calendar-arrow-right</v-icon> {{ activity.day }}
+            </p>
             <p class="dialog-hours">
-              {{ activity.time }} - {{ activity.end_time }}
+              <v-icon>mdi-clock-time-four-outline</v-icon> {{ activity.time }} -
+              {{ activity.end_time }}
             </p>
           </div>
-          <p class="dialog-location">{{ activity.location }}</p>
-          <p class="dialog-description">{{ activity.description }}</p>
-          <p v-if="activity.companies.data.length > 0" class="dialog-title">
-            Companies
-          </p>
-          <center>
-            <img
-              class="dialog-img"
-              v-for="company in activity.companies.data"
-              :key="company.name"
-              :src="jeec_brain_url + company.logo"
-            />
-          </center>
-          <p v-if="activity.speakers.data.length > 0" class="dialog-title">
-            Speakers
-          </p>
-          <center>
-            <figure
-              class="dialog-speaker"
-              v-for="speaker in activity.speakers.data"
-              :key="speaker.name"
-            >
-              <img
-                class="dialog-img dialog-speaker-img"
-                :src="jeec_brain_url + speaker.image"
-              />
-              <figcaption class="dialog-speaker-name">
-                {{ speaker.name }}
-              </figcaption>
-            </figure>
-          </center>
         </div>
       </v-card>
     </v-dialog>
@@ -131,6 +218,40 @@ export default {
     activity: Object,
   },
   computed: {
+    speakers_companies() {
+      var speakers = this.activity.speakers.data.slice(0);
+      var companies = [];
+
+      for (var i = 0; i < speakers.length; i++) {
+        if (speakers[i].company && speakers[i].company_logo && !companies.includes(speakers[i].company_logo)) {
+          companies.push(speakers[i].company_logo);
+        }
+      }
+
+      return companies;
+    },
+    normal_speakers() {
+      var speakers = this.activity.speakers.data.slice(0);
+
+      for (var i = 0; i < speakers.length; i++) {
+        if (speakers[i].name === this.activity.moderator) {
+          speakers.splice(i, 1);
+        }
+      }
+
+      return speakers;
+    },
+    moderator() {
+      var speakers = this.activity.speakers.data;
+
+      for (var i = 0; i < speakers.length; i++) {
+        if (speakers[i].name === this.activity.moderator) {
+          return speakers[i];
+        }
+      }
+
+      return null;
+    },
     companies() {
       var companies = [];
 
@@ -419,37 +540,181 @@ export default {
   font-weight: 600;
 }
 
-.dialog-img {
-  height: 8vh;
-  max-width: 70vw;
-  margin: 1vh;
+.close-dialog {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.dialog-wrapper {
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  padding-left: 3vw;
+  padding-right: 3vw;
+}
+
+.dialog-companies {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.dialog-company-img {
+  position: relative;
+  height: 9vh;
+  width: 9vh;
+  border-radius: 50%;
+  border: 0.1vh solid #707070;
+  background-color: white;
+  overflow: hidden;
+}
+
+.dialog-company-img img {
+  position: absolute;
+  margin: auto;
+  max-height: 9vh;
+  max-width: 9vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .dialog-type {
-  font-size: 3vh;
+  font-size: 3.5vh;
   font-weight: 600;
+  text-align: center;
+  margin: 0;
+  margin-top: 1vh;
+}
+
+.dialog-name {
+  font-size: 3.2vh;
+  font-weight: 500;
   text-align: center;
   margin: 0;
 }
 
-.dialog-name {
-  font-size: 3.5vh;
-  font-weight: 600;
-  color: #707070;
+.dialog-by {
   text-align: center;
+  font-size: 2vh;
+  font-weight: 600;
   margin: 0;
+}
+
+.dialog-description {
+  text-align: center;
+  font-size: 2.2vh;
+  font-weight: 500;
+  margin: 0;
+}
+
+.dialog-raffle {
+  font-size: 2vh;
+  font-weight: bolder;
+  text-align: center;
+  margin-top: 1vh;
+  margin-bottom: 0;
+}
+
+.dialog-buttons {
+  margin-top: 2vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.dialog-buttons * {
+  color: white;
+}
+
+.dialog-buttons > button {
+  width: 100%;
+  min-height: 6vh;
+  border-radius: 2vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  font-size: 2.1vh;
+  font-weight: 500;
+}
+
+.dialog-warning {
+  color: #e42741;
+  font-size: 2vh;
+  font-weight: bolder;
+  margin: 0;
+  text-align: center;
+}
+
+.dialog-speakers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 1vh;
+}
+
+.dialog-speaker {
+  display: flex;
+  text-align: center;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  justify-content: center;
+  align-self: center;
+  margin-bottom: 1vh;
+}
+
+.dialog-speaker-img {
+  height: 8vh;
+  width: 8vh;
+  margin-right: 2vw;
+  border-radius: 50%;
+}
+
+.moderator img {
+  border: 0.4vh solid #27ade4;
+  box-shadow: 0 0 1vh 0.2vh #27ade4;
+}
+
+.dialog-speaker-caption {
+  max-width: 30vw;
+}
+
+.dialog-speaker-caption p:first-of-type {
+  font-size: 2vh;
+  font-weight: 600;
+  margin: 0;
+  text-align: left;
+}
+
+.dialog-speaker-caption p:last-of-type {
+  font-size: 1.8vh;
+  margin: 0;
+  text-align: left;
+}
+
+.dialog-speakers-companies {
+  margin-top: 1vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.dialog-speakers-companies img{
+  max-height: 8vh;
+  max-width: 30vw;
 }
 
 .dialog-time {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1vh;
+  text-align: center;
 }
 
 .dialog-day,
 .dialog-hours {
   margin: 0;
-  margin-left: 1vw;
-  margin-right: 1vw;
   font-size: 2.2vh;
   font-weight: 800;
 }
@@ -461,36 +726,12 @@ export default {
   margin: 0;
 }
 
-.dialog-description {
-  text-align: justify;
-  padding-left: 2vw;
-  padding-right: 2vw;
-  font-size: 2.2vh;
-  margin: 0;
-}
-
 .dialog-title {
   margin: 0;
   text-align: center;
   font-size: 3vh;
   font-weight: 600;
   margin-top: 1.5vh;
-}
-
-.dialog-speaker {
-  display: inline-block;
-  text-align: center;
-  margin-left: 2vw;
-  margin-right: 2vw;
-}
-
-.dialog-speaker-img {
-  vertical-align: top;
-}
-
-.dialog-speaker-name {
-  font-size: 2.5vh;
-  font-weight: 600;
 }
 
 @media screen and (max-width: 1100px) {
@@ -505,13 +746,13 @@ export default {
 
 @media screen and (min-width: 1100px) {
   .activity-img {
-    height: 19vh;
-    width: 19vh;
+    height: 20vh;
+    width: 20vh;
   }
 
   .activity-img img {
-    max-height: 19vh;
-    max-width: 19vh;
+    max-height: 20vh;
+    max-width: 20vh;
   }
 
   .description {
@@ -520,7 +761,7 @@ export default {
 
   .activity-text {
     max-width: 100vw;
-    width: calc(48vw - 19vh);
+    width: calc(48vw - 20vh);
   }
 
   .activity-right {
@@ -569,12 +810,11 @@ export default {
   }
 
   .inner-description {
-    font-size: 2.6vh;
+    font-size: 2.1vh;
     text-align: justify;
     margin-top: 2vh;
     margin-bottom: 0;
-    max-height: 7.5vh;
-    overflow-y: auto;
+    line-height: 2.2vh;
   }
 
   .inner-description::-webkit-scrollbar {
@@ -591,6 +831,61 @@ export default {
 
   .mobile {
     display: none;
+  }
+
+  .dialog-wrapper {
+    display: flex;
+  }
+
+  .dialog-wrapper * {
+    text-align: left;
+  }
+
+  .dialog-wrapper > div:first-of-type {
+    width: 56vw;
+  }
+
+  .dialog-wrapper > div:nth-child(3) {
+    width: calc(42vw - 4px);
+  }
+
+  .dialog-time {
+    justify-content: left;
+  }
+
+  .dialog-day {
+    margin-right: 2vw;
+  }
+
+  .rect {
+    width: 4px;
+    height: auto;
+    background-color: #27ade4;
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }
+
+  .dialog-speaker {
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }
+
+  .dialog-speaker-caption {
+    width: 9vw;
+  }
+
+  .dialog-speaker-caption p:last-of-type {
+    font-size: 1.3vh;
+    font-weight: 500;
+  }
+
+  .dialog-speaker-img {
+    margin-right: 1vw;
+  }
+
+  .dialog-buttons button{
+    text-align: center;
+    font-size: 2.7vh;
   }
 }
 </style>

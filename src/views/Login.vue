@@ -87,7 +87,7 @@ export default {
       return output_plaintext;
     },
     login_student() {
-      window.location.replace("https://fenix.tecnico.ulisboa.pt/oauth/userdialog?client_id=1132965128044826&redirect_uri=http://51.11.191.17:8083/student/redirect_uri&");
+      window.location.replace(process.env.VUE_APP_FENIX_LOGIN_URL);
     },
     login_partner() {
       window.location.replace("https://brain.jeec.ist/companies/");

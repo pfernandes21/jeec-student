@@ -65,15 +65,18 @@
               alt="squad-image"
             />
             <div>
-              <p class="main-title">
-                {{ squad ? squad.name : "No squad" }}
+              <p class="main-title" :style="!squad ? 'text-align:center' : ''">
+                {{ squad ? squad.name : "You currently have no squad" }}
               </p>
-              <p class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
-              <p class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
+              <p v-if="squad" class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
+              <p v-if="squad" class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
+              <div v-else class="redirect-buttons see-more create-squad">
+                <router-link to="/squad" tag="button">Create Squad</router-link>
+              </div>
             </div>
           </div>
-          <div class="middle-info">
-            <div class="xp-wrapper">
+          <div class="middle-info" :style="!squad ? 'justify-content:center  !important' : ''">
+            <div v-if="squad" class="xp-wrapper">
               <div class="daily-xp">
                 <p class="xp-top">Daily:</p>
                 <span class="xp-value">{{
@@ -172,12 +175,11 @@
           </div>
         </div>
       </div>
-
+    </div>
       <div class="redirect-buttons bottom">
         <router-link to="/code" tag="button">Redeem Codes</router-link>
         <router-link to="/quests" tag="button">Daily Quests</router-link>
       </div>
-    </div>
   </div>
 </template>
 
@@ -244,13 +246,11 @@ export default {
       }
     }
   },
-  created() {
-    window.addEventListener("resize", this.resize);
-  },
   destroyed() {
     window.removeEventListener("resize", this.resize);
   },
-  async mounted() {
+  created() {
+    window.addEventListener("resize", this.resize);
     this.resize();
 
     if (!this.currentUser) {
@@ -393,18 +393,19 @@ export default {
   margin-top: -0.5vh !important;
 }
 
+.middle {
+  min-height: 37vh;
+}
+
 .middle-info {
   display: flex;
   padding-top: 2vh;
   scroll-padding-bottom: 2vh;
+  justify-content: space-between;
 }
 
 .xp-wrapper {
   align-self: center;
-}
-
-.today-reward {
-  margin-left: auto;
 }
 
 .xp-top {
@@ -466,6 +467,7 @@ export default {
   margin-left: 1vw;
   margin-right: 1vw;
   min-height: 12vh;
+  line-height: 4.7vh;
 }
 
 .user-wrapper {
@@ -513,6 +515,10 @@ export default {
   }
 
   .members {
+    display: none;
+  }
+
+  .create-squad {
     display: none;
   }
 }
@@ -608,8 +614,7 @@ export default {
     margin: 0;
   }
 
-  .squad-wrapper,
-  .middle-info {
+  .squad-wrapper {
     justify-content: center;
   }
 
@@ -622,7 +627,7 @@ export default {
   }
 
   .redirect-buttons button {
-    width: 13vw;
+    width: 15.8vw;
     margin: 0;
     margin-right: 2vw;
     padding-left: 2vw;
@@ -636,6 +641,19 @@ export default {
   .see-more {
     margin-top: 3vh;
     margin-left: calc(50% - 6.5vw);
+  }
+
+  .create-squad {
+    margin-top: 5vh;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .create-squad button {
+    margin: 0;
   }
 
   .user-wrapper {
@@ -658,6 +676,9 @@ export default {
 
   .xp-wrapper {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .today-reward {
@@ -689,7 +710,7 @@ export default {
   .members {
     width: 80%;
     margin-left: 10%;
-    height: 26vh;
+    max-height: 32vh;
     overflow-y: auto;
   }
 }
