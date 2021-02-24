@@ -55,6 +55,8 @@ export default {
   width: 100% !important;
   margin: 0.1vh;
   font-size: 2.6vh !important;
+  white-space: pre !important;
+  text-align: center !important;
 }
 
 @media screen and (min-width: 1100px) {
