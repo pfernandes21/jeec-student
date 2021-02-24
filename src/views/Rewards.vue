@@ -25,7 +25,7 @@
     />
 
     <JEECPOTRewards
-      style="margin-top: 10vh"
+      style="margin-top: 8vh"
       v-if="button === 'jeecpot'"
       :jeecpot_rewards="jeecpot_rewards"
     />

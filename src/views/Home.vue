@@ -65,7 +65,7 @@
               alt="squad-image"
             />
             <div>
-              <p class="main-title">
+              <p class="main-title" :style="!squad ? 'text-align:center' : ''">
                 {{ squad ? squad.name : "You currently have no squad" }}
               </p>
               <p v-if="squad" class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="middle-info">
+          <div class="middle-info" :style="!squad ? 'justify-content:center  !important' : ''">
             <div v-if="squad" class="xp-wrapper">
               <div class="daily-xp">
                 <p class="xp-top">Daily:</p>
@@ -114,24 +114,6 @@
           </div>
 
           <div class="members" v-if="squad">
-            <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-            />
-            <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-            />
-            <Member
-              v-for="member in squad.members.data"
-              :key="member.ist_id"
-              :member="member"
-              :captain_ist_id="squad.captain_ist_id"
-            />
             <Member
               v-for="member in squad.members.data"
               :key="member.ist_id"
@@ -632,8 +614,7 @@ export default {
     margin: 0;
   }
 
-  .squad-wrapper,
-  .middle-info {
+  .squad-wrapper {
     justify-content: center;
   }
 
@@ -664,6 +645,15 @@ export default {
 
   .create-squad {
     margin-top: 5vh;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .create-squad button {
+    margin: 0;
   }
 
   .user-wrapper {

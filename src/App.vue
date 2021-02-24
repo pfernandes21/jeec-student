@@ -2,8 +2,11 @@
   <div id="app">
     <v-app>
       <div class="app-wrapper">
-        <Navbar class="navbar-wrapper" />
-        <router-view class="page-wrapper" />
+        <Navbar v-if="$route.name !== 'Login'" class="navbar-wrapper" />
+        <router-view
+          class="page-wrapper"
+          :class="$route.name === 'Login' ? 'login-page' : ''"
+        />
       </div>
 
       <Notification
@@ -60,9 +63,9 @@ export default {
       var today = new Date();
       var last_login = this.currentUser
         ? new Date(this.currentUser.last_login)
-        : "";
+        : null;
 
-      if (this.currentUser && today.getDate() !== last_login.getDate()) {
+      if (!last_login || (this.currentUser && today.getDate() !== last_login.getDate())) {
         UserService.todayLogin().then(
           (response) => {
             response.data.data["last_login"] = today;
@@ -71,6 +74,10 @@ export default {
           },
           (error) => {
             console.log(error);
+            if(error.response.status == 409) {
+              this.currentUser.last_login = today;
+              this.$store.dispatch("auth/userUpdate", this.currentUser);
+            }
           }
         );
       }
@@ -126,6 +133,12 @@ export default {
   height: auto !important;
 }
 
+.login-page {
+  width: 100vw !important;
+  height: 100vh !important;
+  transform: translateY(0) !important;
+}
+
 @media screen and (max-width: 1100px) {
   .app-wrapper {
     height: 100vh;
@@ -135,6 +148,10 @@ export default {
     height: 90vh;
     overflow-y: hidden;
     margin-top: 10vh;
+  }
+
+  .login-page {
+    transform: translateY(-10vh) !important;
   }
 }
 

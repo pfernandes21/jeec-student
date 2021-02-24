@@ -1,18 +1,48 @@
 <template>
   <div class="jeecpot-rewards" v-if="jeecpot_rewards">
     <center>
-      <div class="_title">Participants with the most points:</div>
-      <div class="student-reward">
-        <div class="image" :class="{ winner: jeecpot_rewards.student_winner }">
-          <img
-            :src="jeec_brain_url + jeecpot_rewards.student_reward.image"
-            alt=""
-            class="reward"
-          />
+      <div class="_title">Students with the most points:</div>
+      <div class="squad_rewards">
+        <div class="second-squad-reward">
+          <div class="image" :class="{ winner: jeecpot_rewards.second_student_winner }">
+            <img
+              :src="jeec_brain_url + jeecpot_rewards.second_student_reward.image"
+              alt=""
+              class="reward"
+            />
+          </div>
+          <img src="../assets/icons/silver_crown.svg" alt="" class="crown" />
+          <div class="reward-info">
+            {{ jeecpot_rewards.second_student_reward.name }}<br />(2nd place)
+          </div>
         </div>
-        <img src="../assets/icons/gold_crown.svg" alt="" class="crown student-crown" />
-        <div class="reward-info">
-          {{ jeecpot_rewards.student_reward.name }}<br />(1st place)
+
+        <div class="first-squad-reward">
+          <div class="image" :class="{ winner: jeecpot_rewards.first_student_winner }">
+            <img
+              :src="jeec_brain_url + jeecpot_rewards.first_student_reward.image"
+              alt=""
+              class="reward"
+            />
+          </div>
+          <img src="../assets/icons/gold_crown.svg" alt="" class="crown first-squad-crown" />
+          <div class="reward-info">
+            {{ jeecpot_rewards.first_student_reward.name }}<br />(1st place)
+          </div>
+        </div>
+
+        <div class="third-squad-reward">
+          <div class="image" :class="{ winner: jeecpot_rewards.third_student_winner }">
+            <img
+              :src="jeec_brain_url + jeecpot_rewards.third_student_reward.image"
+              alt=""
+              class="reward"
+            />
+          </div>
+          <img src="../assets/icons/bronze_crown.svg" alt="" class="crown" />
+          <div class="reward-info">
+            {{ jeecpot_rewards.third_student_reward.name }}<br />(3rd place)
+          </div>
         </div>
       </div>
 
@@ -82,6 +112,8 @@ export default {
 <style scoped>
 .jeecpot-rewards {
   font-weight: 600;
+  height: 90vh;
+  overflow-y: auto;
 }
 
 ._title {
@@ -145,7 +177,7 @@ export default {
 
 .squad_rewards {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
   justify-content: center;
 }
 
@@ -163,5 +195,11 @@ export default {
 
 .student-reward {
   margin-top: 6vh;
+}
+
+@media screen and (max-width: 1100px) {
+  .jeecpot-rewards {
+    padding-bottom: 8vh;
+  }
 }
 </style>
