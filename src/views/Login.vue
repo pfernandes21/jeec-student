@@ -5,7 +5,6 @@
         <img
           alt="JEEC logo"
           src="../assets/jeec_colour_no_edition.svg"
-          style="width: 75vw"
         />
       </div>
       <div class="buttons-flex">
@@ -36,7 +35,7 @@
         </div>
       </div>
       <div class="loading-bottom">
-        <img alt="IST logo" src="../assets/tecnico_grey.svg" style="width: 32vw" />
+        <img alt="IST logo" src="../assets/tecnico_grey.svg"/>
       </div>
     </div>
   </div>
@@ -123,16 +122,19 @@ export default {
 <style scoped>
 .login {
   height: 100vh;
+  width: 100vw;
   transform: translateY(-10vh);
 }
 
 .loading {
   background-color: #F1F1F1;
   height: 100vh;
+  width: 100vw;
   position: relative;
 }
 
 .loading-top {
+  width: 75vw;
   position: absolute;
   top: 20%;
   left: 50%;
@@ -173,10 +175,47 @@ export default {
 }
 
 .loading-bottom {
+  width: 32vw;
   position: absolute;
   top: 90%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+@media screen and (min-width: 550px) {
+.loading-top {
+  width: 56vh;
+}
+
+.buttons-flex {
+  padding: 0vh;
+}
+
+.button {
+  height: 9.5vh;
+  border-radius: 6vh;
+  padding: 4vh;
+  margin: 2vh;
+  font-size: 3.4vh;
+}
+
+.icon {
+  padding-right: 5vh;
+  height: 5vh;
+}
+
+.loading-bottom {
+  width: 24vh;
+}
+
+}
+
+@media screen and (min-width: 1100px) {
+.login {
+  transform: translateY(0vh);
+}
+
+}
+
 </style>
