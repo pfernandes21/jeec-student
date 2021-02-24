@@ -49,7 +49,7 @@ export default {
   },
   watch: {
     //or $route(to, from)
-    $route() {
+    $route(to) {
       // this.notifications.push("changed page");
       // UserService.getNotifications().then(
       //     (response) => {
@@ -60,26 +60,31 @@ export default {
       //     }
       //   );
 
-      var today = new Date();
-      var last_login = this.currentUser
-        ? new Date(this.currentUser.last_login)
-        : null;
+      if (to.name !== "Login") {
+        var today = new Date();
+        var last_login = this.currentUser
+          ? new Date(this.currentUser.last_login)
+          : null;
 
-      if (!last_login || (this.currentUser && today.getDate() !== last_login.getDate())) {
-        UserService.todayLogin().then(
-          (response) => {
-            response.data.data["last_login"] = today;
-            this.$store.dispatch("auth/userUpdate", response.data.data);
-            // this.dialog = true;
-          },
-          (error) => {
-            console.log(error);
-            if(error.response.status == 409) {
-              this.currentUser.last_login = today;
-              this.$store.dispatch("auth/userUpdate", this.currentUser);
+        if (
+          !last_login ||
+          (this.currentUser && today.getDate() !== last_login.getDate())
+        ) {
+          UserService.todayLogin().then(
+            (response) => {
+              response.data.data["last_login"] = today;
+              this.$store.dispatch("auth/userUpdate", response.data.data);
+              // this.dialog = true;
+            },
+            (error) => {
+              console.log(error);
+              if (error.response.status == 409) {
+                this.currentUser.last_login = today;
+                this.$store.dispatch("auth/userUpdate", this.currentUser);
+              }
             }
-          }
-        );
+          );
+        }
       }
     },
   },

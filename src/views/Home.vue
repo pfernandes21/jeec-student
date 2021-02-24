@@ -65,7 +65,7 @@
               alt="squad-image"
             />
             <div>
-              <p class="main-title" :style="!squad ? 'text-align:center' : ''">
+              <p class="main-title" :class="!squad ? 'no-squad-title' : ''">
                 {{ squad ? squad.name : "You currently have no squad" }}
               </p>
               <p v-if="squad" class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
@@ -319,6 +319,13 @@ export default {
   margin-bottom: -1vh;
 }
 
+.no-squad-title {
+  width: 90vw;
+  text-align: center;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
 .sub-title {
   font-size: 2.6vh;
   font-weight: 500;
@@ -534,6 +541,11 @@ export default {
     padding-left: 4vw;
     padding-top: 4vh;
     background-color: #e6e6e6;
+  }
+
+  .no-squad-title{
+    width: 100%;
+    padding: 0;
   }
 
   .middle {

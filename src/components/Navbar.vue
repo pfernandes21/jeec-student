@@ -42,9 +42,9 @@ import NavbarMenu from "./NavbarMenu.vue";
 export default {
   name: "Navbar",
   components: {
-    NavbarMenu
+    NavbarMenu,
   },
-  data: function() {
+  data: function () {
     return {
       page: this.$route.name,
       display_menu: false,
@@ -57,15 +57,17 @@ export default {
     },
     resize() {
       this.width = window.innerWidth;
-    }
+    },
   },
   watch: {
     //or $route(to, from)
     async $route(to) {
-      LogService.postLog(this.$store.state.auth.user.jwt, to.fullPath);
-
+      if (to.name !== "Login") {
+        LogService.postLog(this.$store.state.auth.user.jwt, to.fullPath);
+      }
+      
       this.page = to.name;
-    }
+    },
   },
   created() {
     window.addEventListener("resize", this.resize);
@@ -82,8 +84,8 @@ export default {
 
       if (names.length > 1) return names;
       else return [this.name, ""];
-    }
-  }
+    },
+  },
 };
 </script>
 
