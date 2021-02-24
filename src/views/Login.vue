@@ -1,23 +1,41 @@
 <template>
   <div class="login">
     <div class="loading">
-      <div class="loading-center">
+      <div class="loading-top">
         <img
           alt="JEEC logo"
-          src="../assets/jeec_white.svg"
-          style="height: 15vh"
+          src="../assets/jeec_colour_no_edition.svg"
         />
       </div>
-      <div @click.stop="login" class="login-button">
-        Login
-        <img
-          alt="Fenix logo"
-          src="../assets/fenix.png"
-          style="height: 6vh; margin-left: 2vw"
-        />
+      <div class="buttons-flex">
+        <div @click.stop="login_student" class="button" style="background-color: #27ADE4">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/graduation-hat.svg"
+            class="icon"
+            style="margin-top: 0.5vw"
+          />
+          Student Login
+        </div>
+        <div @click.stop="login_partner" class="button" style="background-color: #27ADE4">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/businessman.svg"
+            class="icon"
+          />
+          Partner Login
+        </div>
+        <div @click.stop="return_website" class="button" style="background-color: #E42741">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/back-arrow.svg"
+            class="icon"
+          />
+          Return to Website
+        </div>
       </div>
       <div class="loading-bottom">
-        <img alt="IST logo" src="../assets/tecnico.svg" style="height: 8vh" />
+        <img alt="IST logo" src="../assets/tecnico_grey.svg"/>
       </div>
     </div>
   </div>
@@ -68,8 +86,14 @@ export default {
 
       return output_plaintext;
     },
-    login() {
+    login_student() {
       window.location.replace(process.env.VUE_APP_FENIX_LOGIN_URL);
+    },
+    login_partner() {
+      window.location.replace("https://brain.jeec.ist/companies/");
+    },
+    return_website() {
+      window.location.replace("https://jeec.ist/");
     },
   },
   created() {
@@ -98,46 +122,100 @@ export default {
 <style scoped>
 .login {
   height: 100vh;
+  width: 100vw;
   transform: translateY(-10vh);
 }
 
 .loading {
-  background-color: #50575c;
+  background-color: #F1F1F1;
   height: 100vh;
+  width: 100vw;
   position: relative;
 }
 
-.loading-center {
+.loading-top {
+  width: 75vw;
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
-.login-button {
+.buttons-flex {
+  width: 100%;
+  padding: 10vw;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  border: 0.1vh solid white;
-  border-radius: 0.9vh;
-  padding: 1vh;
-  background-color: white;
-  color: #50575c;
-  font-size: 5.5vh;
-  font-weight: 600;
   position: absolute;
-  top: 70%;
+  top: 55%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.button {
+  height: 13vw;
+  display: flex;
+  align-items: center;
+  border-radius: 6vw;
+  padding: 5vw;
+  margin: 2vw;
+  color: #FFFFFF;
+  font-size: 4.5vw;
+  font-weight: 650;
   cursor: pointer;
 }
 
+.icon {
+  padding-right: 5vw;
+  height: 7vw;
+}
+
 .loading-bottom {
+  width: 32vw;
   position: absolute;
   top: 90%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+@media screen and (min-width: 550px) {
+.loading-top {
+  width: 56vh;
+}
+
+.buttons-flex {
+  padding: 0vh;
+}
+
+.button {
+  height: 9.5vh;
+  border-radius: 6vh;
+  padding: 4vh;
+  margin: 2vh;
+  font-size: 3.4vh;
+}
+
+.icon {
+  padding-right: 5vh;
+  height: 5vh;
+}
+
+.loading-bottom {
+  width: 24vh;
+}
+
+}
+
+@media screen and (min-width: 1100px) {
+.login {
+  transform: translateY(0vh);
+}
+
+}
+
 </style>
