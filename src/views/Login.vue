@@ -1,23 +1,42 @@
 <template>
   <div class="login">
     <div class="loading">
-      <div class="loading-center">
+      <div class="loading-top">
         <img
           alt="JEEC logo"
-          src="../assets/jeec_white.svg"
-          style="height: 15vh"
+          src="../assets/jeec_colour_no_edition.svg"
+          style="width: 75vw"
         />
       </div>
-      <div @click.stop="login" class="login-button">
-        Login
-        <img
-          alt="Fenix logo"
-          src="../assets/fenix.png"
-          style="height: 6vh; margin-left: 2vw"
-        />
+      <div class="buttons-flex">
+        <div @click.stop="login_student" class="button" style="background-color: #27ADE4">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/graduation-hat.svg"
+            class="icon"
+            style="margin-top: 0.5vw"
+          />
+          Student Login
+        </div>
+        <div @click.stop="login_partner" class="button" style="background-color: #27ADE4">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/businessman.svg"
+            class="icon"
+          />
+          Partner Login
+        </div>
+        <div @click.stop="return_website" class="button" style="background-color: #E42741">
+          <img
+            alt="Fenix logo"
+            src="../assets/icons/back-arrow.svg"
+            class="icon"
+          />
+          Return to Website
+        </div>
       </div>
       <div class="loading-bottom">
-        <img alt="IST logo" src="../assets/tecnico.svg" style="height: 8vh" />
+        <img alt="IST logo" src="../assets/tecnico_grey.svg" style="width: 32vw" />
       </div>
     </div>
   </div>
@@ -68,8 +87,14 @@ export default {
 
       return output_plaintext;
     },
-    login() {
+    login_student() {
       window.location.replace("https://fenix.tecnico.ulisboa.pt/oauth/userdialog?client_id=1132965128044826&redirect_uri=http://51.11.191.17:8083/student/redirect_uri&");
+    },
+    login_partner() {
+      window.location.replace("https://brain.jeec.ist/companies/");
+    },
+    return_website() {
+      window.location.replace("https://jeec.ist/");
     },
   },
   created() {
@@ -102,35 +127,49 @@ export default {
 }
 
 .loading {
-  background-color: #50575c;
+  background-color: #F1F1F1;
   height: 100vh;
   position: relative;
 }
 
-.loading-center {
+.loading-top {
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
-.login-button {
+.buttons-flex {
+  width: 100%;
+  padding: 10vw;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  border: 0.1vh solid white;
-  border-radius: 0.9vh;
-  padding: 1vh;
-  background-color: white;
-  color: #50575c;
-  font-size: 5.5vh;
-  font-weight: 600;
   position: absolute;
-  top: 70%;
+  top: 55%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.button {
+  height: 13vw;
+  display: flex;
+  align-items: center;
+  border-radius: 6vw;
+  padding: 5vw;
+  margin: 2vw;
+  color: #FFFFFF;
+  font-size: 4.5vw;
+  font-weight: 650;
   cursor: pointer;
+}
+
+.icon {
+  padding-right: 5vw;
+  height: 7vw;
 }
 
 .loading-bottom {
