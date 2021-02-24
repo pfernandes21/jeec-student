@@ -243,7 +243,8 @@ export default {
     height: 7.5vh;
     margin: 0;
     margin-bottom: 0.5vh;
-    background-color: white;
+    background-color: #2D333A;
+    color: white;
     font-size: 3vh;
     font-weight: 600;
     text-align: center;

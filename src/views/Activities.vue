@@ -137,6 +137,14 @@ export default {
       (response) => {
         this.activities = response.data.data;
         this.getEventDates(response.data.start_date, response.data.end_date);
+
+        var now = new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate()
+        );
+        var event_day = this.event_days.map((day) => day.getTime()).indexOf(now.getTime());
+        this.model = event_day !== -1 ? event_day : 0;
       },
       (error) => {
         console.log(error);

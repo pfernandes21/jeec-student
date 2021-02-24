@@ -169,6 +169,15 @@ export default {
       else return "current_reward";
     },
   },
+  created() {
+    var now = new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate()
+        );
+        var event_day = this.squads_rewards.map((day) => new Date(day.date.substring(0, 11)).getTime()).indexOf(now.getTime());
+        this.model = event_day !== -1 ? event_day : 0;
+  },
 };
 </script>
 

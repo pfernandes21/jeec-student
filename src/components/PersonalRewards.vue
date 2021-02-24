@@ -213,7 +213,7 @@ export default {
   },
   data() {
     return {
-      model: 0,
+      model: this.$store.state.auth.user.level ? this.$store.state.auth.user.level.data.value : 0,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       xpbar_width: "65vw",
       height: 30,

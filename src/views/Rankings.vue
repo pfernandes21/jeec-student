@@ -2,6 +2,7 @@
   <div class="rankings">
     <Buttons
       @_click="click"
+      class="-buttons"
       :names="{
         personal: button === 'personal',
         squads: button === 'squads',
@@ -46,7 +47,7 @@
       <div>
         <p class="rank-title">Squads</p>
         <Rank
-          class="rank"
+          class="rank -squads"
           v-for="(squad, index) in squads"
           :key="squad.name"
           :name="squad.name"
@@ -151,6 +152,11 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .-buttons,
+  .rank-title {
+    display: none;
+  }
+
   .rankings {
     height: 100vh;
     overflow-y: auto;
@@ -174,6 +180,10 @@ export default {
     font-size: 6vh;
     font-weight: 600;
     margin: 0;
+  }
+
+  .-squads {
+    cursor: pointer;
   }
 }
 </style>

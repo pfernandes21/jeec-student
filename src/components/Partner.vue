@@ -116,6 +116,11 @@ export default {
     width: 100%;
   }
 
+  .name {
+    font-size: 5vh;
+    margin: 2.5vh;
+  }
+
   .partner {
     width: 24vw;
     margin-bottom: 0.5vh;

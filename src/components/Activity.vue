@@ -67,7 +67,7 @@
       <button><a :href="calendar()">Add to Calendar</a></button>
     </div>
 
-    <v-dialog v-model="dialog">
+    <v-dialog v-model="dialog" style="overflow-x: visible !important">
       <v-card>
         <v-icon @click.stop="dialog=false" class="close-dialog">mdi-close</v-icon>
         <div class="dialog-wrapper">
