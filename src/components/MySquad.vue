@@ -273,7 +273,6 @@ export default {
 
 .squad-name {
   margin: 0;
-  margin-bottom: -0.9vh;
   font-size: 3.7vh;
   font-weight: 600;
   color: #848484;

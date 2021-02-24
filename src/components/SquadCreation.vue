@@ -187,6 +187,7 @@ export default {
   border-radius: 50%;
   border: 0.5vh solid #27ade4;
   box-shadow: 0 0 2.5vh 0.1vh #27ade4;
+  cursor: pointer;
 }
 
 .squad-input {

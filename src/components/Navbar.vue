@@ -49,58 +49,6 @@ export default {
       page: this.$route.name,
       display_menu: false,
       width: window.innerWidth,
-      menu_items: [
-        {
-          name: "Home",
-          src: require("../assets/icons/placeholder.svg"),
-          page: "Home"
-        },
-        {
-          name: "Redeem Code",
-          src: require("../assets/icons/barcode.svg"),
-          page: "Code"
-        },
-        {
-          name: "Chat & Job Fair",
-          src: require("../assets/icons/chat.svg"),
-          page: "Companies"
-        },
-        {
-          name: "Quests",
-          src: require("../assets/icons/sword.svg"),
-          page: "Quests"
-        },
-        {
-          name: "Rewards",
-          src: require("../assets/icons/trophy.svg"),
-          page: "Rewards"
-        },
-        {
-          name: "Activities",
-          src: require("../assets/icons/calendar.svg"),
-          page: "Activities"
-        },
-        {
-          name: "My Profile",
-          src: require("../assets/icons/user.svg"),
-          page: "Profile"
-        },
-        {
-          name: "Squad",
-          src: require("../assets/icons/puzzle.svg"),
-          page: "Squad"
-        },
-        {
-          name: "Rankings",
-          src: require("../assets/icons/rank.svg"),
-          page: "Rankings"
-        },
-        {
-          name: "Rules",
-          src: require("../assets/icons/warning.svg"),
-          page: "Rules"
-        }
-      ]
     };
   },
   methods: {
