@@ -277,6 +277,7 @@ export default {
       }
     },
     add_tag(tag) {
+      this.currentUser.tags.push(tag);
       UserService.addTags([tag]).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -287,6 +288,7 @@ export default {
       );
     },
     add_company(company) {
+      this.currentUser.companies.push(company);
       UserService.addCompanies([company]).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -297,6 +299,7 @@ export default {
       );
     },
     delete_tag(tag) {
+      this.currentUser.tags = this.currentUser.tags.filter(_tag => _tag !== tag);
       UserService.deleteTag(tag).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -307,6 +310,7 @@ export default {
       );
     },
     delete_company(company) {
+      this.currentUser.companies = this.currentUser.companie.filter(_company => _company !== company);
       UserService.deleteCompany(company).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -695,6 +699,10 @@ export default {
 
   .interest-title {
     font-size: 3.5vh;
+  }
+
+  .tags {
+    margin-bottom: 2vh;
   }
 
   .tag {

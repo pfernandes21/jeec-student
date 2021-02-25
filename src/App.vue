@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <VueTitle :title="title" />
     <v-app>
       <div class="app-wrapper">
         <Navbar v-if="$route.name !== 'Login'" class="navbar-wrapper" />
@@ -21,6 +22,7 @@
 
 <script>
 import UserService from "./services/user.service";
+import VueTitle from "@/components/VueTitle.vue";
 import Navbar from "@/components/Navbar.vue";
 import Notification from "@/components/Notification.vue";
 
@@ -31,12 +33,16 @@ export default {
     };
   },
   components: {
+    VueTitle,
     Navbar,
     Notification,
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    title() {
+      return this.$route.name !== 'Company' ? this.$route.name : this.$route.params.name;
     },
   },
   methods: {

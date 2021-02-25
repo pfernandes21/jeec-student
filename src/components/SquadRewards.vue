@@ -279,6 +279,7 @@ export default {
 .points {
   font-size: 9vh;
   line-height: 9vh;
+  color: #26a2d5;
 }
 
 .xp {

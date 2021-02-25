@@ -82,7 +82,8 @@ const routes = [
     path: "/rules",
     name: "Rules",
     component: Rules
-  }
+  },
+  { path: "*", component: Login },
 ];
 
 const router = new VueRouter({

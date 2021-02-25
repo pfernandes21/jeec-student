@@ -312,6 +312,7 @@ export default {
   font-size: 9vh;
   font-weight: 600;
   margin: 0;
+  color: #26a2d5;
 }
 
 .xp {
