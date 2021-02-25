@@ -310,7 +310,7 @@ export default {
       );
     },
     delete_company(company) {
-      this.currentUser.companies = this.currentUser.companie.filter(_company => _company !== company);
+      this.currentUser.companies = this.currentUser.companies.filter(_company => _company !== company);
       UserService.deleteCompany(company).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
