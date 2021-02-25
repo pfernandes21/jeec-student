@@ -108,6 +108,10 @@ export default {
   font-weight: 400;
 }
 
+#app .v-dialog {
+  overflow-x: hidden;
+}
+
 #app button {
   outline: none;
 }

@@ -305,6 +305,10 @@ export default {
     display: none;
   }
 
+  .squads-rewards {
+    margin-top: 18vh !important;
+  }
+
   .date {
     margin-bottom: 2vh;
   }

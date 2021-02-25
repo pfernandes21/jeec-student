@@ -51,9 +51,9 @@ export default {
 
 .button {
   flex: 1;
-  height: 7.6vh !important;
+  height: 100% !important;
   width: 100% !important;
-  margin: 0.1vh;
+  margin: 0vh;
   font-size: 2.6vh !important;
   white-space: pre !important;
   text-align: center !important;

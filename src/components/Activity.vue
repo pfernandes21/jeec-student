@@ -67,13 +67,13 @@
       <button><a :href="calendar()">Add to Calendar</a></button>
     </div>
 
-    <v-dialog v-model="dialog" style="overflow-x: visible !important">
+    <v-dialog v-model="dialog" style="overflow-x: visible !important" :width="width > 1100 ? '70vw' : ''">
       <v-card>
         <v-icon @click.stop="dialog=false" class="close-dialog">mdi-close</v-icon>
         <div class="dialog-wrapper">
           <div>
             <center
-              class="dialog-companies"
+              class="dialog-companies mobile"
               v-if="activity.companies.data.length > 0"
             >
               <div
@@ -121,6 +121,21 @@
           <div class="rect browser"></div>
           <div>
             <center
+              class="dialog-companies browser"
+              v-if="activity.companies.data.length > 0"
+            >
+              <div
+                class="dialog-company-img"
+                v-for="company in activity.companies.data"
+                :key="company.name"
+              >
+                <img
+                  alt="activity-company"
+                  :src="jeec_brain_url + company.logo"
+                />
+              </div>
+            </center>
+            <center
               v-if="activity.speakers.data.length > 0"
               class="dialog-speakers"
             >
@@ -159,7 +174,7 @@
               </figure>
             </center>
 
-            <center class="dialog-speakers-companies" v-if="speakers_companies">
+            <center class="dialog-speakers-companies" v-if="activity.type !== 'Discussion Panel' && speakers_companies">
               <img
                 v-for="company in speakers_companies"
                 :key="company"
@@ -212,6 +227,7 @@ export default {
       images: [],
       current_image: 0,
       dialog: false,
+      width: window.innerWidth,
     };
   },
   props: {
@@ -359,8 +375,16 @@ export default {
 
       return start_date + "/" + end_date;
     },
+    resize() {
+      this.width = window.innerWidth;
+    },
   },
-  mounted() {
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
+  created() {
+    window.addEventListener("resize", this.resize);
+
     for (var i = 0; i < this.activity.companies.data.length; i++) {
       if (this.activity.companies.data[i].logo) {
         this.images.push(
@@ -589,10 +613,12 @@ export default {
 }
 
 .dialog-name {
-  font-size: 3.2vh;
+  font-size: 3vh;
   font-weight: 500;
+  line-height: 3vh;
   text-align: center;
   margin: 0;
+  margin-bottom: 1vh;
 }
 
 .dialog-by {
@@ -603,8 +629,9 @@ export default {
 }
 
 .dialog-description {
-  text-align: center;
+  text-align: justify !important;
   font-size: 2.2vh;
+  line-height: 2.5vh;
   font-weight: 500;
   margin: 0;
 }
@@ -659,13 +686,13 @@ export default {
   margin-left: 2vw;
   margin-right: 2vw;
   justify-content: center;
-  align-self: center;
+  align-self: flex-start;
   margin-bottom: 1vh;
 }
 
 .dialog-speaker-img {
-  height: 8vh;
-  width: 8vh;
+  height: 7.5vh;
+  width: 7.5vh;
   margin-right: 2vw;
   border-radius: 50%;
 }
@@ -676,18 +703,18 @@ export default {
 }
 
 .dialog-speaker-caption {
-  max-width: 30vw;
+  width: 18vw;
 }
 
 .dialog-speaker-caption p:first-of-type {
-  font-size: 2vh;
+  font-size: 1.7vh;
   font-weight: 600;
   margin: 0;
   text-align: left;
 }
 
 .dialog-speaker-caption p:last-of-type {
-  font-size: 1.8vh;
+  font-size: 1.4vh;
   margin: 0;
   text-align: left;
 }
@@ -835,6 +862,8 @@ export default {
 
   .dialog-wrapper {
     display: flex;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
   }
 
   .dialog-wrapper * {
@@ -842,11 +871,11 @@ export default {
   }
 
   .dialog-wrapper > div:first-of-type {
-    width: 56vw;
+    width: 52vw;
   }
 
   .dialog-wrapper > div:nth-child(3) {
-    width: calc(42vw - 4px);
+    width: 48vw;
   }
 
   .dialog-time {
@@ -857,21 +886,34 @@ export default {
     margin-right: 2vw;
   }
 
+  .dialog-description {
+    padding-right: 1vw;
+    height: auto;
+  }
+
   .rect {
     width: 4px;
     height: auto;
     background-color: #27ade4;
-    margin-left: 1vw;
-    margin-right: 1vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+  }
+
+  .dialog-speakers {
+    width: 100%;
   }
 
   .dialog-speaker {
-    margin-left: 1vw;
-    margin-right: 1vw;
+    margin: 0;
+    margin-bottom: 1.7vh;
   }
 
   .dialog-speaker-caption {
     width: 9vw;
+  }
+
+  .dialog-speaker-caption p:first-of-type {
+    line-height: 2.5vh;
   }
 
   .dialog-speaker-caption p:last-of-type {
@@ -883,9 +925,16 @@ export default {
     margin-right: 1vw;
   }
 
+  .dialog-buttons {
+    flex-wrap: wrap;
+  }
+
   .dialog-buttons button{
     text-align: center;
-    font-size: 2.7vh;
+    font-size: 2.4vh;
+    width: 20vw;
+    margin-top: 1vh;
+    min-height: 5vh;
   }
 }
 </style>

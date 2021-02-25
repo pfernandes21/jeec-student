@@ -45,7 +45,7 @@
             Missing
             {{
               (reward_level ? reward_level.end_points : 0) -
-                currentUser.total_points
+              currentUser.total_points
             }}
             xp
           </p>
@@ -68,15 +68,22 @@
               <p class="main-title" :class="!squad ? 'no-squad-title' : ''">
                 {{ squad ? squad.name : "You currently have no squad" }}
               </p>
-              <p v-if="squad" class="sub-title">{{ squad ? squad.cry : "No squad" }}</p>
-              <p v-if="squad" class="sub-sub-title">rank {{ squad ? squad.rank : "" }}</p>
+              <p v-if="squad" class="sub-title">
+                {{ squad ? squad.cry : "No squad" }}
+              </p>
+              <p v-if="squad" class="sub-sub-title">
+                rank {{ squad ? squad.rank : "" }}
+              </p>
               <div v-else class="redirect-buttons see-more create-squad">
                 <router-link to="/squad" tag="button">Create Squad</router-link>
               </div>
             </div>
           </div>
 
-          <div class="middle-info" :style="!squad ? 'justify-content:center  !important' : ''">
+          <div
+            class="middle-info"
+            :style="!squad ? 'justify-content:center  !important' : ''"
+          >
             <div v-if="squad" class="xp-wrapper">
               <div class="daily-xp">
                 <p class="xp-top">Daily:</p>
@@ -130,16 +137,20 @@
             <div class="big-reward-img">
               <img
                 :src="
-                  today_reward
+                  today_reward && today_reward.image
                     ? jeec_brain_url + today_reward.image
-                    : require('../assets/logo.png')
+                    : default_image
                 "
                 alt="today-reward"
               />
             </div>
             <div class="big-reward-info">
               <p class="big-reward-name">
-                {{ (today_reward && today_reward.name !== "") ? today_reward.name : "No Reward Found" }}
+                {{
+                  today_reward && today_reward.image
+                    ? today_reward.name
+                    : "No Reward Found"
+                }}
               </p>
               <p class="big-reward-description">Today's Top Team</p>
             </div>
@@ -151,20 +162,22 @@
                 :src="
                   reward_level
                     ? jeec_brain_url + reward_level.reward.image
-                    : require('../assets/jeec_colour_no_edition.svg')
+                    : default_image
                 "
                 alt="next-reward"
               />
             </div>
             <div class="big-reward-info">
               <p class="big-reward-name">
-                {{ reward_level ? reward_level.reward.name : "No Reward Found" }}
+                {{
+                  reward_level ? reward_level.reward.name : "No Reward Found"
+                }}
               </p>
               <p class="big-reward-description" v-if="reward_level">
-                Missing
+                Next Personal Reward<br>Missing
                 {{
                   (reward_level ? reward_level.end_points : 0) -
-                    currentUser.total_points
+                  currentUser.total_points
                 }}
                 xp
               </p>
@@ -177,10 +190,10 @@
         </div>
       </div>
     </div>
-      <div class="redirect-buttons bottom">
-        <router-link to="/code" tag="button">Redeem Codes</router-link>
-        <router-link to="/quests" tag="button">Daily Quests</router-link>
-      </div>
+    <div class="redirect-buttons bottom">
+      <router-link to="/code" tag="button">Redeem Codes</router-link>
+      <router-link to="/quests" tag="button">Daily Quests</router-link>
+    </div>
   </div>
 </template>
 
@@ -193,16 +206,17 @@ export default {
   name: "Home",
   components: {
     Expbar,
-    Member
+    Member,
   },
-  data: function() {
+  data: function () {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
+      default_image: require("../assets/jeec_colour_no_edition.svg"),
       squad: null,
       levels: null,
       today_reward: {},
       xpbar_width: "92vw",
-      height: 30
+      height: 30,
     };
   },
   computed: {
@@ -228,7 +242,7 @@ export default {
       }
 
       return null;
-    }
+    },
   },
   methods: {
     resize() {
@@ -245,7 +259,7 @@ export default {
       } else {
         this.height = 60;
       }
-    }
+    },
   },
   destroyed() {
     window.removeEventListener("resize", this.resize);
@@ -259,32 +273,32 @@ export default {
     }
 
     UserService.getUserSquad().then(
-      response => {
+      (response) => {
         this.squad = response.data.data;
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
 
     UserService.getLevels().then(
-      response => {
+      (response) => {
         this.levels = response.data.data;
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
 
     UserService.getTodaySquadReward().then(
-      response => {
+      (response) => {
         this.today_reward = response.data;
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
-  }
+  },
 };
 </script>
 
@@ -544,7 +558,7 @@ export default {
     background-color: #e6e6e6;
   }
 
-  .no-squad-title{
+  .no-squad-title {
     width: 100%;
     padding: 0;
   }

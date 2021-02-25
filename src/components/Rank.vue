@@ -10,7 +10,7 @@
       <p v-if="cry" class="cry">{{ cry }}</p>
     </div>
 
-    <v-dialog v-model="dialog" v-if="members">
+    <v-dialog v-model="dialog" v-if="members" :width="width > 1100 ? '40vw' : ''">
       <v-card>
         <div class="dialog-wrapper">
           <div v-for="member in members" :key="member.ist_id" class="member">
@@ -32,6 +32,7 @@ export default {
   data: function () {
     return {
       dialog: false,
+      width: window.innerWidth,
     };
   },
   props: {
@@ -64,6 +65,15 @@ export default {
       if (names.length > 1) return names[0] + " " + names[names.length - 1];
       else return this.name, "";
     },
+    resize() {
+      this.width = window.innerWidth;
+    },
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
+  created() {
+    window.addEventListener("resize", this.resize);
   },
 };
 </script>

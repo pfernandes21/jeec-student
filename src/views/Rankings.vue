@@ -9,6 +9,11 @@
       }"
     />
 
+    <div class="big-title">
+      <p>Personal</p>
+      <p>Squads</p>
+    </div>
+
     <div class="rank-wrapper">
       <Rank
         v-for="(student, index) in students"
@@ -145,8 +150,21 @@ export default {
   overflow-y: auto;
 }
 
+.big-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.big-title p {
+  font-size: 5vh;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+
 @media screen and (max-width: 1100px) {
-  .big-rank-wrapper {
+  .big-rank-wrapper,
+  .big-title {
     display: none;
   }
 }
