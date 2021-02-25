@@ -311,9 +311,9 @@ export default {
 .next_reward,
 .next_image {
   filter: gray;
-  -webkit-filter: grayscale(1);
-  filter: grayscale(1);
-  filter: blur(2px);
+  -webkit-filter: grayscale(10);
+  filter: grayscale(10);
+  /* filter: blur(2px); */
 }
 
 .level {

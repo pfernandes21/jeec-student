@@ -581,6 +581,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .dialog-company-img {
@@ -591,6 +592,9 @@ export default {
   border: 0.1vh solid #707070;
   background-color: white;
   overflow: hidden;
+  margin-top: 1vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 .dialog-company-img img {
