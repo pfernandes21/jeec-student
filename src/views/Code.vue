@@ -127,7 +127,7 @@ export default {
         this.code = this.code + "-";
       }
 
-      if (val.replaceAll("-", "").length > 16) {
+      if (val.replaceAll("-", "").length > 16 || val.length > 19) {
         this.code = this.code.substring(0, 19);
       }
 

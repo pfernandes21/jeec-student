@@ -31,7 +31,7 @@
             :src="
               reward_level
                 ? jeec_brain_url + reward_level.reward.image
-                : '../assets/blank.png'
+                : '../assets/jeec_colour_no_edition.svg'
             "
             alt="next-reward"
           />
@@ -39,9 +39,9 @@
         <div class="next-reward-info">
           <p class="n-reward-top">Next Reward:</p>
           <p class="n-reward-middle">
-            {{ reward_level ? reward_level.reward.name : "" }}
+            {{ reward_level ? reward_level.reward.name : "No Reward Found" }}
           </p>
-          <p class="n-reward-bottom">
+          <p class="n-reward-bottom" v-if="reward_level">
             Missing
             {{
               (reward_level ? reward_level.end_points : 0) -
@@ -75,6 +75,7 @@
               </div>
             </div>
           </div>
+
           <div class="middle-info" :style="!squad ? 'justify-content:center  !important' : ''">
             <div v-if="squad" class="xp-wrapper">
               <div class="daily-xp">
@@ -101,14 +102,14 @@
                     :src="
                       today_reward
                         ? jeec_brain_url + today_reward.image
-                        : '../assets/blank.png'
+                        : '../assets/jeec_colour_no_edition.svg'
                     "
                     alt="today-reward"
                   />
                 </div>
               </center>
               <p class="t-reward-bottom">
-                {{ today_reward ? today_reward.name : "" }}
+                {{ today_reward ? today_reward.name : "No Reward Found" }}
               </p>
             </div>
           </div>
@@ -131,14 +132,14 @@
                 :src="
                   today_reward
                     ? jeec_brain_url + today_reward.image
-                    : '../assets/blank.png'
+                    : require('../assets/logo.png')
                 "
                 alt="today-reward"
               />
             </div>
             <div class="big-reward-info">
               <p class="big-reward-name">
-                {{ today_reward ? today_reward.name : "" }}
+                {{ (today_reward && today_reward.name !== "") ? today_reward.name : "No Reward Found" }}
               </p>
               <p class="big-reward-description">Today's Top Team</p>
             </div>
@@ -150,16 +151,16 @@
                 :src="
                   reward_level
                     ? jeec_brain_url + reward_level.reward.image
-                    : '../assets/blank.png'
+                    : require('../assets/jeec_colour_no_edition.svg')
                 "
                 alt="next-reward"
               />
             </div>
             <div class="big-reward-info">
               <p class="big-reward-name">
-                {{ reward_level ? reward_level.reward.name : "" }}
+                {{ reward_level ? reward_level.reward.name : "No Reward Found" }}
               </p>
-              <p class="big-reward-description">
+              <p class="big-reward-description" v-if="reward_level">
                 Missing
                 {{
                   (reward_level ? reward_level.end_points : 0) -

@@ -98,6 +98,8 @@ export default {
 }
 
 .chat-frame {
+  position: absolute;
+  z-index: 2;
   width: 100vw;
   height: 82vh;
   margin-top: 8vh;
