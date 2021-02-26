@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="next-reward" v-if="currentUser.total_points < reward_level.end_points">
+      <div class="next-reward" v-if="reward_level && currentUser.total_points < reward_level.end_points">
         <div class="reward-img">
           <img
             :src="
@@ -160,7 +160,7 @@
             </div>
           </div>
 
-          <div class="big-reward" v-if="currentUser.total_points < reward_level.end_points">
+          <div class="big-reward" v-if="reward_level && currentUser.total_points < reward_level.end_points">
             <div class="big-reward-img">
               <img
                 :src="

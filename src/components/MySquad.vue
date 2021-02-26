@@ -38,7 +38,13 @@
               alt="today-reward"
             />
           </div>
-          <p>{{ today_reward.name }}</p>
+          <p>
+            {{
+              today_reward && today_reward.image
+                ? today_reward.name
+                : "No Reward Found"
+            }}
+          </p>
         </div>
       </div>
     </div>
@@ -48,11 +54,21 @@
         <div class="big-reward-info">
           <div class="big-reward-img">
             <img
-              :src="jeec_brain_url + today_reward.image"
+              :src="
+                today_reward && today_reward.image
+                  ? jeec_brain_url + today_reward.image
+                  : default_image
+              "
               alt="today-reward"
             />
           </div>
-          <p class="big-reward-name">{{ today_reward.name }}</p>
+          <p class="big-reward-name">
+            {{
+              today_reward && today_reward.image
+                ? today_reward.name
+                : "No Reward Found"
+            }}
+          </p>
         </div>
       </div>
 
@@ -100,6 +116,7 @@
           multiple
           :filter="filterStudents"
           :search-input.sync="search"
+          @change="limitStudents"
         >
           <template v-slot:selection="data">
             <v-chip
@@ -173,6 +190,11 @@ export default {
     },
   },
   methods: {
+    limitStudents() {
+      if(this.squad.members.data.length + this.students.length > 4) {
+        this.students.pop();
+      }
+    },
     remove(item) {
       const index = this.squadmates.indexOf(item.ist_id);
       if (index >= 0) this.squadmates.splice(index, 1);

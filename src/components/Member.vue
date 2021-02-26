@@ -103,6 +103,7 @@ export default {
   justify-self: flex-end;
   transform: scaleX(-1);
   margin-left: auto;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 1100px) {
