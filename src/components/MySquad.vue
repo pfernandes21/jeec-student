@@ -30,7 +30,11 @@
         <div class="reward-info">
           <div class="reward-img">
             <img
-              :src="jeec_brain_url + today_reward.image"
+              :src="
+                today_reward && today_reward.image
+                  ? jeec_brain_url + today_reward.image
+                  : default_image
+              "
               alt="today-reward"
             />
           </div>
@@ -143,12 +147,12 @@ import Member from "@/components/Member.vue";
 export default {
   name: "MySquad",
   components: {
-    Member
+    Member,
   },
   props: {
-    squad: Object
+    squad: Object,
   },
-  data: function() {
+  data: function () {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       add_members_dialog: false,
@@ -156,7 +160,8 @@ export default {
       squadmates: [],
       search: null,
       invitations: [],
-      today_reward: {}
+      today_reward: {},
+      default_image: require("../assets/jeec_colour_no_edition.svg"),
     };
   },
   computed: {
@@ -165,7 +170,7 @@ export default {
     },
     user_is_captain() {
       return this.$store.state.auth.user.ist_id === this.squad.captain_id;
-    }
+    },
   },
   methods: {
     remove(item) {
@@ -193,24 +198,24 @@ export default {
       }
 
       UserService.leaveSquad().then(
-        response => {
+        (response) => {
           this.$emit("delete", response.data.data);
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
     },
     kick_member(ist_id) {
       UserService.kickMember(ist_id).then(
-        response => {
+        (response) => {
           this.squad = response.data.data;
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
-    }
+    },
   },
   watch: {
     search(val) {
@@ -220,26 +225,26 @@ export default {
           (val.length == 4 && val.substring(0, 3) === "ist"))
       ) {
         UserService.getStudents("").then(
-          response => {
+          (response) => {
             this.students = response.data.data;
           },
-          error => {
+          (error) => {
             console.log(error);
           }
         );
       }
-    }
+    },
   },
   created() {
     UserService.getTodaySquadReward().then(
-      response => {
+      (response) => {
         this.today_reward = response.data;
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
-  }
+  },
 };
 </script>
 
