@@ -55,14 +55,14 @@ import UserService from "../services/user.service";
 export default {
   name: "Code",
   components: {},
-  data: function () {
+  data: function() {
     return {
       code: "",
       prev_length: 0,
       dialog: false,
       points: 0,
       squad: null,
-      error: "",
+      error: ""
     };
   },
   computed: {
@@ -80,22 +80,22 @@ export default {
         "-" +
         code.substring(12, 16)
       );
-    },
+    }
   },
   methods: {
     redeem() {
       if (this.code.replaceAll("-", "").length == 16) {
         UserService.redeemCode(this.code).then(
-          (response) => {
+          response => {
             this.points =
               response.data.data.total_points - this.currentUser.total_points;
             this.$store.dispatch("auth/userUpdate", response.data.data);
 
             UserService.getUserSquad().then(
-              (response) => {
+              response => {
                 this.squad = response.data.data;
               },
-              (error) => {
+              error => {
                 console.log(error);
               }
             );
@@ -103,7 +103,7 @@ export default {
             this.dialog = true;
             this.error = "";
           },
-          (error) => {
+          error => {
             this.error = "Invalid Code";
             console.log(error);
           }
@@ -113,7 +113,7 @@ export default {
     clipboard() {
       this.$refs.referral.select();
       document.execCommand("copy");
-    },
+    }
   },
   watch: {
     code(val) {
@@ -142,7 +142,7 @@ export default {
       }
 
       this.prev_length = val.length;
-    },
+    }
   },
   mounted() {
     if (!this.currentUser) {
@@ -150,14 +150,14 @@ export default {
     }
 
     UserService.getUserSquad().then(
-      (response) => {
+      response => {
         this.squad = response.data.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
-  },
+  }
 };
 </script>
 
@@ -263,6 +263,12 @@ export default {
 @media screen and (max-width: 1100px) {
   .code-title {
     display: none;
+  }
+  .referral input {
+    font-size: 6vw;
+  }
+  .clipboard {
+    font-size: 3vw !important;
   }
 }
 
