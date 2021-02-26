@@ -9,8 +9,8 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }, user_and_accessToken) {
-      return AuthService.login(user_and_accessToken).then(
+    login({ commit }, user_and_jwt) {
+      return AuthService.login(user_and_jwt).then(
         user => {
           commit('loginSuccess', user);
           return Promise.resolve(user);

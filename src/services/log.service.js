@@ -1,13 +1,16 @@
 import axios from "axios";
 
 const jeec_log_url = process.env.VUE_APP_JEEC_LOG_URL;
+let jwt = localStorage.getItem('jwt');
 
 class LogService {
-  async postLog(jwt_token, entrypoint) {
-    return axios.post(jeec_log_url + "/log", {
-      jwt_token: jwt_token,
-      entrypoint: entrypoint
-    });
+  async postLog(entrypoint) {
+    if (jwt) {
+      return axios.post(jeec_log_url + "/log", {
+        jwt: jwt,
+        entrypoint: entrypoint
+      });
+    }
   }
 }
 

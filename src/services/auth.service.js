@@ -1,14 +1,13 @@
 import axios from "axios";
 
 class AuthService {
-  login([user, accessToken]) {
+  login([user, jwt]) {
     return axios
-      .get(process.env.VUE_APP_JEEC_BRAIN_URL + '/student/info', { headers: { Authorization: accessToken } })
+      .get(process.env.VUE_APP_JEEC_BRAIN_URL + '/student/info', { headers: { Authorization: jwt } })
       .then(response => {
         if (response.data) {
           user = response.data.data;
-          user.accessToken = accessToken;
-          user.last_login = new Date();
+          localStorage.setItem('jwt', jwt)
           localStorage.setItem('user', JSON.stringify(user));
           return user;
         }
@@ -17,6 +16,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('jwt');
   }
 
   userUpdate(user) {

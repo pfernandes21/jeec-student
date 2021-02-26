@@ -52,7 +52,7 @@ export default {
       user: new User(),
       message: "",
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
-      //loading: true,
+      loading: this.$route.query.token !== null,
     };
   },
   computed: {
@@ -97,11 +97,11 @@ export default {
     },
   },
   created() {
-    if (this.$route.query.code) {
+    if (this.$route.query.token) {
       this.$store
         .dispatch("auth/login", [
           this.user,
-          this.decrypt(this.$route.query.code),
+          this.decrypt(this.$route.query.token),
         ])
         .then(
           () => {

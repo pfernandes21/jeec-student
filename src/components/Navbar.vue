@@ -63,7 +63,7 @@ export default {
     //or $route(to, from)
     async $route(to) {
       if (to.name !== "Login") {
-        LogService.postLog(this.$store.state.auth.user.jwt, to.fullPath);
+        LogService.postLog(to.fullPath);
       }
       
       this.page = to.name;
