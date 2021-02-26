@@ -83,58 +83,56 @@
     </center>
 
     <v-dialog v-model="add_members_dialog">
-        <v-card color="accent" class="squad-dialog">
-          <p class="dialog-title">Add Squadmates</p>
-          <v-autocomplete
-            v-model="squadmates"
-            :items="students"
-            outlined
-            chips
-            label="Name or istID"
-            item-text="name"
-            item-value="ist_id"
-            multiple
-            :filter="filterStudents"
-            :search-input.sync="search"
-          >
-            <template v-slot:selection="data">
-              <v-chip
-                v-bind="data.attrs"
-                :input-value="data.name"
-                close
-                @click="remove(data.item)"
-                @click:close="remove(data.item)"
-              >
-                <v-avatar left>
-                  <v-img :src="data.item.photo"></v-img>
-                </v-avatar>
-                {{ data.item.name }}
-              </v-chip>
+      <v-card color="accent" class="squad-dialog">
+        <p class="dialog-title">Add Squadmates</p>
+        <v-autocomplete
+          v-model="squadmates"
+          :items="students"
+          outlined
+          chips
+          label="Name or istID"
+          item-text="name"
+          item-value="ist_id"
+          multiple
+          :filter="filterStudents"
+          :search-input.sync="search"
+        >
+          <template v-slot:selection="data">
+            <v-chip
+              v-bind="data.attrs"
+              :input-value="data.name"
+              close
+              @click="remove(data.item)"
+              @click:close="remove(data.item)"
+            >
+              <v-avatar left>
+                <v-img :src="data.item.photo"></v-img>
+              </v-avatar>
+              {{ data.item.name }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <template v-if="typeof data.item !== 'object'">
+              <v-list-item-content v-text="data.item"></v-list-item-content>
             </template>
-            <template v-slot:item="data">
-              <template v-if="typeof data.item !== 'object'">
-                <v-list-item-content v-text="data.item"></v-list-item-content>
-              </template>
-              <template v-else>
-                <v-list-item-avatar>
-                  <img :src="data.item.photo" />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title
-                    v-html="data.item.name"
-                  ></v-list-item-title>
-                  <v-list-item-subtitle
-                    v-html="data.item.ist_id"
-                  ></v-list-item-subtitle>
-                </v-list-item-content>
-              </template>
+            <template v-else>
+              <v-list-item-avatar>
+                <img :src="data.item.photo" />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                <v-list-item-subtitle
+                  v-html="data.item.ist_id"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
             </template>
-          </v-autocomplete>
-          <center>
-            <button @click.stop="invite" class="invite">Invite</button>
-          </center>
-        </v-card>
-      </v-dialog>
+          </template>
+        </v-autocomplete>
+        <center>
+          <button @click.stop="invite" class="invite">Invite</button>
+        </center>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -145,12 +143,12 @@ import Member from "@/components/Member.vue";
 export default {
   name: "MySquad",
   components: {
-    Member,
+    Member
   },
   props: {
-    squad: Object,
+    squad: Object
   },
-  data: function () {
+  data: function() {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       add_members_dialog: false,
@@ -158,7 +156,7 @@ export default {
       squadmates: [],
       search: null,
       invitations: [],
-      today_reward: {},
+      today_reward: {}
     };
   },
   computed: {
@@ -167,7 +165,7 @@ export default {
     },
     user_is_captain() {
       return this.$store.state.auth.user.ist_id === this.squad.captain_id;
-    },
+    }
   },
   methods: {
     remove(item) {
@@ -195,24 +193,24 @@ export default {
       }
 
       UserService.leaveSquad().then(
-        (response) => {
+        response => {
           this.$emit("delete", response.data.data);
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
     },
     kick_member(ist_id) {
       UserService.kickMember(ist_id).then(
-        (response) => {
+        response => {
           this.squad = response.data.data;
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
-    },
+    }
   },
   watch: {
     search(val) {
@@ -222,26 +220,26 @@ export default {
           (val.length == 4 && val.substring(0, 3) === "ist"))
       ) {
         UserService.getStudents("").then(
-          (response) => {
+          response => {
             this.students = response.data.data;
           },
-          (error) => {
+          error => {
             console.log(error);
           }
         );
       }
-    },
+    }
   },
   created() {
     UserService.getTodaySquadReward().then(
-      (response) => {
+      response => {
         this.today_reward = response.data;
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
-  },
+  }
 };
 </script>
 
@@ -255,6 +253,12 @@ export default {
   padding-left: 5vw;
   padding-right: 5vw;
   margin-bottom: 0.5vh;
+}
+
+.my-squad {
+  margin-top: 8vh;
+  height: 82vh;
+  overflow-y: auto;
 }
 
 .squad-info {
@@ -559,7 +563,7 @@ export default {
   .big-wrapper {
     display: flex;
     justify-content: space-between;
-    background-color: #E6E6E6;
+    background-color: #e6e6e6;
   }
 
   .big-today-reward,
