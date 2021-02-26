@@ -38,7 +38,7 @@
           <div
             class="image first"
             :class="[
-              user_level > levels[image_index(model - 1)].value
+              user_points >= levels[image_index(model - 1)].end_points
                 ? 'image_done'
                 : '',
               user_level < levels[image_index(model - 1)].value
@@ -61,7 +61,7 @@
           <div
             class="image second"
             :class="[
-              user_level > levels[model].value ? 'image_done' : '',
+              user_points >= levels[model].end_points ? 'image_done' : '',
               user_level < levels[model].value ? 'next_reward' : '',
             ]"
           >
@@ -76,7 +76,7 @@
           <div
             class="image third"
             :class="[
-              user_level > levels[image_index(model + 1)].value
+              user_points >= levels[image_index(model + 1)].end_points
                 ? 'image_done'
                 : '',
               user_level < levels[image_index(model + 1)].value
@@ -101,7 +101,7 @@
             <div
               class="image"
               :class="[
-                user_level > levels[model].value ? 'image_done' : '',
+                user_points >= levels[model].end_points ? 'image_done' : '',
                 user_level < levels[model].value ? 'next_reward' : '',
               ]"
             >
@@ -121,13 +121,13 @@
           <p
             class="level"
             :class="{
-              level_done: user_level > levels[image_index(model - 1)].value,
+              level_done: user_points >= levels[image_index(model - 1)].end_points,
             }"
           >
             Level {{ levels[image_index(model - 1)].value }}
           </p>
           <div
-            v-if="user_level > levels[image_index(model - 1)].value"
+            v-if="user_points >= levels[image_index(model - 1)].end_points"
             class="done"
           >
             Done!
@@ -148,13 +148,13 @@
           <p
             class="level"
             :class="{
-              level_done: user_level > levels[image_index(model + 1)].value,
+              level_done: user_points >= levels[image_index(model + 1)].end_points,
             }"
           >
             Level {{ levels[image_index(model + 1)].value }}
           </p>
           <div
-            v-if="user_level > levels[image_index(model + 1)].value"
+            v-if="user_points >= levels[image_index(model + 1)].end_points"
             class="done"
           >
             Done!
@@ -174,10 +174,12 @@
 
       <p
         class="level"
-        :class="{ level_done: user_level > levels[model].value }"
+        :class="{ level_done: user_points >= levels[model].end_points }"
       >
         Level {{ levels[model].value }}
       </p>
+
+      <div v-if="user_points >= levels[model].end_points" class="done">Done!</div>
 
       <Expbar
         v-if="user_level === levels[model].value"
@@ -188,8 +190,6 @@
         :width="xpbar_width"
         :height="height"
       />
-
-      <div v-if="user_level > levels[model].value" class="done">Done!</div>
 
       <div v-if="user_level < levels[model].value" class="points">
         {{ user_points }}/{{ levels[model].end_points }} points
@@ -213,7 +213,7 @@ export default {
   },
   data() {
     return {
-      model: this.$store.state.auth.user.level ? this.$store.state.auth.user.level.data.value : 0,
+      model: this.user_level ? this.user_level - 1 : 0,
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       xpbar_width: "65vw",
       height: 30,
