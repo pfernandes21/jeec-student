@@ -255,12 +255,6 @@ export default {
   margin-bottom: 0.5vh;
 }
 
-.my-squad {
-  margin-top: 8vh;
-  height: 82vh;
-  overflow-y: auto;
-}
-
 .squad-info {
   padding-top: 3vh;
   padding-bottom: 2vh;
@@ -496,6 +490,11 @@ export default {
 
   .members {
     margin-bottom: 0;
+  }
+  .my-squad {
+    margin-top: 8vh;
+    height: 82vh;
+    overflow-y: auto;
   }
 }
 
