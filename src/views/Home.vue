@@ -25,13 +25,13 @@
         </div>
       </div>
 
-      <div class="next-reward">
+      <div class="next-reward" v-if="currentUser.total_points < reward_level.end_points">
         <div class="reward-img">
           <img
             :src="
               reward_level
                 ? jeec_brain_url + reward_level.reward.image
-                : '../assets/jeec_colour_no_edition.svg'
+                : default_image
             "
             alt="next-reward"
           />
@@ -107,16 +107,20 @@
                 <div class="reward-img">
                   <img
                     :src="
-                      today_reward
+                      today_reward && today_reward.image
                         ? jeec_brain_url + today_reward.image
-                        : '../assets/jeec_colour_no_edition.svg'
+                        : default_image
                     "
                     alt="today-reward"
                   />
                 </div>
               </center>
               <p class="t-reward-bottom">
-                {{ today_reward ? today_reward.name : "No Reward Found" }}
+                {{
+                  today_reward && today_reward.image
+                    ? today_reward.name
+                    : "No Reward Found"
+                }}
               </p>
             </div>
           </div>
@@ -156,7 +160,7 @@
             </div>
           </div>
 
-          <div class="big-reward">
+          <div class="big-reward" v-if="currentUser.total_points < reward_level.end_points">
             <div class="big-reward-img">
               <img
                 :src="
@@ -174,7 +178,7 @@
                 }}
               </p>
               <p class="big-reward-description" v-if="reward_level">
-                Next Personal Reward<br>Missing
+                Next Personal Reward<br />Missing
                 {{
                   (reward_level ? reward_level.end_points : 0) -
                   currentUser.total_points
