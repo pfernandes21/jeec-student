@@ -54,7 +54,7 @@ export default {
   height: 100% !important;
   width: 100% !important;
   margin: 0vh;
-  font-size: 2.6vh !important;
+  font-size: 4.7vw !important;
   white-space: pre !important;
   text-align: center !important;
 }
@@ -62,6 +62,10 @@ export default {
 @media screen and (min-width: 1100px) {
   .buttons {
     width: 75vw;
+  }
+
+  .button {
+    font-size: 3vh !important;
   }
 }
 </style>

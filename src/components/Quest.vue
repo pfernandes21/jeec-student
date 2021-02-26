@@ -86,10 +86,17 @@ export default {
 
 @media screen and (min-width: 1100px) {
   .quest {
-    width: 24.2vw;
+    width: calc(25vw - 10px);
+    height: 45vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  .quest-img {
+    margin: 0;
   }
 
   .quest-img img {
@@ -99,7 +106,7 @@ export default {
   }
 
   .description {
-    font-size: 5vh;
+    font-size: 4vh;
     line-height: normal;
     font-weight: 500;
     text-align: center;
