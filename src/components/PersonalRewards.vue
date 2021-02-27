@@ -259,6 +259,8 @@ export default {
 
 .name {
   font-size: 5.5vh;
+  line-height: 5.5vh;
+  min-height: 11vh;
   margin: 0;
   margin-top: 2vh;
   color: black;
@@ -355,9 +357,9 @@ export default {
     display: none;
   }
 
-  .name {
+  /* .name {
     margin-bottom: 2vh;
-  }
+  } */
 
   .image-wrapper {
     display: flex;

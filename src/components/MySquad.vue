@@ -178,7 +178,7 @@ export default {
       search: null,
       invitations: [],
       today_reward: {},
-      default_image: require("../assets/jeec_colour_no_edition.svg"),
+      default_image: require("../assets/jeec_colour_no_edition_transparent.svg"),
     };
   },
   computed: {
@@ -194,6 +194,8 @@ export default {
       if(this.squad.members.data.length + this.students.length > 4) {
         this.students.pop();
       }
+
+      this.search = "";
     },
     remove(item) {
       const index = this.squadmates.indexOf(item.ist_id);

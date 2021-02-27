@@ -28,7 +28,11 @@
         <div class="buttons">
           <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
           <button @click.stop="dialog = true">See More</button>
-          <button><a :href="calendar()">Add to Calendar</a></button>
+          <button @click.stop="$refs.calendar.click()">
+            <a ref="calendar" :href="calendar()" target="_blank"
+              >Add to Calendar</a
+            >
+          </button>
         </div>
 
         <div
@@ -64,12 +68,18 @@
     <div class="buttons mobile">
       <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
       <button @click.stop="dialog = true">See More</button>
-      <button><a :href="calendar()">Add to Calendar</a></button>
+      <button @click.stop="$refs.calendar.click()">Add to Calendar</button>
     </div>
 
-    <v-dialog v-model="dialog" style="overflow-x: visible !important" :width="width > 1100 ? '70vw' : ''">
+    <v-dialog
+      v-model="dialog"
+      style="overflow-x: visible !important"
+      :width="width > 1100 ? '70vw' : ''"
+    >
       <v-card>
-        <v-icon @click.stop="dialog=false" class="close-dialog">mdi-close</v-icon>
+        <v-icon @click.stop="dialog = false" class="close-dialog"
+          >mdi-close</v-icon
+        >
         <div class="dialog-wrapper">
           <div>
             <center
@@ -174,7 +184,10 @@
               </figure>
             </center>
 
-            <center class="dialog-speakers-companies" v-if="activity.type !== 'Discussion Panel' && speakers_companies">
+            <center
+              class="dialog-speakers-companies"
+              v-if="activity.type !== 'Discussion Panel' && speakers_companies"
+            >
               <img
                 v-for="company in speakers_companies"
                 :key="company"
@@ -185,20 +198,30 @@
             <div class="dialog-buttons">
               <button
                 v-if="activity.zoom_url"
-                @click.stop="zoom()"
                 style="background-color: #27ade4"
+                @click.stop="$refs.zoom.click()"
               >
-                Zoom Link
+                <a ref="zoom" :href="activity.zoom_url" target="_blank"
+                  >Zoom Link</a
+                >
               </button>
               <button
                 v-if="activity.registration_open && activity.registration_link"
-                :href="activity.registration_link"
                 style="background-color: #e42741"
+                @click.stop="$refs.registration.click()"
               >
-                Registration
+                <a
+                  ref="registration"
+                  :href="activity.registration_link"
+                  target="_blank"
+                  >Registration</a
+                >
               </button>
-              <button style="background-color: #27ade4">
-                <a :href="calendar()">Add to Calendar</a>
+              <button
+                style="background-color: #27ade4"
+                @click.stop="$refs.calendar.click()"
+              >
+                Add to Calendar
               </button>
             </div>
           </div>
@@ -239,7 +262,11 @@ export default {
       var companies = [];
 
       for (var i = 0; i < speakers.length; i++) {
-        if (speakers[i].company && speakers[i].company_logo && !companies.includes(speakers[i].company_logo)) {
+        if (
+          speakers[i].company &&
+          speakers[i].company_logo &&
+          !companies.includes(speakers[i].company_logo)
+        ) {
           companies.push(speakers[i].company_logo);
         }
       }
@@ -292,9 +319,6 @@ export default {
       setInterval(() => {
         this.current_image = this.current_image + 1;
       }, 2500);
-    },
-    zoom() {
-      window.location.replace(this.activity.zoom_url);
     },
     calendar() {
       var url = "https://calendar.google.com/calendar/render?action=TEMPLATE";
@@ -354,7 +378,9 @@ export default {
           : (start_date.getMonth() + 1).toString()) +
         start_date.getDate().toString() +
         "T" +
-        start_date.getHours() +
+        (start_date.getHours() < 10
+          ? "0" + start_date.getHours()
+          : start_date.getHours()) +
         (start_date.getMinutes() < 10
           ? "0" + start_date.getMinutes()
           : start_date.getMinutes()) +
@@ -367,7 +393,9 @@ export default {
           : (end_date.getMonth() + 1).toString()) +
         end_date.getDate().toString() +
         "T" +
-        end_date.getHours() +
+        (end_date.getHours() < 10
+          ? "0" + end_date.getHours()
+          : end_date.getHours()) +
         (end_date.getMinutes() < 10
           ? "0" + end_date.getMinutes()
           : end_date.getMinutes()) +
@@ -730,7 +758,7 @@ export default {
   justify-content: space-evenly;
 }
 
-.dialog-speakers-companies img{
+.dialog-speakers-companies img {
   max-height: 8vh;
   max-width: 30vw;
 }
@@ -772,6 +800,10 @@ export default {
 
   .browser {
     display: none;
+  }
+
+  .activity-text {
+    max-width: calc(89vw - 13vh);
   }
 }
 
@@ -933,7 +965,7 @@ export default {
     flex-wrap: wrap;
   }
 
-  .dialog-buttons button{
+  .dialog-buttons button {
     text-align: center;
     font-size: 2.4vh;
     width: 20vw;

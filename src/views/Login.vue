@@ -2,13 +2,14 @@
   <div class="login">
     <div class="loading">
       <div class="loading-top">
-        <img
-          alt="JEEC logo"
-          src="../assets/jeec_colour_no_edition.svg"
-        />
+        <img alt="JEEC logo" src="../assets/jeec_colour_no_edition.svg" />
       </div>
-      <div class="buttons-flex">
-        <div @click.stop="login_student" class="button" style="background-color: #27ADE4">
+      <div class="buttons-flex" v-if="!loading">
+        <div
+          @click.stop="login_student"
+          class="button"
+          style="background-color: #27ade4"
+        >
           <img
             alt="Fenix logo"
             src="../assets/icons/graduation-hat.svg"
@@ -17,7 +18,11 @@
           />
           Student Login
         </div>
-        <div @click.stop="login_partner" class="button" style="background-color: #27ADE4">
+        <div
+          @click.stop="login_partner"
+          class="button"
+          style="background-color: #27ade4"
+        >
           <img
             alt="Fenix logo"
             src="../assets/icons/businessman.svg"
@@ -25,7 +30,11 @@
           />
           Partner Login
         </div>
-        <div @click.stop="return_website" class="button" style="background-color: #E42741">
+        <div
+          @click.stop="return_website"
+          class="button"
+          style="background-color: #e42741"
+        >
           <img
             alt="Fenix logo"
             src="../assets/icons/back-arrow.svg"
@@ -34,8 +43,11 @@
           Return to Website
         </div>
       </div>
+      <div v-else>
+        <v-progress-circular indeterminate color="#27ade4" :size="100" :width="10" class="loading-bar"></v-progress-circular>
+      </div>
       <div class="loading-bottom">
-        <img alt="IST logo" src="../assets/tecnico_grey.svg"/>
+        <img alt="IST logo" src="../assets/tecnico_grey.svg" />
       </div>
     </div>
   </div>
@@ -52,7 +64,7 @@ export default {
       user: new User(),
       message: "",
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
-      loading: this.$route.query.token !== null,
+      loading: this.$route.query.token ? true : false,
     };
   },
   computed: {
@@ -105,14 +117,13 @@ export default {
         ])
         .then(
           () => {
-            this.$router.push('/home');
+            this.$router.push("/home");
           },
           () => {
             this.$store.dispatch("auth/logout");
           }
         );
-    } 
-    else if (this.loggedIn) {
+    } else if (this.loggedIn) {
       this.$router.push("/home");
     }
   },
@@ -127,7 +138,7 @@ export default {
 }
 
 .loading {
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   height: 100vh;
   width: 100vw;
   position: relative;
@@ -137,6 +148,14 @@ export default {
   width: 75vw;
   position: absolute;
   top: 20%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.loading-bar {
+  position: absolute;
+  top: 55%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -163,7 +182,7 @@ export default {
   border-radius: 6vw;
   padding: 5vw;
   margin: 2vw;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 4.5vw;
   font-weight: 650;
   cursor: pointer;
@@ -184,38 +203,35 @@ export default {
 }
 
 @media screen and (min-width: 550px) {
-.loading-top {
-  width: 56vh;
-}
+  .loading-top {
+    width: 56vh;
+  }
 
-.buttons-flex {
-  padding: 0vh;
-}
+  .buttons-flex {
+    padding: 0vh;
+  }
 
-.button {
-  height: 9.5vh;
-  border-radius: 6vh;
-  padding: 4vh;
-  margin: 2vh;
-  font-size: 3.4vh;
-}
+  .button {
+    height: 9.5vh;
+    border-radius: 6vh;
+    padding: 4vh;
+    margin: 2vh;
+    font-size: 3.4vh;
+  }
 
-.icon {
-  padding-right: 5vh;
-  height: 5vh;
-}
+  .icon {
+    padding-right: 5vh;
+    height: 5vh;
+  }
 
-.loading-bottom {
-  width: 24vh;
-}
-
+  .loading-bottom {
+    width: 24vh;
+  }
 }
 
 @media screen and (min-width: 1100px) {
-.login {
-  transform: translateY(0vh);
+  .login {
+    transform: translateY(0vh);
+  }
 }
-
-}
-
 </style>

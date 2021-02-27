@@ -105,6 +105,15 @@ export default {
   .browser {
     display: none;
   }
+
+  .partner-img {
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+
+  .partner-info {
+    width: calc(96vw - 18vh);
+  }
 }
 
 @media screen and (min-width: 1100px) {

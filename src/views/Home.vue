@@ -215,7 +215,7 @@ export default {
   data: function () {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
-      default_image: require("../assets/jeec_colour_no_edition.svg"),
+      default_image: require("../assets/jeec_colour_no_edition_transparent.svg"),
       squad: null,
       levels: null,
       today_reward: {},
@@ -728,7 +728,7 @@ export default {
   }
 
   .xp-value {
-    font-size: 8vh;
+    font-size: 3.5vw;
     font-weight: 600;
     margin: 0;
   }
@@ -739,10 +739,18 @@ export default {
   }
 
   .members {
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
     max-height: 32vh;
-    overflow-y: auto;
+    margin-top: 1vh;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+
+  .members > div {
+    width: 50%;
   }
 }
 </style>

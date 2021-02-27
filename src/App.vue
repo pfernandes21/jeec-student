@@ -141,7 +141,7 @@ export default {
 
 .v-window__prev,
 .v-window__next {
-  background-color: #e6e6e6 !important;
+  background-color: #ffffff00 !important;
   height: 1px;
 }
 
