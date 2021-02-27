@@ -170,6 +170,7 @@
               type="url"
               ref="linkedin_url"
               placeholder="https://www.linkedin.com/in/XXXXX/"
+              pattern="^https?://((www|\w\w)\.)?linkedin.com/((in/[^/]+/?)|(pub/[^/]+/((\w|\d)+/?){3}))$"
               autofocus
               :value="currentUser.linkedin_url"
               required

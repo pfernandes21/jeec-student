@@ -42,7 +42,9 @@ export default {
       return this.$store.state.auth.user;
     },
     title() {
-      return this.$route.name !== 'Company' ? this.$route.name : this.$route.params.name;
+      return this.$route.name !== "Company"
+        ? this.$route.name
+        : this.$route.params.name;
     },
   },
   methods: {
@@ -68,8 +70,8 @@ export default {
 
       if (to.name !== "Login") {
         var today = new Date();
-        var last_login = this.currentUser
-          ? new Date(this.currentUser.last_login)
+        var last_login = localStorage.getItem("last-login")
+          ? new Date(localStorage.getItem("last-login"))
           : null;
 
         if (
@@ -78,15 +80,14 @@ export default {
         ) {
           UserService.todayLogin().then(
             (response) => {
-              response.data.data["last_login"] = today;
+              localStorage.setItem("last-login", today);
               this.$store.dispatch("auth/userUpdate", response.data.data);
               // this.dialog = true;
             },
             (error) => {
               console.log(error);
               if (error.response.status == 409) {
-                this.currentUser.last_login = today;
-                this.$store.dispatch("auth/userUpdate", this.currentUser);
+                localStorage.setItem("last-login", today);
               }
             }
           );
