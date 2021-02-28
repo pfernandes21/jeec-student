@@ -11,9 +11,30 @@
           <p class="squad-name">{{ squad.name }}</p>
           <p class="squad-cry">{{ squad.cry }}</p>
           <p class="squad-rank">Rank {{ squad.rank }}</p>
+          <div class="xp-wrapper browser">
+            <div>
+              <p class="xp-name">Daily:</p>
+              <span class="xp-value">{{ squad.daily_points }}</span
+              ><span class="xp">xp</span>
+            </div>
+            <div>
+              <p class="xp-name">Total:</p>
+              <span class="xp-value">{{ squad.total_points }}</span
+              ><span class="xp">xp</span>
+            </div>
+          </div>
+          <center>
+            <button
+              @click.stop="leave_squad"
+              class="bottom-button browser"
+              style="background-color: red"
+            >
+              {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
+            </button>
+          </center>
         </div>
       </div>
-      <div class="xp-wrapper">
+      <div class="xp-wrapper mobile">
         <div>
           <p class="xp-name">Daily:</p>
           <span class="xp-value">{{ squad.daily_points }}</span
@@ -52,35 +73,49 @@
       <div class="big-today-reward">
         <p class="big-today-reward-title">Today's Reward:</p>
         <div class="big-reward-info">
-          <div class="big-reward-img">
-            <img
-              :src="
+          <center>
+            <div class="big-reward-img">
+              <img
+                :src="
+                  today_reward && today_reward.image
+                    ? jeec_brain_url + today_reward.image
+                    : default_image
+                "
+                alt="today-reward"
+              />
+            </div>
+            <p class="big-reward-name">
+              {{
                 today_reward && today_reward.image
-                  ? jeec_brain_url + today_reward.image
-                  : default_image
-              "
-              alt="today-reward"
-            />
-          </div>
-          <p class="big-reward-name">
-            {{
-              today_reward && today_reward.image
-                ? today_reward.name
-                : "No Reward Found"
-            }}
-          </p>
+                  ? today_reward.name
+                  : "No Reward Found"
+              }}
+            </p>
+          </center>
         </div>
       </div>
 
       <div class="members">
         <p>Squad Members ({{ squad.members.data.length }}/4):</p>
-        <Member
-          v-for="member in squad.members.data"
-          :key="member.ist_id"
-          :member="member"
-          :captain_ist_id="squad.captain_ist_id"
-          @kick="kick_member"
-        />
+        <div class="members-wrapper">
+          <Member
+            v-for="member in squad.members.data"
+            :key="member.ist_id"
+            :member="member"
+            :captain_ist_id="squad.captain_ist_id"
+            @kick="kick_member"
+          />
+        </div>
+        <center>
+          <button
+            class="bottom-button browser"
+            style="background-color: #27ade4"
+            @click.stop="add_members_dialog = true"
+            v-if="squad.members.data.length <= 4"
+          >
+            Add Members
+          </button>
+        </center>
       </div>
     </div>
 
@@ -191,7 +226,7 @@ export default {
   },
   methods: {
     limitStudents() {
-      if(this.squad.members.data.length + this.students.length > 4) {
+      if (this.squad.members.data.length + this.students.length > 4) {
         this.students.pop();
       }
 
@@ -396,8 +431,6 @@ export default {
 .big-reward-name {
   font-size: 4.5vh;
   font-weight: 600;
-  margin-left: 2vw;
-  width: calc(90% - 18vh);
   line-height: 5vh;
 }
 
@@ -425,7 +458,6 @@ export default {
   bottom: 0;
 }
 
-.big-reward-info,
 .reward-info {
   display: flex;
   align-items: center;
@@ -444,7 +476,6 @@ export default {
 }
 
 .big-wrapper {
-  min-height: 19vh;
   background-color: #f1f1f1;
 }
 
@@ -520,10 +551,15 @@ export default {
   .members {
     margin-bottom: 0;
   }
+
   .my-squad {
     margin-top: 8vh;
     height: 82vh;
     overflow-y: auto;
+  }
+
+  .browser {
+    display: none;
   }
 }
 
@@ -534,6 +570,7 @@ export default {
 
   .squad-info-top {
     margin-bottom: 2vh;
+    width: 100%;
   }
 
   .squad-info {
@@ -541,6 +578,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  .squad-data {
+    width: auto;
+    min-width: 25vw;
   }
 
   .xp-wrapper {
@@ -551,23 +593,29 @@ export default {
     justify-content: space-between;
   }
 
+  .xp-wrapper > div:first-of-type {
+    margin-right: 4vw;
+  }
+
   .xp-name {
     margin-right: 5vw;
-    font-size: 4vh;
+    margin-bottom: 0vh;
+    font-size: 2.3vh;
   }
 
   .xp-value {
-    font-size: 13vh;
-    line-height: 13vh;
+    font-size: 8vh;
+    line-height: 7vh;
   }
 
   .xp {
-    font-size: 5vh;
+    font-size: 3vh;
   }
 
   .squad-image {
-    height: 22vh;
-    width: 22vh;
+    height: 25vh;
+    width: 25vh;
+    margin-left: 6vw;
   }
 
   .squad-name {
@@ -594,16 +642,15 @@ export default {
     background-color: #e6e6e6;
   }
 
+  .big-today-reward-title {
+    text-align: center;
+  }
+
   .big-today-reward,
   .members {
     width: 37.3vw;
+    height: 55vh;
     background-color: #f1f1f1;
-  }
-
-  .bottom-buttons {
-    height: 10vh;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
   }
 
   .members > p {
@@ -612,6 +659,20 @@ export default {
     font-weight: 500;
     color: #848484;
     margin-bottom: 1.5vh;
+  }
+
+  .bottom-buttons {
+    display: none;
+  }
+
+  .bottom-button {
+    margin-top: 1vh;
+    height: auto;
+    width: auto;
+  }
+
+  .mobile {
+    display: none;
   }
 }
 </style>
