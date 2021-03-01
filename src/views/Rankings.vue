@@ -189,8 +189,12 @@ export default {
     justify-content: space-between;
   }
 
+  .big-rank-wrapper > div {
+    width: calc(50% - 5px);
+  }
+
   .rank {
-    width: 37.3vw;
+    width: 100%;
   }
 
   .rank-title {

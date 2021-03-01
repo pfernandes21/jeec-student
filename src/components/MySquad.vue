@@ -228,7 +228,7 @@ export default {
   methods: {
     limitStudents() {
       if (this.squad.members.data.length + this.students.length > 4) {
-        this.students.pop();
+        this.squadmates.pop();
       }
 
       this.search = "";

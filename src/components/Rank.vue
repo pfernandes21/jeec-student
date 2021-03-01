@@ -126,7 +126,7 @@ export default {
 .level {
   font-size: 2.1vh;
   font-weight: 700;
-  line-height: 2.5vh;
+  line-height: 2.8vh;
   color: #27ade4;
 }
 
