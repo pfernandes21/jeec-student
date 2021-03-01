@@ -137,7 +137,7 @@
       </button>
     </center>
 
-    <v-dialog v-model="add_members_dialog">
+    <v-dialog v-model="add_members_dialog" :width="width > 1100 ? '50vw' : ''">
       <v-card color="accent" class="squad-dialog">
         <p class="dialog-title">Add Squadmates</p>
         <v-autocomplete
@@ -214,6 +214,7 @@ export default {
       invitations: [],
       today_reward: {},
       default_image: require("../assets/jeec_colour_no_edition_transparent.svg"),
+      width: window.innerWidth,
     };
   },
   computed: {
@@ -275,6 +276,9 @@ export default {
         }
       );
     },
+    resize() {
+      this.width = window.innerWidth;
+    },
   },
   watch: {
     search(val) {
@@ -294,7 +298,11 @@ export default {
       }
     },
   },
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
+  },
   created() {
+    window.addEventListener("resize", this.resize);
     UserService.getTodaySquadReward().then(
       (response) => {
         this.today_reward = response.data;
@@ -359,19 +367,20 @@ export default {
   width: 90vw;
   display: flex;
   margin-top: 1vh;
-  margin-bottom: -2vh;
+  margin-bottom: -1vh;
   justify-content: space-between;
 }
 
 .xp-name {
-  font-size: 2.5vh;
+  font-size: 2vh;
   font-weight: 600;
   margin: 0;
   margin-bottom: -2.5vh;
+  margin-top: 1vh;
 }
 
 .xp-value {
-  font-size: 9vh;
+  font-size: 6vh;
   font-weight: 600;
   margin: 0;
   color: #26a2d5;
@@ -558,6 +567,10 @@ export default {
     overflow-y: auto;
   }
 
+  .reward-info p {
+    width: calc(90vw - 12vh);
+  }
+
   .browser {
     display: none;
   }
@@ -669,6 +682,16 @@ export default {
     margin-top: 1vh;
     height: auto;
     width: auto;
+  }
+
+  .dialog-title {
+    font-size: 3vh;
+  }
+
+  .invite {
+    width: 8vw;
+    padding: 0;
+    font-size: 2.5vh;
   }
 
   .mobile {

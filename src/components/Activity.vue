@@ -935,6 +935,11 @@ export default {
     margin-right: 0.5vw;
   }
 
+  .dialog-company-img {
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+
   .dialog-speakers {
     width: 100%;
   }

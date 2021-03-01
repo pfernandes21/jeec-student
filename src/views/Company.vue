@@ -85,20 +85,18 @@ export default {
       }
     },
     chat_partner(partner_name) {
-      if (this.chat_logged_in) {
-        UserService.getChatRoom(partner_name).then(
-          (response) => {
-            if (response.data.result) {
-              if (window.innerWidth <= 1100) {
-                this.$router.push({
-                  name: "Chat",
-                  query: {
-                    room_id: "/channel/" + partner_name.replace(" ", "_"),
-                  },
-                });
-              } 
-              
-              else {
+      UserService.getChatRoom(partner_name).then(
+        (response) => {
+          if (response.data.result) {
+            if (window.innerWidth <= 1100) {
+              this.$router.push({
+                name: "Chat",
+                query: {
+                  room_id: "/channel/" + partner_name.replace(" ", "_"),
+                },
+              });
+            } else {
+              if (this.chat_logged_in) {
                 this.room_name = partner_name;
                 this.rocket_chat_room_url =
                   this.rocket_chat_url +
@@ -107,26 +105,24 @@ export default {
                   "?layout=embedded";
               }
             }
-          },
-          (error) => {
-            console.log(error);
           }
-        );
-      }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     chat_member(member_id, member_name) {
-      if (this.chat_logged_in) {
-        UserService.getChatRoom("", member_id).then(
-          (response) => {
-            if (response.data.room_id) {
-              if (window.innerWidth <= 1100) {
-                this.$router.push({
-                  name: "Chat",
-                  query: { room_id: "/direct/" + response.data.room_id },
-                });
-              } 
-              
-              else {
+      UserService.getChatRoom("", member_id).then(
+        (response) => {
+          if (response.data.room_id) {
+            if (window.innerWidth <= 1100) {
+              this.$router.push({
+                name: "Chat",
+                query: { room_id: "/direct/" + response.data.room_id },
+              });
+            } else {
+              if (this.chat_logged_in) {
                 this.room_name = member_name;
                 this.rocket_chat_room_url =
                   this.rocket_chat_url +
@@ -135,12 +131,12 @@ export default {
                   "?layout=embedded";
               }
             }
-          },
-          (error) => {
-            console.log(error);
           }
-        );
-      }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     add_interest(partner) {
       UserService.addCompanies([partner]).then(
@@ -201,8 +197,8 @@ export default {
 }
 
 .partner-wrapper {
-    margin-top: 8vh;
-  }
+  margin-top: 8vh;
+}
 
 @media screen and (max-width: 1100px) {
   .chat-room {
@@ -243,7 +239,7 @@ export default {
     height: 7.5vh;
     margin: 0;
     margin-bottom: 0.5vh;
-    background-color: #2D333A;
+    background-color: #2d333a;
     color: white;
     font-size: 3vh;
     font-weight: 600;
