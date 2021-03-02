@@ -45,18 +45,14 @@
                 ? 'next_reward'
                 : '',
             ]"
-          >
-            <img
-              v-if="levels[image_index(model - 1)].reward"
-              :class="{
-                next_image: user_level < levels[image_index(model - 1)].value,
-              }"
-              :src="
-                jeec_brain_url + levels[image_index(model - 1)].reward.image
-              "
-              alt="reward"
-            />
-          </div>
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              levels[image_index(model - 1)].reward.image +
+              ')'
+            "
+          ></div>
           <span class="rect"></span>
           <div
             class="image second"
@@ -64,14 +60,14 @@
               user_points >= levels[model].end_points ? 'image_done' : '',
               user_level < levels[model].value ? 'next_reward' : '',
             ]"
-          >
-            <img
-              v-if="levels[model].reward"
-              :class="{ next_image: user_level < levels[model].value }"
-              :src="jeec_brain_url + levels[model].reward.image"
-              alt="reward"
-            />
-          </div>
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              levels[model].reward.image +
+              ')'
+            "
+          ></div>
           <span class="rect"></span>
           <div
             class="image third"
@@ -83,18 +79,14 @@
                 ? 'next_reward'
                 : '',
             ]"
-          >
-            <img
-              v-if="levels[image_index(model + 1)].reward"
-              :class="{
-                next_image: user_level < levels[image_index(model + 1)].value,
-              }"
-              :src="
-                jeec_brain_url + levels[image_index(model + 1)].reward.image
-              "
-              alt="reward"
-            />
-          </div>
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              levels[image_index(model + 1)].reward.image +
+              ')'
+            "
+          ></div>
         </div>
         <v-carousel-item v-for="(level, i) in levels" :key="i" class="mobile">
           <div class="image-wrapper">
@@ -104,14 +96,14 @@
                 user_points >= levels[model].end_points ? 'image_done' : '',
                 user_level < levels[model].value ? 'next_reward' : '',
               ]"
-            >
-              <img
-                v-if="level.reward"
-                :class="{ next_image: user_level < levels[model].value }"
-                :src="jeec_brain_url + level.reward.image"
-                alt="reward"
-              />
-            </div>
+              :style="
+                'background-image:' +
+                'url(' +
+                jeec_brain_url +
+                level.reward.image +
+                ')'
+              "
+            ></div>
           </div>
         </v-carousel-item>
       </v-carousel>
@@ -121,7 +113,8 @@
           <p
             class="level"
             :class="{
-              level_done: user_points >= levels[image_index(model - 1)].end_points,
+              level_done:
+                user_points >= levels[image_index(model - 1)].end_points,
             }"
           >
             Level {{ levels[image_index(model - 1)].value }}
@@ -137,9 +130,7 @@
             v-if="user_level < levels[image_index(model - 1)].value"
             class="points"
           >
-            {{ user_points }}/{{
-              levels[image_index(model - 1)].end_points
-            }}
+            {{ user_points }}/{{ levels[image_index(model - 1)].end_points }}
             points
           </div>
         </div>
@@ -148,7 +139,8 @@
           <p
             class="level"
             :class="{
-              level_done: user_points >= levels[image_index(model + 1)].end_points,
+              level_done:
+                user_points >= levels[image_index(model + 1)].end_points,
             }"
           >
             Level {{ levels[image_index(model + 1)].value }}
@@ -164,9 +156,7 @@
             v-if="user_level < levels[image_index(model + 1)].value"
             class="points"
           >
-            {{ user_points }}/{{
-              levels[image_index(model + 1)].end_points
-            }}
+            {{ user_points }}/{{ levels[image_index(model + 1)].end_points }}
             points
           </div>
         </div>
@@ -179,7 +169,9 @@
         Level {{ levels[model].value }}
       </p>
 
-      <div v-if="user_points >= levels[model].end_points" class="done">Done!</div>
+      <div v-if="user_points >= levels[model].end_points" class="done">
+        Done!
+      </div>
 
       <Expbar
         v-if="user_level === levels[model].value"
@@ -284,9 +276,10 @@ export default {
   border: 0.5vh solid #27ade4;
   box-shadow: 0 0 2.5vh 0.7vh #27aee4bf;
   margin: 3vh;
-  padding: 1vh;
   background-color: white;
-  overflow: hidden;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .image_done {
@@ -294,24 +287,9 @@ export default {
   box-shadow: 0 0 2.5vh 0.7vh #27e453;
 }
 
-.image img {
-  position: absolute;
-  margin: auto;
-  max-height: 25vh;
-  max-width: 25vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .next_reward {
   border: 0.5vh solid rgba(0, 0, 0, 0.44);
   box-shadow: 0 0 2.5vh 0.7vh rgba(0, 0, 0, 0.261);
-}
-
-.next_reward,
-.next_image {
   filter: gray;
   -webkit-filter: grayscale(10);
   filter: grayscale(10);
@@ -373,20 +351,9 @@ export default {
     width: 18vh;
   }
 
-  .first img,
-  .third img {
-    max-height: 18vh;
-    max-width: 18vh;
-  }
-
   .second {
     height: 28vh;
     width: 28vh;
-  }
-
-  .second img {
-    max-height: 28vh;
-    max-width: 28vh;
   }
 
   .rect {

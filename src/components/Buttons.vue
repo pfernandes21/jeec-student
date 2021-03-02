@@ -7,7 +7,7 @@
       :key="name"
       :color="names[name] ? '#26A2D5' : '#6CBFE0'"
       @click="click(name)"
-      >{{ name }}
+      >{{ (n_invites && name === 'invitations') ? (name + ' (' + n_invites + ')') : name  }}
     </v-btn>
   </div>
 </template>
@@ -17,6 +17,10 @@ export default {
   name: "Buttons",
   props: {
     names: Object,
+    n_invites: {
+      default: null,
+      type: Number,
+    },
   },
   data: function () {
     return {};
@@ -24,7 +28,7 @@ export default {
   methods: {
     resize() {},
     click(name) {
-      this.$emit('_click', name);
+      this.$emit("_click", name);
     },
   },
   destroyed() {

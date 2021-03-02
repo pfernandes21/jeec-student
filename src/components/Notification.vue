@@ -1,14 +1,14 @@
 <template>
   <div>
-    <v-snackbar v-model="snackbar" :timeout="timeout" color="#FFE785" absolute>
+    <v-snackbar v-model="snackbar" :timeout="timeout" :color="color" absolute>
       <div class="notification">
-        <img src="../assets/icons/trophy.svg" />
+        <v-icon :color="icon_color" style="font-size: 3.5vh; margin-right: 2vw">{{ icon }}</v-icon>
         <p>
-          {{ notification_text }}
+          {{ text }}
         </p>
         <v-icon
-          color="#FFB300"
-          style="margin-left: 4vw"
+          :color="icon_color"
+          style="margin-left: 2vw"
           @click.stop="snackbar = false"
           >mdi-close</v-icon
         >
@@ -23,6 +23,7 @@ export default {
   props: {
     text: String,
     type: String,
+    id: Number,
   },
   data: function () {
     return {
@@ -33,11 +34,45 @@ export default {
   watch: {
     snackbar(val) {
       if (!val) {
-        this.$emit("end", this.notification_text);
+        this.$emit("end", this.id);
       }
     },
   },
-  methods: {},
+  computed: {
+    color() {
+      if (this.type === "points") {
+        return "#FFE785";
+      } else if (this.type === "success") {
+        return "#C0FFBC";
+      } else if (this.type === "error") {
+        return "#FFBCBC";
+      } else {
+        return "";
+      }
+    },
+    icon() {
+      if (this.type === "points") {
+        return "mdi-trophy";
+      } else if (this.type === "success") {
+        return "mdi-check";
+      } else if (this.type === "error") {
+        return "mdi-alert";
+      } else {
+        return "";
+      }
+    },
+    icon_color() {
+      if (this.type === "points") {
+        return "#FFB300";
+      } else if (this.type === "success") {
+        return "green";
+      } else if (this.type === "error") {
+        return "red";
+      } else {
+        return "";
+      }
+    },
+  },
   created() {
     window.addEventListener("resize", this.resize);
   },
@@ -59,13 +94,7 @@ export default {
 
 .notification p {
   margin: 0;
-  text-align: justify;
-}
-
-.notification img {
-  height: 3.5vh;
-  filter: invert(70%) sepia(67%) saturate(2300%) hue-rotate(359deg)
-    brightness(104%) contrast(104%);
-  margin-right: 4vw;
+  text-align: left;
+  line-height: 2.7vh;
 }
 </style>

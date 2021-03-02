@@ -9,15 +9,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.second_student_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.second_student_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.second_student_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/silver_crown.svg"
                 alt=""
@@ -33,15 +32,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.first_student_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.first_student_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.first_student_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -56,15 +54,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.third_student_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.third_student_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.third_student_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/bronze_crown.svg"
                 alt=""
@@ -83,15 +80,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.second_squad_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.second_squad_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.second_squad_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/silver_crown.svg"
                 alt=""
@@ -106,15 +102,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.first_squad_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.first_squad_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.first_squad_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -129,15 +124,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.third_squad_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.third_squad_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.third_squad_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/bronze_crown.svg"
                 alt=""
@@ -158,15 +152,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.king_job_fair_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.king_job_fair_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.king_job_fair_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -189,15 +182,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.king_knowledge_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.king_knowledge_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.king_knowledge_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -211,15 +203,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.king_hacking_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url + jeecpot_rewards.king_hacking_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.king_hacking_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -242,16 +233,14 @@
               <div
                 class="image"
                 :class="{ winner: jeecpot_rewards.king_networking_winner }"
-              >
-                <img
-                  :src="
-                    jeec_brain_url +
-                    jeecpot_rewards.king_networking_reward.image
-                  "
-                  alt=""
-                  class="reward"
-                />
-              </div>
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  jeecpot_rewards.king_networking_reward.image +
+                  ')'
+                "
+              ></div>
               <img
                 src="../assets/icons/gold_crown.svg"
                 alt=""
@@ -308,23 +297,13 @@ export default {
   border-radius: 50%;
   border: 0.5vh solid #27ade4;
   box-shadow: 0 0 2.5vh 0.7vh #27ade4;
-  padding: 1vh;
   margin-top: 4vh;
   margin-left: 1vw;
   margin-right: 1vw;
   background-color: white;
-  overflow: hidden;
-}
-
-.reward {
-  position: absolute;
-  margin: auto;
-  max-height: 23vw;
-  max-width: 23vw;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .winner {
@@ -447,11 +426,6 @@ export default {
   .image {
     width: 9vw;
     height: 9vw;
-  }
-
-  .reward {
-    max-width: 8vw;
-    max-height: 8vw;
   }
 
   .king-reward:nth-of-type(odd) > div:last-of-type > p:first-of-type,

@@ -2,9 +2,12 @@
   <div class="partner-info" v-if="partner">
     <div class="info-top">
       <div style="display: flex; align-items: center">
-        <div class="partner-img">
-          <img :src="jeec_brain_url + partner.logo" />
-        </div>
+        <div
+          class="partner-img"
+          :style="
+            'background-image:' + 'url(' + jeec_brain_url + partner.logo + ')'
+          "
+        ></div>
         <div>
           <p class="name">{{ partner.name }}</p>
           <p class="bio">{{ partner.business_area }}</p>
@@ -31,7 +34,10 @@
           <p class="member-name">{{ member.name }}</p>
           <p class="member-post">{{ member.post }}</p>
         </div>
-        <button class="chat-icon" @click.stop="chat_member(member.user_id, member.name)">
+        <button
+          class="chat-icon"
+          @click.stop="chat_member(member.user_id, member.name)"
+        >
           <img src="../assets/icons/chat.svg" />
         </button>
       </div>
@@ -136,19 +142,11 @@ export default {
   border-radius: 50%;
   border: 0.3vh solid #707070;
   background-color: white;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-right: 5vw;
   overflow: hidden;
-}
-
-.partner-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .team {
@@ -232,6 +230,7 @@ export default {
     padding-left: 1vw;
     padding-right: 1vw;
   }
+
   .button {
     width: 15vw;
     padding-top: 2vh;
@@ -248,11 +247,6 @@ export default {
     height: 17vh;
     width: 17vh;
     margin-right: 2vw;
-  }
-
-  .partner-img img {
-    max-height: 17vh;
-    max-width: 17vh;
   }
 
   .name {

@@ -1,16 +1,18 @@
 <template>
   <div class="partner" :style="'background-color:' + color">
-    <div class="partner-img mobile">
-      <img :src="img_src" />
-    </div>
+    <div
+      class="partner-img mobile"
+      :style="'background-image:' + 'url(' + img_src + ')'"
+    ></div>
     <div class="partner-info mobile">
       <p class="name">{{ name }}</p>
       <button @click.stop="learn" class="learn">Learn More</button>
     </div>
     <center class="browser">
-      <div class="partner-img">
-        <img :src="img_src" />
-      </div>
+      <div
+        class="partner-img"
+        :style="'background-image:' + 'url(' + img_src + ')'"
+      ></div>
       <p class="name">{{ name }}</p>
       <button @click.stop="learn" class="learn">Learn More</button>
     </center>
@@ -63,20 +65,11 @@ export default {
   border-radius: 50%;
   border: 0.3vh solid #707070;
   background-color: white;
-  overflow: hidden;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-left: 5vh;
   margin-right: 5vh;
-}
-
-.partner-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .partner-info {

@@ -6,11 +6,21 @@
         'my squad': button === 'my squad',
         invitations: button === 'invitations',
       }"
+      :n_invites="invitations.length"
     />
 
     <div v-show="button === 'my squad' && !loading" style="margin-top: 8vh">
-      <SquadCreation v-if="squad === null" @create="create_squad" />
-      <MySquad v-else :squad="squad" @delete="delete_squad" @notification="notification" />
+      <SquadCreation
+        v-if="squad === null"
+        @create="create_squad"
+        @notification="notification"
+      />
+      <MySquad
+        v-else
+        :squad="squad"
+        @delete="delete_squad"
+        @notification="notification"
+      />
     </div>
 
     <div v-show="button === 'invitations'" style="margin-top: 8vh">
@@ -68,27 +78,29 @@ export default {
       UserService.acceptInvitation(invitation_id).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
 
-      UserService.getSquadInvitations().then(
-        (response) => {
-          this.invitations = response.data.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+          UserService.getSquadInvitations().then(
+            (response) => {
+              this.invitations = response.data.data;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
 
-      UserService.getUserSquad().then(
-        (response) => {
-          this.squad = response.data.data;
+          UserService.getUserSquad().then(
+            (response) => {
+              this.squad = response.data.data;
+              this.notification("Joined squad " + this.squad.name, "success");
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         },
         (error) => {
           console.log(error);
+          this.notification("Failed to join squad", "error");
         }
       );
     },
@@ -156,5 +168,4 @@ export default {
 .squad {
   background-color: #e6e6e6;
 }
-
 </style>

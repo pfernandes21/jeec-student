@@ -102,10 +102,13 @@ export default {
 
             this.dialog = true;
             this.error = "";
+
+            this.$emit("notification", "Code redeemed successfully +" + this.points + "pts", "success");
           },
           error => {
             this.error = "Invalid Code";
             console.log(error);
+            this.$emit("notification", "Failed to redeem code", "error");
           }
         );
       }

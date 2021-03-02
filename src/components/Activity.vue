@@ -9,12 +9,15 @@
     <p class="hours mobile">{{ activity.time }}</p>
 
     <div class="activity-info">
-      <div class="activity-img">
-        <img
-          :src="images[current_image % images.length]"
-          alt="activity-company"
-        />
-      </div>
+      <div
+        class="activity-img"
+        :style="
+          'background-image:' +
+          'url(' +
+          images[current_image % images.length] +
+          ')'
+        "
+      ></div>
       <div class="activity-text">
         <p class="type">{{ activity.type }}</p>
         <p v-if="activity.name" class="name">{{ activity.name }}</p>
@@ -88,14 +91,16 @@
             >
               <div
                 class="dialog-company-img"
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  company.logo +
+                  ')'
+                "
                 v-for="company in activity.companies.data"
                 :key="company.name"
-              >
-                <img
-                  alt="activity-company"
-                  :src="jeec_brain_url + company.logo"
-                />
-              </div>
+              ></div>
             </center>
             <p class="dialog-type">{{ activity.type }}</p>
             <p v-if="activity.name" class="dialog-name">{{ activity.name }}</p>
@@ -136,14 +141,16 @@
             >
               <div
                 class="dialog-company-img"
+                :style="
+                  'background-image:' +
+                  'url(' +
+                  jeec_brain_url +
+                  company.logo +
+                  ')'
+                "
                 v-for="company in activity.companies.data"
                 :key="company.name"
-              >
-                <img
-                  alt="activity-company"
-                  :src="jeec_brain_url + company.logo"
-                />
-              </div>
+              ></div>
             </center>
             <center
               v-if="activity.speakers.data.length > 0"
@@ -460,19 +467,10 @@ export default {
   border-radius: 50%;
   border: 0.1vh solid #707070;
   background-color: white;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-right: 3vw;
-  overflow: hidden;
-}
-
-.activity-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .activity-info {
@@ -619,21 +617,12 @@ export default {
   border-radius: 50%;
   border: 0.1vh solid #707070;
   background-color: white;
-  overflow: hidden;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-top: 1vh;
   margin-left: 1vw;
   margin-right: 1vw;
-}
-
-.dialog-company-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 9vh;
-  max-width: 9vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .dialog-type {
@@ -811,11 +800,6 @@ export default {
   .activity-img {
     height: 20vh;
     width: 20vh;
-  }
-
-  .activity-img img {
-    max-height: 20vh;
-    max-width: 20vh;
   }
 
   .description {

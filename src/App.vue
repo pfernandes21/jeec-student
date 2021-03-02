@@ -13,9 +13,10 @@
 
       <Notification
         v-for="notification in notifications"
-        :key="notification + Math.ceil(Math.random() * 10)"
+        :key="notification.id"
         :text="notification.text"
         :type="notification.type"
+        :id="notification.id"
         @end="notification_end"
       />
     </v-app>
@@ -51,13 +52,10 @@ export default {
   },
   methods: {
     notification(message, type) {
-      this.notifications.push({text:message, type:type});
+      this.notifications.push({text:message, type:type, id:Math.floor(Math.random() * 10000)});
     },
-    notification_end(text) {
-      var index = this.notifications.indexOf(text);
-      if (index !== -1) {
-        this.notifications.splice(index, 1);
-      }
+    notification_end(id) {
+      this.notifications = this.notifications.filter(row=> row.id !== id);
     },
   },
   watch: {

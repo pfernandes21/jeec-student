@@ -25,17 +25,16 @@
         </div>
       </div>
 
-      <div class="next-reward" v-if="reward_level && currentUser.total_points < reward_level.end_points">
-        <div class="reward-img">
-          <img
-            :src="
-              reward_level
-                ? jeec_brain_url + reward_level.reward.image
-                : default_image
-            "
-            alt="next-reward"
-          />
-        </div>
+      <div
+        class="next-reward"
+        v-if="
+          reward_level && currentUser.total_points < reward_level.end_points
+        "
+      >
+        <div
+          class="reward-img"
+          :style="'background-image:' + 'url(' + _reward_level + ')'"
+        ></div>
         <div class="next-reward-info">
           <p class="n-reward-top">Next Reward:</p>
           <p class="n-reward-middle">
@@ -104,16 +103,10 @@
             <div class="today-reward">
               <p class="t-reward-top">Today's Reward:</p>
               <center>
-                <div class="reward-img">
-                  <img
-                    :src="
-                      today_reward && today_reward.image
-                        ? jeec_brain_url + today_reward.image
-                        : default_image
-                    "
-                    alt="today-reward"
-                  />
-                </div>
+                <div
+                  class="reward-img"
+                  :style="'background-image:' + 'url(' + _today_reward + ')'"
+                ></div>
               </center>
               <p class="t-reward-bottom">
                 {{
@@ -138,16 +131,10 @@
         <div class="big-rewards">
           <p class="big-rewards-title">Next Rewards:</p>
           <div class="big-reward">
-            <div class="big-reward-img">
-              <img
-                :src="
-                  today_reward && today_reward.image
-                    ? jeec_brain_url + today_reward.image
-                    : default_image
-                "
-                alt="today-reward"
-              />
-            </div>
+            <div
+              class="big-reward-img"
+              :style="'background-image:' + 'url(' + _today_reward + ')'"
+            ></div>
             <div class="big-reward-info">
               <p class="big-reward-name">
                 {{
@@ -160,17 +147,16 @@
             </div>
           </div>
 
-          <div class="big-reward" v-if="reward_level && currentUser.total_points < reward_level.end_points">
-            <div class="big-reward-img">
-              <img
-                :src="
-                  reward_level
-                    ? jeec_brain_url + reward_level.reward.image
-                    : default_image
-                "
-                alt="next-reward"
-              />
-            </div>
+          <div
+            class="big-reward"
+            v-if="
+              reward_level && currentUser.total_points < reward_level.end_points
+            "
+          >
+            <div
+              class="big-reward-img"
+              :style="'background-image:' + 'url(' + _reward_level + ')'"
+            ></div>
             <div class="big-reward-info">
               <p class="big-reward-name">
                 {{
@@ -224,6 +210,16 @@ export default {
     };
   },
   computed: {
+    _today_reward() {
+      return this.today_reward && this.today_reward.image
+        ? this.jeec_brain_url + this.today_reward.image
+        : this.default_image;
+    },
+    _reward_level() {
+      return this.reward_level
+        ? this.jeec_brain_url + this.reward_level.reward.image
+        : this.default_image;
+    },
     currentUser() {
       return this.$store.state.auth.user;
     },
@@ -375,22 +371,12 @@ export default {
   position: relative;
   height: 13vh;
   width: 13vh;
-  padding: 1vh;
   border: 0.1vh solid #707070;
   border-radius: 50%;
   background-color: white;
-  overflow: hidden;
-}
-
-.reward-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .next-reward-info {
@@ -610,22 +596,12 @@ export default {
     position: relative;
     height: 15vh;
     width: 15vh;
-    padding: 1vh;
     border: 0.3vh solid #707070;
     border-radius: 50%;
     background-color: white;
-    overflow: hidden;
-  }
-
-  .big-reward-img img {
-    position: absolute;
-    margin: auto;
-    max-height: 13vh;
-    max-width: 13vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    background-size: 105%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .big-reward-info {

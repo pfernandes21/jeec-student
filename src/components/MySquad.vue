@@ -49,16 +49,17 @@
       <div class="today-reward">
         <p>Today's Reward:</p>
         <div class="reward-info">
-          <div class="reward-img">
-            <img
-              :src="
-                today_reward && today_reward.image
-                  ? jeec_brain_url + today_reward.image
-                  : default_image
-              "
-              alt="today-reward"
-            />
-          </div>
+          <div
+            class="reward-img"
+            :style="
+              'background-image:' +
+              'url(' +
+              (today_reward && today_reward.image
+                ? jeec_brain_url + today_reward.image
+                : default_image) +
+              ')'
+            "
+          ></div>
           <p>
             {{
               today_reward && today_reward.image
@@ -74,16 +75,17 @@
         <p class="big-today-reward-title">Today's Reward:</p>
         <div class="big-reward-info">
           <center>
-            <div class="big-reward-img">
-              <img
-                :src="
-                  today_reward && today_reward.image
-                    ? jeec_brain_url + today_reward.image
-                    : default_image
-                "
-                alt="today-reward"
-              />
-            </div>
+            <div
+              class="big-reward-img"
+              :style="
+                'background-image:' +
+                'url(' +
+                (today_reward && today_reward.image
+                  ? jeec_brain_url + today_reward.image
+                  : default_image) +
+                ')'
+              "
+            ></div>
             <p class="big-reward-name">
               {{
                 today_reward && today_reward.image
@@ -427,24 +429,14 @@ export default {
   position: relative;
   height: 18vh;
   width: 18vh;
-  padding: 1vh;
   border: 0.01vh solid #707070;
   box-shadow: 0 0.3vh 1.5vh 0.1vh #707070;
   border-radius: 50%;
   background-color: white;
-  overflow: hidden;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
   margin-bottom: 2vh;
-}
-
-.big-reward-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 18vh;
-  max-width: 18vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .big-reward-name {
@@ -458,23 +450,13 @@ export default {
   position: relative;
   height: 13vh;
   width: 13vh;
-  padding: 1vh;
   border: 0.01vh solid #707070;
   box-shadow: 0 0.3vh 1.5vh 0.1vh #707070;
   border-radius: 50%;
   background-color: white;
-  overflow: hidden;
-}
-
-.reward-img img {
-  position: absolute;
-  margin: auto;
-  max-height: 13vh;
-  max-width: 13vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .reward-info {
@@ -578,7 +560,7 @@ export default {
   }
 
   .reward-info p {
-    width: calc(90vw - 12vh);
+    max-width: calc(83vw - 12vh);
   }
 
   .browser {

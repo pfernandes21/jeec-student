@@ -35,54 +35,82 @@
         </template>
 
         <div class="image-wrapper browser">
-            <div class="image first" :class="rewardClass(image_index(model - 1))">
-              <img
-                :src="jeec_brain_url + squads_rewards[image_index(model - 1)].reward.image"
-                alt="reward"
-              />
-              <img
-                v-if="rewardClass(image_index(model - 1)) === 'lost_reward'"
-                src="../assets/icons/cross.svg"
-                class="small-cross"
-              />
-            </div>
-
-            <span class="rect"></span>
-
-            <div class="image second" :class="rewardClass(model)">
-              <img
-                :src="jeec_brain_url + squads_rewards[model].reward.image"
-                alt="reward"
-              />
-              <img
-                v-if="rewardClass(model) === 'lost_reward'"
-                src="../assets/icons/cross.svg"
-                class="cross"
-              />
-            </div>
-
-            <span class="rect"></span>
-
-            <div class="image third" :class="rewardClass(image_index(model + 1))">
-              <img
-                :src="jeec_brain_url + squads_rewards[image_index(model + 1)].reward.image"
-                alt="reward"
-              />
-              <img
-                v-if="rewardClass(image_index(model + 1)) === 'lost_reward'"
-                src="../assets/icons/cross.svg"
-                class="small-cross"
-              />
-            </div>
+          <div
+            class="image first"
+            :class="rewardClass(image_index(model - 1))"
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              squads_rewards[image_index(model - 1)].reward.image +
+              ')'
+            "
+          >
+            <img
+              v-if="rewardClass(image_index(model - 1)) === 'lost_reward'"
+              src="../assets/icons/cross.svg"
+              class="small-cross"
+            />
           </div>
 
-        <v-carousel-item v-for="(squad_reward, i) in squads_rewards" :key="i" class="mobile">
+          <span class="rect"></span>
+
+          <div
+            class="image second"
+            :class="rewardClass(model)"
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              squads_rewards[model].reward.image +
+              ')'
+            "
+          >
+            <img
+              v-if="rewardClass(model) === 'lost_reward'"
+              src="../assets/icons/cross.svg"
+              class="cross"
+            />
+          </div>
+
+          <span class="rect"></span>
+
+          <div
+            class="image third"
+            :class="rewardClass(image_index(model + 1))"
+            :style="
+              'background-image:' +
+              'url(' +
+              jeec_brain_url +
+              squads_rewards[image_index(model + 1)].reward.image +
+              ')'
+            "
+          >
+            <img
+              v-if="rewardClass(image_index(model + 1)) === 'lost_reward'"
+              src="../assets/icons/cross.svg"
+              class="small-cross"
+            />
+          </div>
+        </div>
+
+        <v-carousel-item
+          v-for="(squad_reward, i) in squads_rewards"
+          :key="i"
+          class="mobile"
+        >
           <div class="image-wrapper">
-            <div class="image second" :class="rewardClass(i)">
-              <img
-                :src="jeec_brain_url + squad_reward.reward.image"
-                alt="reward"
-              />
+            <div
+              class="image second"
+              :class="rewardClass(i)"
+              :style="
+                'background-image:' +
+                'url(' +
+                jeec_brain_url +
+                squad_reward.reward.image +
+                ')'
+              "
+            >
               <img
                 v-if="rewardClass(i) === 'lost_reward'"
                 src="../assets/icons/cross.svg"
@@ -99,7 +127,8 @@
       </div>
       <div
         v-if="
-          rewardClass(model) === 'current_reward' || rewardClass(model) === 'future_reward'
+          rewardClass(model) === 'current_reward' ||
+          rewardClass(model) === 'future_reward'
         "
         class="today-points"
       >
@@ -171,12 +200,14 @@ export default {
   },
   created() {
     var now = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate()
-        );
-        var event_day = this.squads_rewards.map((day) => new Date(day.date.substring(0, 11)).getTime()).indexOf(now.getTime());
-        this.model = event_day !== -1 ? event_day : 0;
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    );
+    var event_day = this.squads_rewards
+      .map((day) => new Date(day.date.substring(0, 11)).getTime())
+      .indexOf(now.getTime());
+    this.model = event_day !== -1 ? event_day : 0;
   },
 };
 </script>
@@ -209,30 +240,32 @@ export default {
   height: 25vh;
   border-radius: 50%;
   margin: 3vh;
-  padding: 1vh;
   background-color: white;
-  overflow: hidden;
+  background-size: 105%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.image img {
+.cross {
+  height: 17vh;
+  width: 17vh;
   position: absolute;
   margin: auto;
-  max-height: 25vh;
-  max-width: 25vh;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
 
-.cross {
-  height: 17vh;
-  width: 17vh;
-}
-
 .small-cross {
   height: 11vh;
   width: 11vh;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .current_reward {
@@ -326,20 +359,9 @@ export default {
     width: 18vh;
   }
 
-  .first img,
-  .third img {
-    max-height: 18vh;
-    max-width: 18vh;
-  }
-
   .second {
     height: 28vh;
     width: 28vh;
-  }
-
-  .second img {
-    max-height: 28vh;
-    max-width: 28vh;
   }
 
   .rect {

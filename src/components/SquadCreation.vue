@@ -111,10 +111,12 @@ export default {
         .then((response) => {
           this.$emit("create", response.data.data);
           this.error = "";
+          this.$emit("notification", "Squad created successfully", "success");
         })
         .catch((error) => {
           this.error = error.response.data.error;
           console.log(error);
+          this.$emit("notification", "Failed to create squad", "error");
         });
     },
   },

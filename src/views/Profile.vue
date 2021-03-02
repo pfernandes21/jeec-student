@@ -221,9 +221,11 @@ export default {
       UserService.addLinkedin(url).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.$emit("notification", "LinkedIn added successfully +15 pts", "points");
         },
         (error) => {
           console.log(error);
+          this.$emit("notification", "Failed to add LinkedIn", "error");
         }
       );
     },
@@ -248,11 +250,15 @@ export default {
       UserService.addCV(this.$refs.cv).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.$emit("notification", "CV uploaded successfully +15 pts", "points");
         },
         (error) => {
           console.log(error);
+          this.$emit("notification", "Fail to upload CV", "error");
         }
       );
+      
+      this.$refs.cv.value = "";
     },
     see_cv() {
       if (this.currentUser.uploaded_cv) {
