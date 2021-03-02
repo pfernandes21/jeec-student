@@ -217,8 +217,8 @@ export default {
 .image img {
   position: absolute;
   margin: auto;
-  max-height: 20vh;
-  max-width: 20vh;
+  max-height: 25vh;
+  max-width: 25vh;
   top: 0;
   left: 0;
   right: 0;
@@ -328,8 +328,8 @@ export default {
 
   .first img,
   .third img {
-    max-height: 15vh;
-    max-width: 15vh;
+    max-height: 18vh;
+    max-width: 18vh;
   }
 
   .second {
@@ -338,8 +338,8 @@ export default {
   }
 
   .second img {
-    max-height: 24vh;
-    max-width: 24vh;
+    max-height: 28vh;
+    max-width: 28vh;
   }
 
   .rect {

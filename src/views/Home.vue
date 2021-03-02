@@ -385,8 +385,8 @@ export default {
 .reward-img img {
   position: absolute;
   margin: auto;
-  max-height: 11vh;
-  max-width: 11vh;
+  max-height: 13vh;
+  max-width: 13vh;
   top: 0;
   left: 0;
   right: 0;

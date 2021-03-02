@@ -227,7 +227,8 @@ export default {
   },
   methods: {
     limitStudents() {
-      if (this.squad.members.data.length + this.students.length > 4) {
+      if (this.squad.members.data.length + this.squadmates.length > 4) {
+        console.log();
         this.squadmates.pop();
       }
 
@@ -249,8 +250,17 @@ export default {
       );
     },
     invite() {
-      UserService.inviteSquad(this.squadmates);
-      this.add_members_dialog = false;
+      UserService.inviteSquad(this.squadmates).then(
+        () => {
+          this.$emit("notification", "Invitation sent successfully", "success");
+          this.add_members_dialog = false;
+        },
+        (error) => {
+          console.log(error);
+          this.$emit("notification", "Failed to send invitation", "error");
+          this.add_members_dialog = false;
+        }
+      );
     },
     leave_squad() {
       if (!confirm("Are you sure you want to proceed?")) {
@@ -429,8 +439,8 @@ export default {
 .big-reward-img img {
   position: absolute;
   margin: auto;
-  max-height: 14vh;
-  max-width: 14vh;
+  max-height: 18vh;
+  max-width: 18vh;
   top: 0;
   left: 0;
   right: 0;
@@ -459,8 +469,8 @@ export default {
 .reward-img img {
   position: absolute;
   margin: auto;
-  max-height: 11vh;
-  max-width: 11vh;
+  max-height: 13vh;
+  max-width: 13vh;
   top: 0;
   left: 0;
   right: 0;
@@ -662,7 +672,7 @@ export default {
   .big-today-reward,
   .members {
     width: 37.3vw;
-    height: 55vh;
+    height: 54vh;
     background-color: #f1f1f1;
   }
 

@@ -10,7 +10,7 @@
 
     <div v-show="button === 'my squad' && !loading" style="margin-top: 8vh">
       <SquadCreation v-if="squad === null" @create="create_squad" />
-      <MySquad v-else :squad="squad" @delete="delete_squad" />
+      <MySquad v-else :squad="squad" @delete="delete_squad" @notification="notification" />
     </div>
 
     <div v-show="button === 'invitations'" style="margin-top: 8vh">
@@ -53,6 +53,9 @@ export default {
       if (name !== this.button) {
         this.button = name;
       }
+    },
+    notification(message, type) {
+      this.$emit("notification", message, type);
     },
     create_squad(squad) {
       this.squad = squad;

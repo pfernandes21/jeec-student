@@ -7,13 +7,15 @@
         <router-view
           class="page-wrapper"
           :class="$route.name === 'Login' ? 'login-page' : ''"
+          @notification="notification"
         />
       </div>
 
       <Notification
         v-for="notification in notifications"
         :key="notification + Math.ceil(Math.random() * 10)"
-        :notification_text="notification"
+        :text="notification.text"
+        :type="notification.type"
         @end="notification_end"
       />
     </v-app>
@@ -48,6 +50,9 @@ export default {
     },
   },
   methods: {
+    notification(message, type) {
+      this.notifications.push({text:message, type:type});
+    },
     notification_end(text) {
       var index = this.notifications.indexOf(text);
       if (index !== -1) {
@@ -82,7 +87,7 @@ export default {
             (response) => {
               localStorage.setItem("last-login", today);
               this.$store.dispatch("auth/userUpdate", response.data.data);
-              // this.dialog = true;
+              this.notification("New daily login +5pts", "points");
             },
             (error) => {
               console.log(error);

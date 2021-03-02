@@ -21,7 +21,8 @@
 export default {
   name: "Notification",
   props: {
-    notification_text: String,
+    text: String,
+    type: String,
   },
   data: function () {
     return {

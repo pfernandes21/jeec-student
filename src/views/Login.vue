@@ -44,7 +44,13 @@
         </div>
       </div>
       <div v-else>
-        <v-progress-circular indeterminate color="#27ade4" :size="100" :width="10" class="loading-bar"></v-progress-circular>
+        <v-progress-circular
+          indeterminate
+          color="#27ade4"
+          :size="100"
+          :width="10"
+          class="loading-bar"
+        ></v-progress-circular>
       </div>
       <div class="loading-bottom">
         <img alt="IST logo" src="../assets/tecnico_grey.svg" />
@@ -117,6 +123,9 @@ export default {
         ])
         .then(
           () => {
+            if (this.$route.query.firstlog) {
+              this.$emit("notification", "New daily login +5pts", "points");
+            }
             this.$router.push("/home");
           },
           () => {
