@@ -32,6 +32,7 @@
         <tr
           v-for="item in menu_items"
           :key="item.name"
+          class="nav-row"
           v-bind:class="
             (
               page === 'Company' || page === 'Chat'
@@ -77,6 +78,21 @@ export default {
           page: "Code",
         },
         {
+          name: "My Profile",
+          src: require("../assets/icons/user.svg"),
+          page: "Profile",
+        },
+        {
+          name: "My Squad",
+          src: require("../assets/icons/puzzle.svg"),
+          page: "Squad",
+        },
+        {
+          name: "Activities",
+          src: require("../assets/icons/calendar.svg"),
+          page: "Activities",
+        },
+        {
           name: "Chat & Job Fair",
           src: require("../assets/icons/chat.svg"),
           page: "Companies",
@@ -90,21 +106,6 @@ export default {
           name: "Rewards",
           src: require("../assets/icons/trophy.svg"),
           page: "Rewards",
-        },
-        {
-          name: "Activities",
-          src: require("../assets/icons/calendar.svg"),
-          page: "Activities",
-        },
-        {
-          name: "My Profile",
-          src: require("../assets/icons/user.svg"),
-          page: "Profile",
-        },
-        {
-          name: "Squad",
-          src: require("../assets/icons/puzzle.svg"),
-          page: "Squad",
         },
         {
           name: "Rankings",
@@ -207,13 +208,17 @@ export default {
 }
 
 .menu-middle img {
-  height: 5vh;
-  width: auto;
+  width: 2.6vw;
+  vertical-align: middle;
+}
+
+.nav-row {
+  height: 6.5vh;
 }
 
 .menu-items {
   cursor: pointer;
-  font-size: 3.7vh;
+  font-size: 1.8vw;
   font-weight: 700;
 }
 
@@ -228,7 +233,6 @@ export default {
 
 .menu-names {
   padding-left: 4vw;
-  padding-bottom: 2vh;
 }
 
 .menu-bottom {
@@ -258,16 +262,27 @@ export default {
   .big-jeec {
     display: none;
   }
-}
 
-@media screen and (min-width: 1100px) {
   .menu-items {
-    font-size: 3.2vh;
+    font-size: 6vw;
   }
 
   .menu-names {
+    width: 60vw;
+  }
+
+  .menu-middle img {
+    width: 8vw;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  /* .menu-items {
+    font-size: 3.2vh;
+  } */
+
+  .menu-names {
     padding-left: 2vw;
-    padding-bottom: 2vh;
   }
 
   .menu-middle,
@@ -287,7 +302,11 @@ export default {
   }
 
   .big-jeec img {
-    height: 10vh;
+    width: 60%;
+  }
+
+  .nav-row {
+    height: 7vh;
   }
 }
 </style>

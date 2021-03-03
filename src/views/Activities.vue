@@ -172,6 +172,7 @@ export default {
 .day-wrapper {
   vertical-align: middle;
   margin: 0;
+  height: 100%;
 }
 
 .activities-wrapper {
@@ -182,7 +183,7 @@ export default {
 .day {
   color: black;
   align-self: center;
-  font-size: 6.5vh;
+  font-size: 9vw;
   font-weight: 600;
   margin: 0;
 }
@@ -204,6 +205,10 @@ export default {
 @media screen and (min-width: 1100px) {
   .mobile {
     display: none;
+  }
+
+  .day {
+    font-size: 7vh;
   }
 }
 </style>

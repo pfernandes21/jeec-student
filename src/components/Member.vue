@@ -4,7 +4,7 @@
     <div class="profile-info">
       <p v-if="member.is_captain" class="captain">Captain</p>
       <p class="name">
-        {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
+        {{ nameArray[0] }} <br v-if="line_break"> {{ nameArray[nameArray.length - 1] }}
       </p>
       <p class="level">level {{ member.level }}</p>
     </div>
@@ -24,6 +24,10 @@ export default {
   props: {
     member: Object,
     captain_ist_id: String,
+    line_break: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     currentUser() {
@@ -108,7 +112,7 @@ export default {
 
 @media screen and (min-width: 1100px) {
   .profile-info {
-    margin-left: 2vw;
+    margin-left: 1vw;
   }
 }
 </style>

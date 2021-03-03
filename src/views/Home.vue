@@ -124,6 +124,7 @@
               :key="member.ist_id"
               :member="member"
               :captain_ist_id="squad.captain_ist_id"
+              :line_break="true"
             />
           </div>
         </div>
@@ -722,11 +723,8 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: space-evenly;
-  }
-
-  .members > div {
-    width: 50%;
+    justify-content: space-between;
+    overflow-y: auto;
   }
 }
 </style>

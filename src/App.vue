@@ -149,7 +149,11 @@ export default {
 }
 
 .v-carousel__item {
-  height: auto !important;
+  height: 100% !important;
+}
+
+.v-sheet {
+  height: 100% !important;
 }
 
 .login-page {

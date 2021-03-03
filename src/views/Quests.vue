@@ -12,7 +12,7 @@
       </div>
 
       <div class="quests-warning">
-        <p class="searching" v-if="!quests || quests.length === 0">Waiting for more Quests...</p>
+        <p class="searching" v-if="!quests || quests.length === 0"></p>
         <span class="warning-msg">For more quests go to</span>
         <router-link to="/activities" class="warning-msg activities-link">
           Activities</router-link
