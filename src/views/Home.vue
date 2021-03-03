@@ -52,7 +52,10 @@
       </div>
     </div>
 
-    <div class="middle">
+    <div
+      class="middle"
+      v-if="!loading_squad && !loading_level && !loading_reward"
+    >
       <router-link to="/squad" tag="button" class="plus">+</router-link>
       <div class="middle-wrapper">
         <div class="big-squad-wrapper">
@@ -181,6 +184,15 @@
         </div>
       </div>
     </div>
+    <div class="loading" v-else>
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
+    </div>
     <div class="redirect-buttons bottom">
       <router-link to="/code" tag="button">Redeem Codes</router-link>
       <router-link to="/quests" tag="button">Daily Quests</router-link>
@@ -208,6 +220,9 @@ export default {
       today_reward: {},
       xpbar_width: "92vw",
       height: 30,
+      loading_squad: true,
+      loading_level: true,
+      loading_reward: true,
     };
   },
   computed: {
@@ -276,27 +291,33 @@ export default {
     UserService.getUserSquad().then(
       (response) => {
         this.squad = response.data.data;
+        this.loading_squad = false;
       },
       (error) => {
         console.log(error);
+        this.loading_squad = false;
       }
     );
 
     UserService.getLevels().then(
       (response) => {
         this.levels = response.data.data;
+        this.loading_level = false;
       },
       (error) => {
         console.log(error);
+        this.loading_level = false;
       }
     );
 
     UserService.getTodaySquadReward().then(
       (response) => {
         this.today_reward = response.data;
+        this.loading_reward = false;
       },
       (error) => {
         console.log(error);
+        this.loading_reward = false;
       }
     );
   },
@@ -504,6 +525,12 @@ export default {
   border-radius: 50%;
   border: 0.5vh solid #27ade4;
   box-shadow: 0 0 2.5vh 0.1vh #27ade4;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 15%;
+  min-height: 30vh;
 }
 
 @media screen and (max-width: 1100px) {

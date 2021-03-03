@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-snackbar v-model="snackbar" :timeout="timeout" :color="color" absolute>
+    <v-snackbar v-model="snackbar" :timeout="timeout" :color="color" absolute style="height: auto !important;">
       <div class="notification">
         <v-icon :color="icon_color" style="font-size: 3.5vh; margin-right: 2vw">{{ icon }}</v-icon>
         <p>
@@ -27,7 +27,7 @@ export default {
   },
   data: function () {
     return {
-      timeout: 5000,
+      timeout: -1,
       snackbar: true,
     };
   },

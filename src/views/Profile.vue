@@ -34,10 +34,10 @@
             <p>Added</p>
             <p><v-icon large style="color: white">mdi-check</v-icon></p>
           </div>
-          <p @click.stop="cv_click">
+          <p @click.stop="cv_click" style="cursor: pointer">
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
           </p>
-          <p @click.stop="see_cv">
+          <p @click.stop="see_cv" style="cursor: pointer">
             <v-icon large style="color: white">mdi-download</v-icon>
           </p>
           <a
@@ -71,14 +71,14 @@
             <p>Added</p>
             <p><v-icon large style="color: white">mdi-check</v-icon></p>
           </div>
-          <p @click.stop="dialog = true">
+          <p @click.stop="dialog = true" style="cursor: pointer">
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
           </p>
         </div>
       </div>
     </div>
 
-    <div class="bottom">
+    <div class="bottom" v-if="!loading_companies && !loading_tags">
       <center>
         <p class="interests">Your Interests</p>
       </center>
@@ -136,6 +136,15 @@
           }}</v-icon>
         </p>
       </div>
+    </div>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
     </div>
 
     <div class="footer">
@@ -205,6 +214,8 @@ export default {
       height: 30,
       xpbar_width: "62vw",
       dialog_width: "",
+      loading_tags: true,
+      loading_companies: true,
     };
   },
   methods: {
@@ -220,8 +231,13 @@ export default {
 
       UserService.addLinkedin(url).then(
         (response) => {
+          if (!this.currentUser.linkedin_url) {
+            this.$emit("notification", "Added LinkedIn + 15pts", "points");
+          } else {
+            this.$emit("notification", "LinkedIn updated successfully", "success");
+          }
+
           this.$store.dispatch("auth/userUpdate", response.data.data);
-          this.$emit("notification", "LinkedIn added successfully +15 pts", "points");
         },
         (error) => {
           console.log(error);
@@ -249,15 +265,20 @@ export default {
     add_cv() {
       UserService.addCV(this.$refs.cv).then(
         (response) => {
+          if (!this.currentUser.uploaded_cv) {
+            this.$emit("notification", "Added CV + 15pts", "points");
+          } else {
+            this.$emit("notification", "CV updated successfully", "success");
+          }
+
           this.$store.dispatch("auth/userUpdate", response.data.data);
-          this.$emit("notification", "CV uploaded successfully +15 pts", "points");
         },
         (error) => {
           console.log(error);
           this.$emit("notification", "Fail to upload CV", "error");
         }
       );
-      
+
       this.$refs.cv.value = "";
     },
     see_cv() {
@@ -306,7 +327,9 @@ export default {
       );
     },
     delete_tag(tag) {
-      this.currentUser.tags = this.currentUser.tags.filter(_tag => _tag !== tag);
+      this.currentUser.tags = this.currentUser.tags.filter(
+        (_tag) => _tag !== tag
+      );
       UserService.deleteTag(tag).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -317,7 +340,9 @@ export default {
       );
     },
     delete_company(company) {
-      this.currentUser.companies = this.currentUser.companies.filter(_company => _company !== company);
+      this.currentUser.companies = this.currentUser.companies.filter(
+        (_company) => _company !== company
+      );
       UserService.deleteCompany(company).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
@@ -330,7 +355,7 @@ export default {
     resize() {
       if (window.innerWidth < 1100) {
         this.xpbar_width = "62vw";
-        this.dialog_width = ""
+        this.dialog_width = "";
       } else {
         this.xpbar_width = "47vw";
         this.dialog_width = "40vw";
@@ -380,18 +405,22 @@ export default {
     UserService.getTags().then(
       (response) => {
         this.tags = response.data;
+        this.loading_tags = false;
       },
       (error) => {
         console.log(error);
+        this.loading_tags = false;
       }
     );
 
     UserService.getCompanies().then(
       (response) => {
         this.companies = response.data;
+        this.loading_companies = false;
       },
       (error) => {
         console.log(error);
+        this.loading_companies = false;
       }
     );
   },
@@ -635,6 +664,11 @@ export default {
   font-size: 2.4vh;
 }
 
+.loading {
+  text-align: center;
+  margin-top: 10vh;
+}
+
 @media screen and (max-width: 1100px) {
   .cv-wrapper {
     margin-bottom: 2.5vh;
@@ -674,7 +708,6 @@ export default {
 
   .cv-wrapper,
   .linkedin-wrapper {
-    cursor: pointer;
     width: 30vw;
   }
 

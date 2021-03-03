@@ -2,7 +2,11 @@
   <div class="companies">
     <Buttons @_click="click" :names="{ Partners: true, Messages: false }" />
 
-    <center class="sponsors-page" style="margin-top: 8vh">
+    <center
+      class="sponsors-page"
+      style="margin-top: 8vh"
+      v-if="!loading_partners"
+    >
       <div class="main-sponsors sponsors">
         <Partner
           v-for="partner in main_sponsors"
@@ -44,6 +48,15 @@
         />
       </div>
     </center>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
+    </div>
   </div>
 </template>
 
@@ -63,6 +76,7 @@ export default {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       partners: [],
       partner: null,
+      loading_partners: true,
     };
   },
   computed: {
@@ -108,9 +122,11 @@ export default {
     UserService.getPartners().then(
       (response) => {
         this.partners = response.data.data;
+        this.loading_partners = false;
       },
       (error) => {
         console.log(error);
+        this.loading_partners = false;
       }
     );
   },
@@ -130,6 +146,11 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (max-width: 1100px) {

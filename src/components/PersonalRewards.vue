@@ -331,6 +331,10 @@ export default {
 }
 
 @media screen and (min-width: 1100px) {
+  .personal-reward {
+    margin-top: 18vh !important;
+  }
+
   .mobile {
     display: none;
   }

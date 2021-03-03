@@ -1,8 +1,11 @@
 <template>
   <div class="quests">
-    <Buttons @_click="click" :names="{ daily: button === 'daily', special: button === 'special' }" />
+    <Buttons
+      @_click="click"
+      :names="{ daily: button === 'daily', special: button === 'special' }"
+    />
 
-    <div class="daily" v-show="button === 'daily'">
+    <div class="daily" v-if="!loading_quests" v-show="button === 'daily'">
       <div class="activities-wrapper">
         <Activity
           v-for="quest in quests"
@@ -18,6 +21,15 @@
           Activities</router-link
         >
       </div>
+    </div>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
     </div>
 
     <div class="special" v-show="button === 'special'">
@@ -70,6 +82,7 @@ export default {
         "<b>Add your linkedin to your <a href=" +
         '"/profile"' +
         ' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
+      loading_quests: true,
     };
   },
   computed: {
@@ -85,8 +98,7 @@ export default {
   },
   methods: {
     click(name) {
-      if(name !== this.button)
-      {
+      if (name !== this.button) {
         this.button = name;
       }
     },
@@ -99,9 +111,11 @@ export default {
     UserService.getQuests().then(
       (response) => {
         this.quests = response.data.data;
+        this.loading_quests = false;
       },
       (error) => {
         console.log(error);
+        this.loading_quests = false;
       }
     );
   },
@@ -148,6 +162,11 @@ export default {
   color: #27ade4;
   font-weight: 600;
   text-decoration: none;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (min-width: 1100px) {

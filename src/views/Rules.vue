@@ -5,18 +5,28 @@
       :names="{
         Rules: button === 'Rules',
         Prizes: button === 'Prizes',
-        Activities: button === 'Activities'
+        Activities: button === 'Activities',
       }"
     />
+    <div v-if="!loading_event">
+      <GeneralRules v-if="button === 'Rules'" :event_info="event_info" />
 
-    <GeneralRules v-if="button === 'Rules'" :event_info="event_info" />
+      <PrizeRules v-if="button === 'Prizes'" />
 
-    <PrizeRules v-if="button === 'Prizes'" />
-
-    <ActivityRules
-      v-if="button === 'Activities'"
-      :activities="event_info.activity_types"
-    />
+      <ActivityRules
+        v-if="button === 'Activities'"
+        :activities="event_info.activity_types"
+      />
+    </div>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
+    </div>
   </div>
 </template>
 
@@ -33,24 +43,25 @@ export default {
     Buttons,
     GeneralRules,
     PrizeRules,
-    ActivityRules
+    ActivityRules,
   },
-  data: function() {
+  data: function () {
     return {
       button: "Rules",
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
-      event_info: []
+      event_info: [],
+      loading_event: true,
     };
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
   methods: {
     click(name) {
       this.button = name;
-    }
+    },
   },
   created() {
     if (!this.currentUser) {
@@ -58,20 +69,27 @@ export default {
     }
 
     UserService.getEventInfo().then(
-      response => {
+      (response) => {
         this.event_info = response.data;
+        this.loading_event = false;
       },
-      error => {
+      (error) => {
         console.log(error);
+        this.loading_event = false;
       }
     );
-  }
+  },
 };
 </script>
 
 <style scoped>
 .rules-page {
   background-color: #e6e6e6;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (max-width: 1100px) {

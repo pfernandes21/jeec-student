@@ -9,7 +9,7 @@
       :n_invites="invitations.length"
     />
 
-    <div v-show="button === 'my squad' && !loading" style="margin-top: 8vh">
+    <div v-if="!loading_squad" v-show="button === 'my squad'" style="margin-top: 8vh">
       <SquadCreation
         v-if="squad === null"
         @create="create_squad"
@@ -21,6 +21,15 @@
         @delete="delete_squad"
         @notification="notification"
       />
+    </div>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
     </div>
 
     <div v-show="button === 'invitations'" style="margin-top: 8vh">
@@ -55,7 +64,7 @@ export default {
       button: "my squad",
       squad: null,
       invitations: [],
-      loading: true,
+      loading_squad: true,
     };
   },
   methods: {
@@ -144,11 +153,11 @@ export default {
           }
         });
 
-        this.loading = false;
+        this.loading_squad = false;
       },
       (error) => {
         console.log(error);
-        this.loading = false;
+        this.loading_squad = false;
       }
     );
 
@@ -167,5 +176,10 @@ export default {
 <style scoped>
 .squad {
   background-color: #e6e6e6;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 </style>

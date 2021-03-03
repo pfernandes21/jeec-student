@@ -84,7 +84,7 @@ export default {
         },
         {
           name: "My Squad",
-          src: require("../assets/icons/puzzle.svg"),
+          src: require("../assets/icons/squad.svg"),
           page: "Squad",
         },
         {

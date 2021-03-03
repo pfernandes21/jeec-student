@@ -8,7 +8,7 @@
       }"
     />
 
-    <div style="margin-top: 8vh">
+    <div style="margin-top: 8vh" v-if="!loading_activities">
       <center>
         <div>
           <v-carousel
@@ -68,6 +68,15 @@
         </div>
       </center>
     </div>
+    <div v-else class="loading">
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
+    </div>
   </div>
 </template>
 
@@ -97,6 +106,7 @@ export default {
         "Friday",
         "Saturday",
       ],
+      loading_activities: true,
     };
   },
   methods: {
@@ -143,11 +153,15 @@ export default {
           new Date().getMonth(),
           new Date().getDate()
         );
-        var event_day = this.event_days.map((day) => day.getTime()).indexOf(now.getTime());
+        var event_day = this.event_days
+          .map((day) => day.getTime())
+          .indexOf(now.getTime());
         this.model = event_day !== -1 ? event_day : 0;
+        this.loading_activities = false;
       },
       (error) => {
         console.log(error);
+        this.loading_activities = false;
       }
     );
   },
@@ -200,6 +214,11 @@ export default {
 .profile {
   color: #27ade4;
   font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (min-width: 1100px) {
