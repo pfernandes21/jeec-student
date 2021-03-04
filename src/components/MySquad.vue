@@ -279,6 +279,10 @@ export default {
       );
     },
     kick_member(ist_id) {
+      if (!confirm("Are you sure you want to proceed?")) {
+        return;
+      }
+      
       UserService.kickMember(ist_id).then(
         (response) => {
           this.squad = response.data.data;
