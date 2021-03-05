@@ -73,7 +73,7 @@ export default {
   },
   data: function () {
     return {
-      jeec_brain_url: 'process.env.VUE_APP_JEEC_BRAIN_URL',
+      jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       partners: [{name:'BNP Paribas', partnership_tier:'silver', logo:'/static/companies/images/bnp_paribas_.png'},
       {name:'Celfinet', partnership_tier:'bronze', logo:'/static/companies/images/celfinet.png'},
       {name:'CI&T', partnership_tier:'silver', logo:'/static/companies/images/ci&t.png'},
