@@ -73,7 +73,7 @@
         >
           <img src="../assets/instagram_icon.svg" class="icon" />
         </a>
-        <a href="https:jeec.ist" style="margin-right:3vw" target="_blank">
+        <a href="https://jeec.ist" style="margin-right:3vw" target="_blank">
           <img src="../assets/globe_icon.svg" class="icon" />
         </a>
         <a :href="event_info.facebook_link" target="_blank">
