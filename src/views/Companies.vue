@@ -63,7 +63,7 @@
 <script>
 import Buttons from "@/components/Buttons.vue";
 import Partner from "@/components/Partner.vue";
-import UserService from "../services/user.service";
+// import UserService from "../services/user.service";
 
 export default {
   name: "Companies",
@@ -74,9 +74,17 @@ export default {
   data: function () {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
-      partners: [],
+      partners: [{name:'BNP Paribas', partnership_tier:'silver', logo:'/static/companies/images/bnp_paribas_.png'},
+      {name:'Celfinet', partnership_tier:'bronze', logo:'/static/companies/images/celfinet.png'},
+      {name:'CI&T', partnership_tier:'silver', logo:'/static/companies/images/ci&t.png'},
+      {name:'Fidelidae', partnership_tier:'bronze', logo:'/static/companies/images/fidelidade.png'},
+      {name:'Infinera', partnership_tier:'bronze', logo:'/static/companies/images/infinera.png'},
+      {name:'KPMG', partnership_tier:'gold', logo:'/static/companies/images/kpmg.png'},
+      {name:'Siemens', partnership_tier:'silver', logo:'/static/companies/images/siemens.png'},
+      {name:'Vodafone', partnership_tier:'silver', logo:'/static/companies/images/vodafone.png'},
+      ],
       partner: null,
-      loading_partners: true,
+      loading_partners: false,
     };
   },
   computed: {
@@ -119,16 +127,16 @@ export default {
       this.$router.push("/");
     }
 
-    UserService.getPartners().then(
-      (response) => {
-        this.partners = response.data.data;
-        this.loading_partners = false;
-      },
-      (error) => {
-        console.log(error);
-        this.loading_partners = false;
-      }
-    );
+    // UserService.getPartners().then(
+    //   (response) => {
+    //     this.partners = response.data.data;
+    //     this.loading_partners = false;
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //     this.loading_partners = false;
+    //   }
+    // );
   },
 };
 </script>
