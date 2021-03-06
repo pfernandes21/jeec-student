@@ -3,13 +3,15 @@
     <p class="title">
       <img :src="require(`@/assets/${icon_src}`)" class="icon" />
       {{ title }}
-      <v-btn
-        depressed
-        @click.stop="go_to"
-        class="redeem white--text"
-        color="secundary"
-        style="float: right"
-        >See All</v-btn
+      <a :href="path" target="_blank"
+        ><v-btn
+          depressed
+          @click.stop="go_to"
+          class="redeem white--text"
+          color="secundary"
+          style="float: right"
+          >See All</v-btn
+        ></a
       >
     </p>
     <p>
@@ -31,11 +33,7 @@ export default {
     path: String
   },
   computed: {},
-  methods: {
-    go_to() {
-      window.location.href = this.path;
-    }
-  }
+  methods: {}
 };
 </script>
 

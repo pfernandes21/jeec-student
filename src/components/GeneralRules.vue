@@ -66,13 +66,17 @@
         </p>
       </center>
       <center>
-        <a :href="event_info.instagram_link" style="margin-right:3vw">
+        <a
+          :href="event_info.instagram_link"
+          target="_blank"
+          style="margin-right:3vw"
+        >
           <img src="../assets/instagram_icon.svg" class="icon" />
         </a>
-        <a href="https:jeec.ist" style="margin-right:3vw">
+        <a href="https:jeec.ist" style="margin-right:3vw" target="_blank">
           <img src="../assets/globe_icon.svg" class="icon" />
         </a>
-        <a :href="event_info.facebook_link">
+        <a :href="event_info.facebook_link" target="_blank">
           <img src="../assets/facebook_icon.svg" class="icon" />
         </a>
       </center>
