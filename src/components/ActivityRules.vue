@@ -11,7 +11,7 @@
           .replace(' ', '_')
           .replace('/', '') + '_icon.svg'
       "
-      path="jeff"
+      :path="'https://www.jeec.ist/schedule?type=' + activity.name"
     />
   </div>
 </template>
