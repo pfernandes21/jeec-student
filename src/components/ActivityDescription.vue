@@ -33,7 +33,7 @@ export default {
   computed: {},
   methods: {
     go_to() {
-      window.location.href = path;
+      window.location.href = this.path;
     }
   }
 };
