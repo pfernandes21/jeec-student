@@ -3,7 +3,7 @@
     class="activity"
     :class="{
       participated: activity.participated,
-      quest: !activity.participated && activity.quest,
+      quest: !activity.participated && activity.quest
     }"
   >
     <p class="hours mobile">{{ activity.time }}</p>
@@ -13,9 +13,9 @@
         class="activity-img"
         :style="
           'background-image:' +
-          'url(' +
-          images[current_image % images.length] +
-          ')'
+            'url(' +
+            images[current_image % images.length] +
+            ')'
         "
       ></div>
       <div class="activity-text">
@@ -93,10 +93,10 @@
                 class="dialog-company-img"
                 :style="
                   'background-image:' +
-                  'url(' +
-                  jeec_brain_url +
-                  company.logo +
-                  ')'
+                    'url(' +
+                    jeec_brain_url +
+                    company.logo +
+                    ')'
                 "
                 v-for="company in activity.companies.data"
                 :key="company.name"
@@ -116,7 +116,7 @@
               class="dialog-warning"
               v-if="
                 activity.type === 'Discussion Panel' ||
-                activity.type === 'Speaker'
+                  activity.type === 'Speaker'
               "
             >
               This activity is held in the Job Fair's auditorium
@@ -143,10 +143,10 @@
                 class="dialog-company-img"
                 :style="
                   'background-image:' +
-                  'url(' +
-                  jeec_brain_url +
-                  company.logo +
-                  ')'
+                    'url(' +
+                    jeec_brain_url +
+                    company.logo +
+                    ')'
                 "
                 v-for="company in activity.companies.data"
                 :key="company.name"
@@ -250,18 +250,18 @@
 <script>
 export default {
   name: "Activity",
-  data: function () {
+  data: function() {
     return {
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       currentPage: this.$route.name,
       images: [],
       current_image: 0,
       dialog: false,
-      width: window.innerWidth,
+      width: window.innerWidth
     };
   },
   props: {
-    activity: Object,
+    activity: Object
   },
   computed: {
     speakers_companies() {
@@ -319,7 +319,7 @@ export default {
       }
 
       return speakers.join(", ");
-    },
+    }
   },
   methods: {
     updateImages() {
@@ -344,12 +344,24 @@ export default {
         url =
           url +
           "&details=" +
-          "Registrations in " +
+          "Registrations:" +
+          "\n" +
           this.activity.registration_link +
+          "\n" +
+          "Zoom:" +
+          "\n" +
+          this.activity.zoom_url +
           "\n" +
           this.activity.description;
       } else {
-        url = url + "&details=" + this.activity.description;
+        url =
+          url +
+          "&details=" +
+          "Zoom:" +
+          "\n" +
+          this.activity.zoom_url +
+          "\n" +
+          this.activity.description;
       }
 
       var date = new Date();
@@ -412,7 +424,7 @@ export default {
     },
     resize() {
       this.width = window.innerWidth;
-    },
+    }
   },
   destroyed() {
     window.removeEventListener("resize", this.resize);
@@ -437,7 +449,7 @@ export default {
     }
 
     this.updateImages();
-  },
+  }
 };
 </script>
 
