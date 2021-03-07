@@ -561,6 +561,10 @@ export default {
   .create-squad {
     display: none;
   }
+
+  .next-reward-info {
+    width: calc(90vw - 13vh);
+  }
 }
 
 @media screen and (min-width: 1100px) {

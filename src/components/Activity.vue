@@ -39,6 +39,7 @@
         </div>
 
         <div
+          v-if="activity.points"
           class="xp-wrapper"
           :class="{ quest2: !activity.participated && activity.quest }"
         >
@@ -57,6 +58,7 @@
     </p> -->
 
     <div
+      v-if="activity.points"
       class="xp-wrapper mobile"
       :class="{ quest2: !activity.participated && activity.quest }"
     >

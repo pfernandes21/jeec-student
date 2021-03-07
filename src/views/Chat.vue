@@ -2,13 +2,22 @@
   <div class="chat">
     <Buttons @_click="click" :names="{ Partners: false, Messages: true }" />
 
-    <div class="chat-room">
+    <div class="chat-room" v-if="!loading">
       <iframe
         class="chat-frame"
         ref="chat"
         :src="rocket_chat_room_url"
         frameborder="0"
       ></iframe>
+    </div>
+    <div class="loading" v-else>
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
     </div>
   </div>
 </template>
@@ -28,6 +37,7 @@ export default {
       rocket_chat_room_url: "",
       chat_logged_in: false,
       room_id: this.$route.query.room_id,
+      loading: true,
     };
   },
   computed: {
@@ -80,9 +90,11 @@ export default {
       (response) => {
         this.rocket_chat_room_url =
           this.rocket_chat_url + "/home?resumeToken=" + response.data.token;
+          this.loading = false;
       },
       (error) => {
         console.log(error);
+        this.loading = false;
       }
     );
   },
@@ -103,6 +115,11 @@ export default {
   width: 100vw;
   height: 82vh;
   margin-top: 8vh;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (max-width: 1100px) {

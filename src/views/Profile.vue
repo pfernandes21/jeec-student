@@ -29,7 +29,7 @@
           <p>Add CV</p>
           <p><v-icon large style="color: white">mdi-plus</v-icon></p>
         </div>
-        <div class="added-cv" v-else>
+        <div class="added-cv" v-else-if="!loading_cv">
           <div>
             <p>Added</p>
             <p><v-icon large style="color: white">mdi-check</v-icon></p>
@@ -47,6 +47,15 @@
             :download="currentUser.ist_id + '_cv.pdf'"
             >CV</a
           >
+        </div>
+        <div v-else>
+          <v-progress-circular
+            indeterminate
+            color="#27ade4"
+            :size="50"
+            :width="5"
+            class="loading-bar"
+          ></v-progress-circular>
         </div>
         <input
           hidden
@@ -66,7 +75,7 @@
           <p>Add LinkedIn</p>
           <p><v-icon large style="color: white">mdi-plus</v-icon></p>
         </div>
-        <div class="added-linkedin" v-else>
+        <div class="added-linkedin" v-else-if="!loading_linkedin">
           <div>
             <p>Added</p>
             <p><v-icon large style="color: white">mdi-check</v-icon></p>
@@ -74,6 +83,15 @@
           <p @click.stop="dialog = true" style="cursor: pointer">
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
           </p>
+        </div>
+        <div v-else>
+          <v-progress-circular
+            indeterminate
+            color="#27ade4"
+            :size="50"
+            :width="5"
+            class="loading-bar"
+          ></v-progress-circular>
         </div>
       </div>
     </div>
@@ -216,6 +234,8 @@ export default {
       dialog_width: "",
       loading_tags: true,
       loading_companies: true,
+      loading_cv: false,
+      loading_linkedin: false,
     };
   },
   methods: {
@@ -226,6 +246,7 @@ export default {
     add_linkedin(e) {
       e.preventDefault();
 
+      this.loading_linkedin = true;
       var url = this.$refs.linkedin_url.value;
       this.dialog = false;
 
@@ -234,14 +255,20 @@ export default {
           if (!this.currentUser.linkedin_url) {
             this.$emit("notification", "Added LinkedIn + 15pts", "points");
           } else {
-            this.$emit("notification", "LinkedIn updated successfully", "success");
+            this.$emit(
+              "notification",
+              "LinkedIn updated successfully",
+              "success"
+            );
           }
 
           this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.loading_linkedin = false;
         },
         (error) => {
           console.log(error);
           this.$emit("notification", "Failed to add LinkedIn", "error");
+          this.loading_linkedin = false;
         }
       );
     },
@@ -263,6 +290,7 @@ export default {
       }
     },
     add_cv() {
+      this.loading_cv = true;
       UserService.addCV(this.$refs.cv).then(
         (response) => {
           if (!this.currentUser.uploaded_cv) {
@@ -272,10 +300,12 @@ export default {
           }
 
           this.$store.dispatch("auth/userUpdate", response.data.data);
+          this.loading_cv = false;
         },
         (error) => {
           console.log(error);
           this.$emit("notification", "Fail to upload CV", "error");
+          this.loading_cv = false;
         }
       );
 
