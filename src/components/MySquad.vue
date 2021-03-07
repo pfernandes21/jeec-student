@@ -23,14 +23,24 @@
               ><span class="xp">xp</span>
             </div>
           </div>
-          <center>
+          <center class="browser">
             <button
+              v-if="!loading_delete"
               @click.stop="leave_squad"
-              class="bottom-button browser"
-              style="background-color: red"
+              class="bottom-button"
+              style="background-color: red; margin-right: 5vw"
             >
               {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
             </button>
+            <v-progress-circular
+              v-else
+              style="margin-right: 5vw; margin-bottom: -1vh"
+              indeterminate
+              color="#27ade4"
+              :size="60"
+              :width="6"
+              class="loading-bar"
+            ></v-progress-circular>
           </center>
         </div>
       </div>
@@ -113,10 +123,18 @@
             class="bottom-button browser"
             style="background-color: #27ade4"
             @click.stop="add_members_dialog = true"
-            v-if="squad.members.data.length <= 4"
+            v-if="squad.members.data.length <= 4 && !loading_add"
           >
             Add Members
           </button>
+          <v-progress-circular
+            v-else
+            indeterminate
+            color="#27ade4"
+            :size="60"
+            :width="6"
+            class="loading-bar"
+          ></v-progress-circular>
         </center>
       </div>
     </div>
@@ -126,17 +144,36 @@
         class="bottom-button"
         style="background-color: #27ade4"
         @click.stop="add_members_dialog = true"
-        v-if="squad.members.data.length <= 4"
+        v-if="squad.members.data.length <= 4 && true"
       >
         Add Members
       </button>
+      <v-progress-circular
+        v-else
+        style="margin-left: 15vw; margin-right: 15vw"
+        indeterminate
+        color="#27ade4"
+        :size="30"
+        :width="3"
+        class="loading-bar"
+      ></v-progress-circular>
       <button
+        v-if="!loading_delete"
         @click.stop="leave_squad"
         class="bottom-button"
         style="background-color: red"
       >
         {{ squad.members.data.length > 1 ? "Leave" : "Delete" }} Squad
       </button>
+      <v-progress-circular
+        v-else
+        style="margin-left: 12vw; margin-right: 12vw"
+        indeterminate
+        color="#27ade4"
+        :size="60"
+        :width="6"
+        class="loading-bar"
+      ></v-progress-circular>
     </center>
 
     <v-dialog v-model="add_members_dialog" :width="width > 1100 ? '50vw' : ''">
@@ -217,6 +254,9 @@ export default {
       today_reward: {},
       default_image: require("../assets/jeec_colour_no_edition_transparent.svg"),
       width: window.innerWidth,
+      loading_delete: false,
+      loading_add: false,
+      loading_kick: false,
     };
   },
   computed: {
@@ -252,29 +292,39 @@ export default {
       );
     },
     invite() {
-      UserService.inviteSquad(this.squadmates).then(
-        () => {
-          this.$emit("notification", "Invitation sent successfully", "success");
-          this.add_members_dialog = false;
-        },
-        (error) => {
-          console.log(error);
-          this.$emit("notification", "Failed to send invitation", "error");
-          this.add_members_dialog = false;
-        }
-      );
+      if (this.squadmates.length > 0) {
+        this.loading_add = true;
+        this.add_members_dialog = false;
+        UserService.inviteSquad(this.squadmates).then(
+          () => {
+            this.$emit(
+              "notification",
+              "Invitation sent successfully",
+              "success"
+            );
+            this.loading_add = false;
+          },
+          (error) => {
+            console.log(error);
+            this.$emit("notification", "Failed to send invitation", "error");
+            this.loading_add = false;
+          }
+        );
+      }
     },
     leave_squad() {
       if (!confirm("Are you sure you want to proceed?")) {
         return;
       }
-
+      this.loading_delete = true;
       UserService.leaveSquad().then(
         (response) => {
           this.$emit("delete", response.data.data);
+          this.loading_delete = false;
         },
         (error) => {
           console.log(error);
+          this.loading_delete = false;
         }
       );
     },
@@ -282,13 +332,15 @@ export default {
       if (!confirm("Are you sure you want to proceed?")) {
         return;
       }
-      
+      this.loading_kick = true;
       UserService.kickMember(ist_id).then(
         (response) => {
           this.squad = response.data.data;
+          this.loading_kick = false;
         },
         (error) => {
           console.log(error);
+          this.loading_kick = false;
         }
       );
     },

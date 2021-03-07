@@ -2,7 +2,7 @@
   <div class="company">
     <Buttons @_click="click" :names="{ Partners: false, Messages: false }" />
 
-    <div class="partner-wrapper">
+    <div class="partner-wrapper" v-if="!loading">
       <Partner_Info
         class="partner-info-wrapper"
         :partner="partner"
@@ -20,6 +20,16 @@
           frameborder="0"
         ></iframe>
       </div>
+    </div>
+
+    <div class="loading" v-else>
+      <v-progress-circular
+        indeterminate
+        color="#27ade4"
+        :size="100"
+        :width="10"
+        class="loading-bar"
+      ></v-progress-circular>
     </div>
   </div>
 </template>
@@ -43,6 +53,7 @@ export default {
       rocket_chat_room_url: "",
       chat_logged_in: false,
       room_name: "",
+      loading: true,
     };
   },
   computed: {
@@ -157,11 +168,15 @@ export default {
               this.rocket_chat_url +
               "/home?layout=embedded&resumeToken=" +
               response.data.token;
+            this.loading = false;
           },
           (error) => {
             console.log(error);
+            this.loading = false;
           }
         );
+      } else {
+        this.loading = false;
       }
     },
   },
@@ -180,13 +195,13 @@ export default {
     UserService.getPartner(this.$route.params.name).then(
       (response) => {
         this.partner = response.data;
+        this.resize();
       },
       (error) => {
         console.log(error);
+        this.resize();
       }
     );
-
-    this.resize();
   },
 };
 </script>
@@ -198,6 +213,11 @@ export default {
 
 .partner-wrapper {
   margin-top: 8vh;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 35vh;
 }
 
 @media screen and (max-width: 1100px) {

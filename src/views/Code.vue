@@ -11,12 +11,22 @@
       />
       <center>
         <v-btn
+          v-if="!loading_redeem"
           depressed
           @click.stop="redeem"
           class="redeem white--text"
           color="secundary"
           >Redeem</v-btn
         >
+        <v-progress-circular
+          v-else
+          style="margin-top: 1.9vh"
+          indeterminate
+          color="#27ade4"
+          :size="60"
+          :width="6"
+          class="loading-bar"
+        ></v-progress-circular>
       </center>
 
       <p class="error-msg">{{ error }}</p>
@@ -55,14 +65,15 @@ import UserService from "../services/user.service";
 export default {
   name: "Code",
   components: {},
-  data: function() {
+  data: function () {
     return {
       code: "",
       prev_length: 0,
       dialog: false,
       points: 0,
       squad: null,
-      error: ""
+      error: "",
+      loading_redeem: false,
     };
   },
   computed: {
@@ -80,22 +91,23 @@ export default {
         "-" +
         code.substring(12, 16)
       );
-    }
+    },
   },
   methods: {
     redeem() {
       if (this.code.replaceAll("-", "").length == 16) {
+        this.loading_redeem = true;
         UserService.redeemCode(this.code).then(
-          response => {
+          (response) => {
             this.points =
               response.data.data.total_points - this.currentUser.total_points;
             this.$store.dispatch("auth/userUpdate", response.data.data);
 
             UserService.getUserSquad().then(
-              response => {
+              (response) => {
                 this.squad = response.data.data;
               },
-              error => {
+              (error) => {
                 console.log(error);
               }
             );
@@ -103,12 +115,18 @@ export default {
             this.dialog = true;
             this.error = "";
 
-            this.$emit("notification", "Code redeemed successfully +" + this.points + "pts", "success");
+            this.$emit(
+              "notification",
+              "Code redeemed successfully +" + this.points + "pts",
+              "success"
+            );
+            this.loading_redeem = false;
           },
-          error => {
+          (error) => {
             this.error = "Invalid Code";
             console.log(error);
             this.$emit("notification", "Failed to redeem code", "error");
+            this.loading_redeem = false;
           }
         );
       }
@@ -116,7 +134,7 @@ export default {
     clipboard() {
       this.$refs.referral.select();
       document.execCommand("copy");
-    }
+    },
   },
   watch: {
     code(val) {
@@ -145,7 +163,7 @@ export default {
       }
 
       this.prev_length = val.length;
-    }
+    },
   },
   mounted() {
     if (!this.currentUser) {
@@ -153,14 +171,14 @@ export default {
     }
 
     UserService.getUserSquad().then(
-      response => {
+      (response) => {
         this.squad = response.data.data;
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
-  }
+  },
 };
 </script>
 

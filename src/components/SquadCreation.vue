@@ -51,9 +51,18 @@
       />
 
       <center>
-        <button @click.stop="create_squad" class="button">
+        <button @click.stop="create_squad" class="button" v-if="!loading">
           Create!
         </button>
+        <v-progress-circular
+          v-else
+          style="margin-top: 3vh"
+          indeterminate
+          color="#27ade4"
+          :size="80"
+          :width="8"
+          class="loading-bar"
+        ></v-progress-circular>
       </center>
 
       <p class="error-msg">{{ error }}</p>
@@ -73,6 +82,7 @@ export default {
       name: "",
       cry: "",
       error: "",
+      loading: false,
     };
   },
   computed: {
@@ -104,7 +114,7 @@ export default {
     },
     create_squad() {
       if (!this.locked) return;
-
+      this.loading = true;
       var image = this.$refs.image_input;
 
       UserService.createSquad(image.files[0], this.name, this.cry)
@@ -112,11 +122,13 @@ export default {
           this.$emit("create", response.data.data);
           this.error = "";
           this.$emit("notification", "Squad created successfully", "success");
+          this.loading = false;
         })
         .catch((error) => {
           this.error = error.response.data.error;
           console.log(error);
           this.$emit("notification", "Failed to create squad", "error");
+          this.loading = false;
         });
     },
   },
@@ -247,5 +259,4 @@ export default {
     width: 20vh;
   }
 }
-
 </style>
