@@ -39,7 +39,7 @@
         </div>
         <div>
           <p class="xp-top">Squad:</p>
-          <span class="xp-value">{{ squad ? squad.total_points : "0" }}</span
+          <span class="xp-value">{{ squad ? squad.total_points : "-" }}</span
           ><span class="xp">xp</span>
         </div>
       </div>
