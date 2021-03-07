@@ -73,7 +73,7 @@
     <div class="buttons mobile">
       <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
       <button @click.stop="click_see_more()">See More</button>
-      <button @click.stop="$refs.calendar.click()">Add to Calendar</button>
+      <button @click.stop="click_add_to_calendar()">Add to Calendar</button>
     </div>
 
     <v-dialog
