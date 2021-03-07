@@ -32,7 +32,7 @@
         <div class="added-cv" v-else-if="!loading_cv">
           <div>
             <p>Added</p>
-            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+            <v-icon large style="color: white">mdi-check</v-icon>
           </div>
           <p @click.stop="cv_click" style="cursor: pointer">
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
@@ -78,7 +78,7 @@
         <div class="added-linkedin" v-else-if="!loading_linkedin">
           <div>
             <p>Added</p>
-            <p><v-icon large style="color: white">mdi-check</v-icon></p>
+            <v-icon large style="color: white">mdi-check</v-icon>
           </div>
           <p @click.stop="dialog = true" style="cursor: pointer">
             <v-icon large style="color: white">mdi-lead-pencil</v-icon>
