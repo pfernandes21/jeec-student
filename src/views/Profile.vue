@@ -220,9 +220,9 @@ import UserService from "../services/user.service";
 export default {
   name: "Profile",
   components: {
-    Expbar,
+    Expbar
   },
-  data: function () {
+  data: function() {
     return {
       color: "gray",
       dialog: false,
@@ -235,7 +235,7 @@ export default {
       loading_tags: true,
       loading_companies: true,
       loading_cv: false,
-      loading_linkedin: false,
+      loading_linkedin: false
     };
   },
   methods: {
@@ -251,7 +251,7 @@ export default {
       this.dialog = false;
 
       UserService.addLinkedin(url).then(
-        (response) => {
+        response => {
           if (!this.currentUser.linkedin_url) {
             this.$emit("notification", "Added LinkedIn + 15pts", "points");
           } else {
@@ -265,7 +265,7 @@ export default {
           this.$store.dispatch("auth/userUpdate", response.data.data);
           this.loading_linkedin = false;
         },
-        (error) => {
+        error => {
           console.log(error);
           this.$emit("notification", "Failed to add LinkedIn", "error");
           this.loading_linkedin = false;
@@ -292,7 +292,7 @@ export default {
     add_cv() {
       this.loading_cv = true;
       UserService.addCV(this.$refs.cv).then(
-        (response) => {
+        response => {
           if (!this.currentUser.uploaded_cv) {
             this.$emit("notification", "Added CV + 15pts", "points");
           } else {
@@ -302,7 +302,7 @@ export default {
           this.$store.dispatch("auth/userUpdate", response.data.data);
           this.loading_cv = false;
         },
-        (error) => {
+        error => {
           console.log(error);
           this.$emit("notification", "Fail to upload CV", "error");
           this.loading_cv = false;
@@ -314,21 +314,23 @@ export default {
     see_cv() {
       if (this.currentUser.uploaded_cv) {
         UserService.getCV().then(
-          (response) => {
+          response => {
             var raw = atob(response.data.data);
             var uint8Array = new Uint8Array(raw.length);
             for (var i = 0; i < raw.length; i++) {
               uint8Array[i] = raw.charCodeAt(i);
             }
             var fileBlob = new Blob([uint8Array], {
-              type: response.data["content-type"],
+              type: response.data["content-type"]
             });
             var objetURL = window.URL.createObjectURL(fileBlob);
+
             this.cv_url = objetURL;
 
+            this.$refs.see_cv.href = objetURL;
             this.$refs.see_cv.click();
           },
-          (error) => {
+          error => {
             console.log(error);
           }
         );
@@ -337,10 +339,10 @@ export default {
     add_tag(tag) {
       this.currentUser.tags.push(tag);
       UserService.addTags([tag]).then(
-        (response) => {
+        response => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
@@ -348,36 +350,36 @@ export default {
     add_company(company) {
       this.currentUser.companies.push(company);
       UserService.addCompanies([company]).then(
-        (response) => {
+        response => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
     },
     delete_tag(tag) {
       this.currentUser.tags = this.currentUser.tags.filter(
-        (_tag) => _tag !== tag
+        _tag => _tag !== tag
       );
       UserService.deleteTag(tag).then(
-        (response) => {
+        response => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
     },
     delete_company(company) {
       this.currentUser.companies = this.currentUser.companies.filter(
-        (_company) => _company !== company
+        _company => _company !== company
       );
       UserService.deleteCompany(company).then(
-        (response) => {
+        response => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
@@ -400,7 +402,7 @@ export default {
       } else {
         this.height = 60;
       }
-    },
+    }
   },
   computed: {
     currentUser() {
@@ -418,7 +420,7 @@ export default {
       var end_points = this.$store.state.auth.user.level.data.end_points;
 
       return ((xp - start_points) / (end_points - start_points)) * 100;
-    },
+    }
   },
   destroyed() {
     window.removeEventListener("resize", this.resize);
@@ -433,27 +435,27 @@ export default {
     this.resize();
 
     UserService.getTags().then(
-      (response) => {
+      response => {
         this.tags = response.data;
         this.loading_tags = false;
       },
-      (error) => {
+      error => {
         console.log(error);
         this.loading_tags = false;
       }
     );
 
     UserService.getCompanies().then(
-      (response) => {
+      response => {
         this.companies = response.data;
         this.loading_companies = false;
       },
-      (error) => {
+      error => {
         console.log(error);
         this.loading_companies = false;
       }
     );
-  },
+  }
 };
 </script>
 
