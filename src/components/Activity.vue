@@ -346,12 +346,10 @@ export default {
         url =
           url +
           "&details=" +
-          "Registrations:" +
-          "\n" +
+          "Registrations: " +
           this.activity.registration_link +
           "\n" +
-          "Zoom:" +
-          "\n" +
+          "Zoom: " +
           this.activity.zoom_url +
           "\n" +
           this.activity.description;
@@ -359,8 +357,7 @@ export default {
         url =
           url +
           "&details=" +
-          "Zoom:" +
-          "\n" +
+          "Zoom: " +
           this.activity.zoom_url +
           "\n" +
           this.activity.description;
