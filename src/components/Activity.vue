@@ -30,8 +30,8 @@
 
         <div class="buttons">
           <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
-          <button @click.stop="dialog = true">See More</button>
-          <button @click.stop="$refs.calendar.click()">
+          <button @click.stop="click_see_more()">See More</button>
+          <button @click.stop="click_add_to_calendar()">
             <a ref="calendar" :href="calendar()" target="_blank"
               >Add to Calendar</a
             >
@@ -72,7 +72,7 @@
 
     <div class="buttons mobile">
       <!-- <button v-if="activity.zoom_url"><a :href="zoom()">Add to Calendar</a></button> -->
-      <button @click.stop="dialog = true">See More</button>
+      <button @click.stop="click_see_more()">See More</button>
       <button @click.stop="$refs.calendar.click()">Add to Calendar</button>
     </div>
 
@@ -250,6 +250,8 @@
 </template>
 
 <script>
+import LogService from "../services/log.service";
+
 export default {
   name: "Activity",
   data: function() {
@@ -324,6 +326,14 @@ export default {
     }
   },
   methods: {
+    async click_see_more() {
+      this.dialog = true;
+      LogService.postLog("/see_more/" + this.activity.name);
+    },
+    async click_add_to_calendar() {
+      this.$refs.calendar.click();
+      LogService.postLog("/add_to_calendar/" + this.activity.name);
+    },
     updateImages() {
       setInterval(() => {
         this.current_image = this.current_image + 1;
