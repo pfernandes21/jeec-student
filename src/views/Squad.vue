@@ -88,7 +88,7 @@ export default {
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
 
-          UserService.getSquadInvitations().then(
+          UserService.getSquadInvitationsReceived().then(
             (response) => {
               this.invitations = response.data.data;
             },
@@ -121,7 +121,7 @@ export default {
         }
       );
 
-      UserService.getSquadInvitations().then(
+      UserService.getSquadInvitationsReceived().then(
         (response) => {
           this.invitations = response.data.data;
         },
@@ -161,7 +161,7 @@ export default {
       }
     );
 
-    UserService.getSquadInvitations().then(
+    UserService.getSquadInvitationsReceived().then(
       (response) => {
         this.invitations = response.data.data;
       },

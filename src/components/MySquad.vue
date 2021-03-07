@@ -123,12 +123,12 @@
             class="bottom-button browser"
             style="background-color: #27ade4"
             @click.stop="add_members_dialog = true"
-            v-if="squad.members.data.length <= 4 && !loading_add"
+            v-if="squad.members.data.length < 4 && !loading_add"
           >
             Add Members
           </button>
           <v-progress-circular
-            v-else
+            v-else-if="squad.members.data.length < 4"
             indeterminate
             color="#27ade4"
             :size="60"
@@ -695,6 +695,9 @@ export default {
     height: 35vh;
     overflow-y: auto;
     width: 49.75%;
+    margin-bottom: 0;
+    padding-top: 1vh;
+    padding-bottom: 0;
   }
 
   .big-wrapper {

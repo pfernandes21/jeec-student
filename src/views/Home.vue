@@ -757,5 +757,9 @@ export default {
     justify-content: space-between;
     overflow-y: auto;
   }
+
+  .members > div {
+    min-width: 50%;
+  }
 }
 </style>

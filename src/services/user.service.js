@@ -86,8 +86,14 @@ class UserService {
     );
   }
 
-  getSquadInvitations() {
-    return axios.get(jeec_brain_url + "/student/squad-invitations", {
+  getSquadInvitationsReceived() {
+    return axios.get(jeec_brain_url + "/student/squad-invitations-received", {
+      headers: authHeader()
+    });
+  }
+
+  getSquadInvitationsSent() {
+    return axios.get(jeec_brain_url + "/student/squad-invitations-sent", {
       headers: authHeader()
     });
   }
@@ -186,6 +192,12 @@ class UserService {
 
   getSquadsRanking() {
     return axios.get(jeec_brain_url + "/student/squads-ranking", {
+      headers: authHeader()
+    });
+  }
+
+  getDailySquadsRanking() {
+    return axios.get(jeec_brain_url + "/student/daily-squads-ranking", {
       headers: authHeader()
     });
   }

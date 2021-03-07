@@ -6,12 +6,24 @@
       :names="{
         personal: button === 'personal',
         squads: button === 'squads',
+        daily: button === 'daily',
       }"
     />
-    <div v-if="!loading_students && !loading_squads">
-      <div class="big-title">
-        <p>Personal</p>
-        <p>Squads</p>
+    <Buttons
+      @_click="click"
+      class="-big-buttons"
+      :names="{
+        personal: button === 'personal',
+        squads: button === 'squads',
+      }"
+    />
+
+    <div style="height: 8vh"></div>
+
+    <div v-if="!loading_students && !loading_squads && !loading_daily">
+      <div class="big-title" v-if="button == 'squads'">
+        <p>Daily</p>
+        <p>Weekly</p>
       </div>
 
       <div class="rank-wrapper">
@@ -34,14 +46,24 @@
           :img_src="jeec_brain_url + squad.image"
           :members="squad.members.data"
         />
+        <Rank
+          v-for="(squad, index) in daily_squads"
+          v-show="button === 'daily'"
+          :key="'daily' + squad.name"
+          :name="squad.name"
+          :cry="squad.cry"
+          :index="rank(index, squads)"
+          :img_src="jeec_brain_url + squad.image"
+          :members="squad.members.data"
+        />
       </div>
 
       <div class="big-rank-wrapper">
-        <div>
-          <p class="rank-title">Personal</p>
+        <div v-if="button == 'personal'">
           <Rank
             class="rank"
             v-for="(student, index) in students"
+            v-show="index < 10"
             :key="student.ist_id"
             :name="student.name"
             :index="rank(index, students)"
@@ -49,8 +71,33 @@
             :img_src="student.photo"
           />
         </div>
-        <div>
-          <p class="rank-title">Squads</p>
+        <div v-if="button == 'personal'">
+          <Rank
+            class="rank"
+            v-for="(student, index) in students"
+            v-show="index >= 10"
+            :key="student.ist_id"
+            :name="student.name"
+            :index="rank(index, students)"
+            :level="student.level.data.value"
+            :img_src="student.photo"
+          />
+        </div>
+        <div v-if="button == 'squads'">
+          <p class="rank-title">Daily</p>
+          <Rank
+            class="rank -squads"
+            v-for="(squad, index) in daily_squads"
+            :key="'daily' + squad.name"
+            :name="squad.name"
+            :cry="squad.cry"
+            :index="rank(index, squads)"
+            :img_src="jeec_brain_url + squad.image"
+            :members="squad.members.data"
+          />
+        </div>
+        <div v-if="button == 'squads'">
+          <p class="rank-title">Weekly</p>
           <Rank
             class="rank -squads"
             v-for="(squad, index) in squads"
@@ -92,9 +139,11 @@ export default {
       button: "personal",
       students: [],
       squads: [],
+      daily_squads: [],
       jeec_brain_url: process.env.VUE_APP_JEEC_BRAIN_URL,
       loading_students: true,
       loading_squads: true,
+      loading_daily: true,
     };
   },
   computed: {
@@ -151,6 +200,18 @@ export default {
         this.loading_squads = false;
       }
     );
+
+    UserService.getDailySquadsRanking().then(
+      (response) => {
+        this.daily_squads = response.data.data;
+        if (!Array.isArray(this.daily_squads)) this.daily_squads = [this.daily_squads];
+        this.loading_daily = false;
+      },
+      (error) => {
+        console.log(error);
+        this.loading_daily = false;
+      }
+    );
   },
 };
 </script>
@@ -161,7 +222,6 @@ export default {
 }
 
 .rank-wrapper {
-  margin-top: 8vh;
   height: 82vh;
   overflow-y: auto;
 }
@@ -185,7 +245,8 @@ export default {
 
 @media screen and (max-width: 1100px) {
   .big-rank-wrapper,
-  .big-title {
+  .big-title,
+  .-big-buttons {
     display: none;
   }
 }
