@@ -30,15 +30,15 @@ import Navbar from "@/components/Navbar.vue";
 import Notification from "@/components/Notification.vue";
 
 export default {
-  data: function () {
+  data: function() {
     return {
-      notifications: [],
+      notifications: []
     };
   },
   components: {
     VueTitle,
     Navbar,
-    Notification,
+    Notification
   },
   computed: {
     currentUser() {
@@ -48,15 +48,19 @@ export default {
       return this.$route.name !== "Company"
         ? this.$route.name
         : this.$route.params.name;
-    },
+    }
   },
   methods: {
     notification(message, type) {
-      this.notifications.push({text:message, type:type, id:Math.floor(Math.random() * 10000)});
+      this.notifications.push({
+        text: message,
+        type: type,
+        id: Math.floor(Math.random() * 10000)
+      });
     },
     notification_end(id) {
-      this.notifications = this.notifications.filter(row=> row.id !== id);
-    },
+      this.notifications = this.notifications.filter(row => row.id !== id);
+    }
   },
   watch: {
     //or $route(to, from)
@@ -82,12 +86,15 @@ export default {
           (this.currentUser && today.getDate() !== last_login.getDate())
         ) {
           UserService.todayLogin().then(
-            (response) => {
+            response => {
               localStorage.setItem("last-login", today);
               this.$store.dispatch("auth/userUpdate", response.data.data);
-              this.notification("New daily login +5pts", "points");
+              this.notification(
+                "New daily login +" + process.env.VUE_APP_REWARD_LOGIN + "pts",
+                "points"
+              );
             },
-            (error) => {
+            error => {
               console.log(error);
               if (error.response.status == 409) {
                 localStorage.setItem("last-login", today);
@@ -96,13 +103,13 @@ export default {
           );
         }
       }
-    },
+    }
   },
   created() {
     this.$vuetify.theme.themes.light.primary = "#50575C";
     this.$vuetify.theme.themes.light.secundary = "#27ADE4";
     this.$vuetify.theme.themes.light.accent = "#F1F1F1";
-  },
+  }
 };
 </script>
 

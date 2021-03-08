@@ -253,7 +253,11 @@ export default {
       UserService.addLinkedin(url).then(
         response => {
           if (!this.currentUser.linkedin_url) {
-            this.$emit("notification", "Added LinkedIn + 15pts", "points");
+            this.$emit(
+              "notification",
+              "Added LinkedIn + " + process.env.VUE_APP_REWARD_LINKEDIN + "pts",
+              "points"
+            );
           } else {
             this.$emit(
               "notification",
@@ -294,7 +298,11 @@ export default {
       UserService.addCV(this.$refs.cv).then(
         response => {
           if (!this.currentUser.uploaded_cv) {
-            this.$emit("notification", "Added CV + 15pts", "points");
+            this.$emit(
+              "notification",
+              "Added CV +" + process.env.VUE_APP_REWARD_CV + "pts",
+              "points"
+            );
           } else {
             this.$emit("notification", "CV updated successfully", "success");
           }
