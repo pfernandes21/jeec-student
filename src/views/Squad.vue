@@ -4,9 +4,9 @@
       @_click="click"
       :names="{
         'my squad': button === 'my squad',
-        invitations: button === 'invitations',
+        invites: button === 'invites',
       }"
-      :n_invites="invitations.length"
+      :n_invites="invites.length"
     />
 
     <div v-if="!loading_squad" v-show="button === 'my squad'" style="margin-top: 8vh">
@@ -32,20 +32,20 @@
       ></v-progress-circular>
     </div>
 
-    <div v-show="button === 'invitations'" style="margin-top: 8vh">
-      <Invitation
-        @accept="accept_invitation"
-        @reject="reject_invitation"
-        v-for="invitation in invitations"
-        :key="invitation.sender_name"
-        :invitation="invitation"
+    <div v-show="button === 'invites'" style="margin-top: 8vh">
+      <Invite
+        @accept="accept_invite"
+        @reject="reject_invite"
+        v-for="invite in invites"
+        :key="invite.sender_name"
+        :invite="invite"
       />
     </div>
   </div>
 </template>
 
 <script>
-import Invitation from "@/components/Invitation.vue";
+import Invite from "@/components/Invite.vue";
 import UserService from "../services/user.service";
 import Buttons from "@/components/Buttons.vue";
 import SquadCreation from "@/components/SquadCreation.vue";
@@ -54,7 +54,7 @@ import MySquad from "@/components/MySquad.vue";
 export default {
   name: "Squad",
   components: {
-    Invitation,
+    Invite,
     Buttons,
     SquadCreation,
     MySquad,
@@ -63,7 +63,8 @@ export default {
     return {
       button: "my squad",
       squad: null,
-      invitations: [],
+      invites: [],
+      invites_sent: [],
       loading_squad: true,
     };
   },
@@ -83,14 +84,14 @@ export default {
       this.$store.dispatch("auth/userUpdate", student);
       this.squad = null;
     },
-    accept_invitation(invitation_id) {
-      UserService.acceptInvitation(invitation_id).then(
+    accept_invite(invite_id) {
+      UserService.acceptInvite(invite_id).then(
         (response) => {
           this.$store.dispatch("auth/userUpdate", response.data.data);
 
-          UserService.getSquadInvitationsReceived().then(
+          UserService.getSquadInvitesReceived().then(
             (response) => {
-              this.invitations = response.data.data;
+              this.invites = response.data.data;
             },
             (error) => {
               console.log(error);
@@ -113,17 +114,17 @@ export default {
         }
       );
     },
-    reject_invitation(invitation_id) {
-      UserService.rejectInvitation(invitation_id).then(
+    reject_invite(invite_id) {
+      UserService.rejectInvite(invite_id).then(
         () => {},
         (error) => {
           console.log(error);
         }
       );
 
-      UserService.getSquadInvitationsReceived().then(
+      UserService.getSquadInvitesReceived().then(
         (response) => {
-          this.invitations = response.data.data;
+          this.invites = response.data.data;
         },
         (error) => {
           console.log(error);
@@ -163,7 +164,7 @@ export default {
 
     UserService.getSquadInvitationsReceived().then(
       (response) => {
-        this.invitations = response.data.data;
+        this.invites = response.data.data;
       },
       (error) => {
         console.log(error);

@@ -1,15 +1,15 @@
 <template>
-  <div class="invitation">
+  <div class="invite">
     <div class="squad-info-top">
       <img
         class="squad-image"
-        :src="jeec_brain_url + invitation.squad_image"
+        :src="jeec_brain_url + invite.squad_image"
         alt="squad-image"
       />
       <div class="squad-data">
-        <p class="squad-name">{{ invitation.squad_name }}</p>
-        <p class="squad-cry">{{ invitation.squad_cry }}</p>
-        <p class="squad-rank">Rank {{ invitation.squad_rank }}</p>
+        <p class="squad-name">{{ invite.squad_name }}</p>
+        <p class="squad-cry">{{ invite.squad_cry }}</p>
+        <p class="squad-rank">Rank {{ invite.squad_rank }}</p>
       </div>
     </div>
     <div class="from">
@@ -30,9 +30,9 @@
 
 <script>
 export default {
-  name: "Invitation",
+  name: "Invite",
   props: {
-    invitation: Object,
+    invite: Object,
   },
   data: function () {
     return {
@@ -45,25 +45,25 @@ export default {
     },
 
     nameArray() {
-      var names = this.invitation.sender_name.split(" ");
+      var names = this.invite.sender_name.split(" ");
 
       if (names.length > 1) return names;
-      else return [this.name, ""];
+      else return [this.invite.sender_name, ""];
     },
   },
   methods: {
     accept() {
-      this.$emit("accept", this.invitation.external_id);
+      this.$emit("accept", this.invite.external_id);
     },
     reject() {
-      this.$emit("reject", this.invitation.external_id);
+      this.$emit("reject", this.invite.external_id);
     },
   },
 };
 </script>
 
 <style scoped>
-.invitation {
+.invite {
   margin-bottom: 1vh;
   padding-left: 5vw;
   padding-right: 5vw;

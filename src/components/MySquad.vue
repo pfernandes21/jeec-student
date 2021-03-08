@@ -117,18 +117,27 @@
             :captain_ist_id="squad.captain_ist_id"
             @kick="kick_member"
           />
+          <InviteSent
+            v-for="invite in invites_sent"
+            :key="invite.ist_id"
+            :invite="invite"
+            @cancel="cancel_invite"
+          />
         </div>
         <center>
           <button
             class="bottom-button browser"
             style="background-color: #27ade4"
             @click.stop="add_members_dialog = true"
-            v-if="squad.members.data.length < 4 && !loading_add"
+            v-if="
+              squad.members.data.length + invites_sent.length < 4 &&
+              !loading_add
+            "
           >
             Add Members
           </button>
           <v-progress-circular
-            v-else-if="squad.members.data.length < 4"
+            v-else-if="squad.members.data.length + invites_sent.length < 4"
             indeterminate
             color="#27ade4"
             :size="60"
@@ -144,12 +153,14 @@
         class="bottom-button"
         style="background-color: #27ade4"
         @click.stop="add_members_dialog = true"
-        v-if="squad.members.data.length <= 4 && true"
+        v-if="
+          squad.members.data.length + invites_sent.length < 4 && !loading_add
+        "
       >
         Add Members
       </button>
       <v-progress-circular
-        v-else
+        v-else-if="squad.members.data.length + invites_sent.length < 4"
         style="margin-left: 15vw; margin-right: 15vw"
         indeterminate
         color="#27ade4"
@@ -234,11 +245,13 @@
 <script>
 import UserService from "../services/user.service";
 import Member from "@/components/Member.vue";
+import InviteSent from "@/components/InviteSent.vue";
 
 export default {
   name: "MySquad",
   components: {
     Member,
+    InviteSent,
   },
   props: {
     squad: Object,
@@ -250,13 +263,12 @@ export default {
       students: [],
       squadmates: [],
       search: null,
-      invitations: [],
+      invites_sent: [],
       today_reward: {},
       default_image: require("../assets/jeec_colour_no_edition_transparent.svg"),
       width: window.innerWidth,
       loading_delete: false,
       loading_add: false,
-      loading_kick: false,
     };
   },
   computed: {
@@ -269,8 +281,12 @@ export default {
   },
   methods: {
     limitStudents() {
-      if (this.squad.members.data.length + this.squadmates.length > 4) {
-        console.log();
+      if (
+        this.squad.members.data.length +
+          this.squadmates.length +
+          this.invites_sent.length >
+        4
+      ) {
         this.squadmates.pop();
       }
 
@@ -302,11 +318,33 @@ export default {
               "Invitation sent successfully",
               "success"
             );
-            this.loading_add = false;
+
+            UserService.getSquadInvitationsSent().then(
+              (response) => {
+                this.invites_sent = response.data.data;
+                this.loading_add = false;
+              },
+              (error) => {
+                console.log(error);
+                this.loading_add = false;
+              }
+            );
           },
           (error) => {
             console.log(error);
             this.$emit("notification", "Failed to send invitation", "error");
+
+            UserService.getSquadInvitationsSent().then(
+              (response) => {
+                this.invites_sent = response.data.data;
+                this.loading_add = false;
+              },
+              (error) => {
+                console.log(error);
+                this.loading_add = false;
+              }
+            );
+
             this.loading_add = false;
           }
         );
@@ -328,19 +366,16 @@ export default {
         }
       );
     },
-    kick_member(ist_id) {
-      if (!confirm("Are you sure you want to proceed?")) {
-        return;
-      }
-      this.loading_kick = true;
-      UserService.kickMember(ist_id).then(
+    kick_member(squad) {
+      this.squad = squad;
+    },
+    cancel_invite() {
+      UserService.getSquadInvitationsSent().then(
         (response) => {
-          this.squad = response.data.data;
-          this.loading_kick = false;
+          this.invites_sent = response.data.data;
         },
         (error) => {
           console.log(error);
-          this.loading_kick = false;
         }
       );
     },
@@ -355,9 +390,17 @@ export default {
         ((val.length == 3 && val !== "ist") ||
           (val.length == 4 && val.substring(0, 3) === "ist"))
       ) {
-        UserService.getStudents("").then(
+        UserService.getStudents(val).then(
           (response) => {
-            this.students = response.data.data;
+            var students = response.data.data;
+            if (!Array.isArray(students)) students = [students];
+
+            var squad_members = this.squad.members.data.map((item) => item.ist_id);
+            var invites_sent = this.invites_sent.map((item) => item.ist_id);
+
+            this.students = students.filter(
+              (item) => (!squad_members.includes(item.ist_id) && !invites_sent.includes(item.ist_id))
+            );
           },
           (error) => {
             console.log(error);
@@ -374,6 +417,15 @@ export default {
     UserService.getTodaySquadReward().then(
       (response) => {
         this.today_reward = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    UserService.getSquadInvitationsSent().then(
+      (response) => {
+        this.invites_sent = response.data.data;
       },
       (error) => {
         console.log(error);

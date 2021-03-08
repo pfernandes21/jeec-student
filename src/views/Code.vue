@@ -39,8 +39,20 @@
         </div>
         <div>
           <p class="xp-top">Squad:</p>
-          <span class="xp-value">{{ squad ? squad.total_points : "-" }}</span
-          ><span class="xp">xp</span>
+          <div v-if="!loading_squad">
+            <span class="xp-value">{{ squad ? squad.total_points : "-" }}</span>
+            <span class="xp">xp</span>
+          </div>
+          <div v-else>
+            <v-progress-circular
+              style="margin-top: 5vh"
+              indeterminate
+              color="#27ade4"
+              :size="100"
+              :width="10"
+              class="loading-bar"
+            ></v-progress-circular>
+          </div>
         </div>
       </div>
       <div class="referral">
@@ -74,6 +86,7 @@ export default {
       squad: null,
       error: "",
       loading_redeem: false,
+      loading_squad: true,
     };
   },
   computed: {
@@ -173,9 +186,11 @@ export default {
     UserService.getUserSquad().then(
       (response) => {
         this.squad = response.data.data;
+        this.loading_squad = false;
       },
       (error) => {
         console.log(error);
+        this.loading_squad = false;
       }
     );
   },
