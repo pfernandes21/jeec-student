@@ -255,7 +255,7 @@ export default {
           if (!this.currentUser.linkedin_url) {
             this.$emit(
               "notification",
-              "Added LinkedIn + " + process.env.VUE_APP_REWARD_LINKEDIN + "pts",
+              "Added LinkedIn +" + process.env.VUE_APP_REWARD_LINKEDIN + "pts",
               "points"
             );
           } else {
