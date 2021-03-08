@@ -1,23 +1,22 @@
 <template>
   <div class="member">
-    <img :src="member.photo" alt="profile photo" class="profile-photo" />
+    <img :src="invite.photo" alt="profile photo" class="profile-photo" />
     <div class="profile-info">
-      <p v-if="member.is_captain" class="captain">Captain</p>
+      <p class="msg">Invite Sent</p>
       <p class="name">
-        {{ nameArray[0] }} <br v-if="$route.name === 'Home'" />
-        {{ nameArray[nameArray.length - 1] }}
+        {{ nameArray[0] }} {{ nameArray[nameArray.length - 1] }}
       </p>
-      <p class="level">level {{ member.level }}</p>
+      <p class="level">level {{ invite.level }}</p>
     </div>
     <img
-      v-if="is_kickable && !loading_kick"
-      @click.stop="kick"
-      src="../assets/icons/kick.svg"
-      alt="kick"
-      class="kick"
+      v-if="!loading_cancel"
+      @click.stop="cancel"
+      src="../assets/icons/delete.svg"
+      alt="delete"
+      class="delete"
     />
     <v-progress-circular
-      v-else-if="is_kickable && loading_kick"
+      v-else
       indeterminate
       color="#27ade4"
       :size="60"
@@ -31,14 +30,13 @@
 import UserService from "../services/user.service";
 
 export default {
-  name: "Member",
+  name: "InviteSent",
   props: {
-    member: Object,
-    captain_ist_id: String,
+    invite: Object,
   },
   data: function () {
     return {
-      loading_kick: false,
+      loading_cancel: false,
     };
   },
   computed: {
@@ -47,37 +45,23 @@ export default {
     },
 
     nameArray() {
-      var names = this.member.name.split(" ");
+      var names = this.invite.name.split(" ");
 
       if (names.length > 1) return names;
-      else return [this.member.name, ""];
-    },
-
-    is_kickable() {
-      var user = this.$store.state.auth.user;
-      return (
-        user.ist_id === this.captain_ist_id &&
-        this.member.ist_id !== user.ist_id &&
-        this.$route.name === "Squad"
-      );
+      else return [this.invite.name, ""];
     },
   },
   methods: {
-    kick() {
-      if (!confirm("Are you sure you want to proceed?")) {
-        return;
-      }
+    cancel() {
+      this.loading_cancel = true;
 
-      this.loading_kick = true;
-
-      UserService.kickMember(this.member.ist_id).then(
-        (response) => {
-          var squad = response.data.data;
-          this.$emit("kick", squad);
+      UserService.cancelInvitation(this.invite.id).then(
+        () => {
+          this.$emit("cancel", this.invite.id);
         },
         (error) => {
           console.log(error);
-          this.loading_kick = false;
+          this.loading_cancel = false;
         }
       );
     },
@@ -96,6 +80,7 @@ export default {
   width: 10vh;
   border-radius: 50%;
   align-self: center;
+  filter: grayscale(1);
 }
 
 .profile-info {
@@ -114,12 +99,19 @@ export default {
   margin-bottom: -0.5vh;
 }
 
+.msg {
+  font-size: 2vh;
+  font-weight: 800;
+  margin: 0;
+}
+
 .name {
   font-size: 2.7vh;
   font-weight: 600;
   line-height: 3vh;
   margin-top: 0.5vh;
   margin-bottom: 0.5vh;
+  color: gray;
 }
 
 .level {
@@ -127,10 +119,11 @@ export default {
   font-weight: 700;
   color: #27ade4;
   margin-top: -0.5vh;
+  color: gray;
 }
 
-.kick {
-  height: 5vh;
+.delete {
+  height: 4vh;
   align-self: center;
   justify-self: flex-end;
   transform: scaleX(-1);

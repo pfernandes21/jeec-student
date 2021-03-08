@@ -148,7 +148,7 @@ export default {
       var names = this.$store.state.auth.user.name.split(" ");
 
       if (names.length > 1) return names;
-      else return [this.name, ""];
+      else return [this.$store.state.auth.user.name, ""];
     },
   },
 };

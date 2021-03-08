@@ -127,7 +127,6 @@
               :key="member.ist_id"
               :member="member"
               :captain_ist_id="squad.captain_ist_id"
-              :line_break="true"
             />
           </div>
         </div>
@@ -240,7 +239,10 @@ export default {
       return this.$store.state.auth.user;
     },
     nameArray() {
-      return this.$store.state.auth.user.name.split(" ");
+      var names = this.$store.state.auth.user.name.split(" ");
+
+      if (names.length > 1) return names;
+      else return [this.$store.state.auth.user.name, ""];
     },
     progress() {
       var xp = this.$store.state.auth.user.total_points;

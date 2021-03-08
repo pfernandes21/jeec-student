@@ -86,6 +86,14 @@ class UserService {
     );
   }
 
+  cancelInvitation(id) {
+    return axios.post(
+      jeec_brain_url + "/student/cancel-invitation",
+      { id: id },
+      { headers: authHeader() }
+    );
+  }
+
   getSquadInvitationsReceived() {
     return axios.get(jeec_brain_url + "/student/squad-invitations-received", {
       headers: authHeader()
