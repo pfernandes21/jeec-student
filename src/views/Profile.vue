@@ -337,49 +337,61 @@ export default {
       }
     },
     add_tag(tag) {
-      this.currentUser.tags.push(tag);
+      let user_backup = JSON.parse(JSON.stringify(this.currentUser));
+      let user = JSON.parse(JSON.stringify(this.currentUser));
+
+      user.tags.push(tag);
+      this.$store.dispatch("auth/userUpdate", user);
+
       UserService.addTags([tag]).then(
-        response => {
-          this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
+        () => {},
         error => {
+          this.$store.dispatch("auth/userUpdate", user_backup);
           console.log(error);
         }
       );
     },
     add_company(company) {
-      this.currentUser.companies.push(company);
+      let user_backup = JSON.parse(JSON.stringify(this.currentUser));
+      let user = JSON.parse(JSON.stringify(this.currentUser));
+
+      user.companies.push(company);
+      this.$store.dispatch("auth/userUpdate", user);
+
       UserService.addCompanies([company]).then(
-        response => {
-          this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
+        () => {},
         error => {
+          this.$store.dispatch("auth/userUpdate", user_backup);
           console.log(error);
         }
       );
     },
     delete_tag(tag) {
-      this.currentUser.tags = this.currentUser.tags.filter(
-        _tag => _tag !== tag
-      );
+      let user_backup = JSON.parse(JSON.stringify(this.currentUser));
+      let user = JSON.parse(JSON.stringify(this.currentUser));
+
+      user.tags = user.tags.filter(_tag => _tag !== tag);
+      this.$store.dispatch("auth/userUpdate", user);
+
       UserService.deleteTag(tag).then(
-        response => {
-          this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
+        () => {},
         error => {
+          this.$store.dispatch("auth/userUpdate", user_backup);
           console.log(error);
         }
       );
     },
     delete_company(company) {
-      this.currentUser.companies = this.currentUser.companies.filter(
-        _company => _company !== company
-      );
+      let user_backup = JSON.parse(JSON.stringify(this.currentUser));
+      let user = JSON.parse(JSON.stringify(this.currentUser));
+
+      user.companies = user.companies.filter(_company => _company !== company);
+      this.$store.dispatch("auth/userUpdate", user);
+
       UserService.deleteCompany(company).then(
-        response => {
-          this.$store.dispatch("auth/userUpdate", response.data.data);
-        },
+        () => {},
         error => {
+          this.$store.dispatch("auth/userUpdate", user_backup);
           console.log(error);
         }
       );
