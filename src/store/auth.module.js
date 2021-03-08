@@ -1,6 +1,6 @@
-import AuthService from '../services/auth.service';
+import AuthService from "../services/auth.service";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
   ? { status: { loggedIn: true }, user }
   : { status: { loggedIn: false }, user: null };
@@ -12,22 +12,22 @@ export const auth = {
     login({ commit }, user_and_jwt) {
       return AuthService.login(user_and_jwt).then(
         user => {
-          commit('loginSuccess', user);
+          commit("loginSuccess", user);
           return Promise.resolve(user);
         },
         error => {
-          commit('loginFailure');
+          commit("loginFailure");
           return Promise.reject(error);
         }
       );
     },
     logout({ commit }) {
       AuthService.logout();
-      commit('logout');
+      commit("logout");
     },
     userUpdate({ commit }, user) {
       AuthService.userUpdate(user);
-      commit('userUpdate', user);
+      commit("userUpdate", user);
     }
   },
   mutations: {

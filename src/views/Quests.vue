@@ -36,13 +36,13 @@
       <Quest
         :image="require('../assets/icons/cv.svg')"
         :description="cv_description"
-        :points="400"
+        :points="reward_cv"
         :done="currentUser.uploaded_cv"
       />
       <Quest
         :image="require('../assets/icons/linkedin.svg')"
         :description="linkedin_description"
-        :points="400"
+        :points="reward_linkedin"
         :done="has_linkedin"
       />
       <Quest
@@ -50,7 +50,7 @@
         :key="date"
         :image="require('../assets/icons/login.svg')"
         :description="'<b>Logged in on ' + date.substring(0, 6) + '</b>'"
-        :points="5"
+        :points="reward_login"
         :done="true"
       />
     </div>
@@ -68,9 +68,9 @@ export default {
   components: {
     Activity,
     Quest,
-    Buttons,
+    Buttons
   },
-  data: function () {
+  data: function() {
     return {
       button: "daily",
       quests: [],
@@ -83,6 +83,9 @@ export default {
         '"/profile"' +
         ' style="color:#27ade4;text-decoration:none;">Profile</a></b>',
       loading_quests: true,
+      reward_cv: process.env.VUE_APP_REWARD_CV,
+      reward_linkedin: process.env.VUE_APP_REWARD_LINKEDIN,
+      reward_login: process.env.VUE_APP_REWARD_LOGIN
     };
   },
   computed: {
@@ -94,14 +97,14 @@ export default {
         return true;
       }
       return false;
-    },
+    }
   },
   methods: {
     click(name) {
       if (name !== this.button) {
         this.button = name;
       }
-    },
+    }
   },
   created() {
     if (!this.currentUser) {
@@ -109,16 +112,16 @@ export default {
     }
 
     UserService.getQuests().then(
-      (response) => {
+      response => {
         this.quests = response.data.data;
         this.loading_quests = false;
       },
-      (error) => {
+      error => {
         console.log(error);
         this.loading_quests = false;
       }
     );
-  },
+  }
 };
 </script>
 

@@ -21,8 +21,8 @@ export default {
     image: String,
     description: String,
     points: Number,
-    done: Boolean,
-  },
+    done: Boolean
+  }
 };
 </script>
 
