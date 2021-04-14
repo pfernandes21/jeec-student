@@ -8,7 +8,7 @@
         />
       </div>
       <div class="buttons-flex">
-        <div @click.stop="login_student" class="button" style="background-color: #27ADE4">
+        <div @click.stop="login_student" class="button button-login" style="background-color: #27ADE4">
           <img
             alt="Fenix logo"
             src="../assets/icons/graduation-hat.svg"
@@ -17,7 +17,7 @@
           />
           Student Login
         </div>
-        <div @click.stop="login_partner" class="button" style="background-color: #27ADE4">
+        <div @click.stop="login_partner" class="button button-login" style="background-color: #27ADE4">
           <img
             alt="Fenix logo"
             src="../assets/icons/businessman.svg"
@@ -169,6 +169,10 @@ export default {
   cursor: pointer;
 }
 
+.button-login {
+  width: 58vw;
+}
+
 .icon {
   padding-right: 5vw;
   height: 7vw;
@@ -198,6 +202,10 @@ export default {
   padding: 4vh;
   margin: 2vh;
   font-size: 3.4vh;
+}
+
+.button-login {
+  width: 45vh;
 }
 
 .icon {
